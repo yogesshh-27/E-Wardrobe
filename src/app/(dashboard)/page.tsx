@@ -24,7 +24,6 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
 import { useOutfitStore } from '@/store/useOutfitStore';
 import { Card3D } from '@/components/ui/Card3D';
-import { FloatingWardrobe3D } from '@/components/ui/FloatingWardrobe3D';
 import { WardrobeItem } from '@/types';
 
 export default function DashboardHomePage() {
@@ -262,23 +261,7 @@ export default function DashboardHomePage() {
         </Card3D>
       </div>
 
-      {/* 3. 3D FLOATING WARDROBE COMPOSITION SHOWCASE */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="font-serif text-2xl font-bold text-[#1C1917]">
-              Atelier 3D Depth
-            </h2>
-            <p className="text-xs text-[#78716C]">
-              Floating wardrobe garments rendered with lightweight CSS perspective and real-time cursor parallax.
-            </p>
-          </div>
-          <span className="text-xs font-bold text-[#B4533C] hidden sm:inline-block">
-            60 FPS GPU-Accelerated
-          </span>
-        </div>
-        <FloatingWardrobe3D interactive={true} />
-      </div>
+
 
       {/* 4. WARDROBE SECTION */}
       <section className="space-y-6 pt-4">
