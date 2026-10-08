@@ -10,6 +10,8 @@ import { VirtualTryOnModal } from '@/components/stylist/VirtualTryOnModal';
 import { ItemDetailModal } from '@/components/wardrobe/ItemDetailModal';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
 
+import { AmbientBackground } from '@/components/ui/AmbientBackground';
+
 export default function DashboardLayout({
   children,
 }: {
@@ -19,7 +21,9 @@ export default function DashboardLayout({
   const { selectedItem, setSelectedItem } = useWardrobeStore();
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#1C1917] flex flex-col">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#1C1917] flex flex-col relative overflow-x-hidden">
+      {/* Ambient Animated Luxury Background Glow */}
+      <AmbientBackground />
       {/* Sidebar */}
       <DesktopSidebar
         isOpen={isSidebarOpen}

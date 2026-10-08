@@ -24,6 +24,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
 import { useOutfitStore } from '@/store/useOutfitStore';
 import { Card3D } from '@/components/ui/Card3D';
+import { CinematicHeroBanner } from '@/components/ui/CinematicHeroBanner';
 import { WardrobeItem } from '@/types';
 
 export default function DashboardHomePage() {
@@ -153,13 +154,16 @@ export default function DashboardHomePage() {
         </div>
       </div>
 
-      {/* 2. THREE LARGE INTERACTIVE 3D HERO CARDS */}
+      {/* 2. CINEMATIC EDITORIAL RUNWAY HERO BANNER */}
+      <CinematicHeroBanner />
+
+      {/* 3. THREE LARGE INTERACTIVE 3D HERO CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Card 1: ✈️ TRAVEL */}
         <Card3D depth={12} className="h-full">
           <Link
             href="/travel"
-            className="group block h-full rounded-3xl bg-white border border-[#E7E0D6] p-7 shadow-md hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
+            className="group block h-full rounded-3xl bg-white border border-[#E7E0D6] p-7 shadow-md hover:shadow-2xl transition-all duration-300 relative overflow-hidden shimmer-card"
           >
             <div className="absolute top-0 right-0 -mr-6 -mt-6 h-28 w-28 rounded-full bg-[#B4533C]/5 group-hover:bg-[#B4533C]/12 transition-colors duration-500" />
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FAF8F5] text-[#B4533C] border border-[#E7E0D6]/60 mb-5 group-hover:scale-110 transition-transform">
@@ -194,7 +198,7 @@ export default function DashboardHomePage() {
         <Card3D depth={12} className="h-full">
           <Link
             href="/occasions"
-            className="group block h-full rounded-3xl bg-white border border-[#E7E0D6] p-7 shadow-md hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
+            className="group block h-full rounded-3xl bg-white border border-[#E7E0D6] p-7 shadow-md hover:shadow-2xl transition-all duration-300 relative overflow-hidden shimmer-card"
           >
             <div className="absolute top-0 right-0 -mr-6 -mt-6 h-28 w-28 rounded-full bg-[#C5A059]/10 group-hover:bg-[#C5A059]/20 transition-colors duration-500" />
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FAF8F5] text-[#C5A059] border border-[#E7E0D6]/60 mb-5 group-hover:scale-110 transition-transform">
@@ -229,7 +233,7 @@ export default function DashboardHomePage() {
         <Card3D depth={12} className="h-full">
           <Link
             href="/recommendations"
-            className="group block h-full rounded-3xl bg-white border border-[#E7E0D6] p-7 shadow-md hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
+            className="group block h-full rounded-3xl bg-white border border-[#E7E0D6] p-7 shadow-md hover:shadow-2xl transition-all duration-300 relative overflow-hidden shimmer-card"
           >
             <div className="absolute top-0 right-0 -mr-6 -mt-6 h-28 w-28 rounded-full bg-[#5F6F52]/10 group-hover:bg-[#5F6F52]/20 transition-colors duration-500" />
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#FAF8F5] text-[#5F6F52] border border-[#E7E0D6]/60 mb-5 group-hover:scale-110 transition-transform">
