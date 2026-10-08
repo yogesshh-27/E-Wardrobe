@@ -19,6 +19,8 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
 import { Card3D } from '@/components/ui/Card3D';
 
+import { StyleDnaRadialChart } from '@/components/ui/StyleDnaRadialChart';
+
 interface StyleDnaMetric {
   name: string;
   percentage: number;
@@ -79,7 +81,7 @@ export default function StyleProfilePage() {
         <div>
           <div className="inline-flex items-center gap-2 rounded-full bg-[#B4533C]/10 px-3 py-1 text-xs font-bold text-[#B4533C] uppercase tracking-wider mb-2">
             <Dna className="h-3.5 w-3.5" />
-            <span>Algorithmic Aesthetics</span>
+            <span>Algorithmic Aesthetics • 21st.dev Radial Gauge</span>
           </div>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1917]">
             Style Profile & DNA
@@ -104,77 +106,12 @@ export default function StyleProfilePage() {
 
       {/* Main Visual "Style DNA" Section */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Side: Elegant Visual Chart */}
-        <div className="lg:col-span-7 rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-10 card-shadow space-y-8">
-          <div className="flex items-center justify-between border-b border-[#F4EFEA] pb-4">
-            <div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-[#B4533C] block">
-                Visual Aesthetic Spectrum
-              </span>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#1C1917] mt-0.5">
-                YOUR STYLE DNA
-              </h2>
-            </div>
-
-            <span className="text-xs font-bold text-[#5F6F52] bg-[#5F6F52]/10 px-3 py-1 rounded-full">
-              Real-time Calibration
-            </span>
-          </div>
-
-          {/* Stacked Proportional Bar */}
-          <div className="space-y-2">
-            <div className="h-4 w-full rounded-full bg-[#FAF8F5] overflow-hidden flex shadow-inner">
-              {dnaMetrics.map((m) => (
-                <div
-                  key={m.name}
-                  style={{
-                    width: `${m.percentage}%`,
-                    backgroundColor: m.color,
-                  }}
-                  title={`${m.name}: ${m.percentage}%`}
-                  className="h-full transition-all duration-500 hover:opacity-90"
-                />
-              ))}
-            </div>
-            <p className="text-[10px] text-[#78716C] text-right font-medium">
-              100% Normalized Style Vector
-            </p>
-          </div>
-
-          {/* Detailed Metric Rows */}
-          <div className="space-y-4">
-            {dnaMetrics.map((m) => (
-              <div key={m.name} className="space-y-1.5">
-                <div className="flex items-center justify-between text-xs font-bold">
-                  <div className="flex items-center gap-2.5">
-                    <div
-                      className="h-3 w-3 rounded-full"
-                      style={{ backgroundColor: m.color }}
-                    />
-                    <span className="text-[#1C1917]">{m.name}</span>
-                  </div>
-                  <span className="font-serif text-sm font-bold text-[#1C1917]">
-                    {m.percentage}%
-                  </span>
-                </div>
-
-                <div className="h-2 w-full rounded-full bg-[#FAF8F5] overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-700"
-                    style={{
-                      width: `${m.percentage}%`,
-                      backgroundColor: m.color,
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6] p-4 text-xs text-[#57534E] flex items-center justify-between">
-            <span>DNA confidence score based on {items.length} cataloged garments</span>
-            <span className="font-bold text-[#1C1917]">94% Affinity</span>
-          </div>
+        {/* Left Side: 21st.dev Inspired Concentric Gauge & Breakdown */}
+        <div className="lg:col-span-7">
+          <StyleDnaRadialChart
+            metrics={dnaMetrics}
+            dominantArchetype="Classic Tailored"
+          />
         </div>
 
         {/* Right Side: Tend To Prefer & Tend To Avoid */}

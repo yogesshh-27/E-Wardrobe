@@ -29,6 +29,7 @@ import { useTravelStore } from '@/store/useTravelStore';
 import { useOutfitStore } from '@/store/useOutfitStore';
 import { weatherService } from '@/services/weatherService';
 import { Card3D } from '@/components/ui/Card3D';
+import { JourneyTimelineStepper } from '@/components/ui/JourneyTimelineStepper';
 import { POPULAR_DESTINATIONS } from '@/data/mockDestinations';
 import { WardrobeItem } from '@/types';
 
@@ -59,6 +60,7 @@ export default function TravelPlannerPage() {
   const [endDate, setEndDate] = useState('2026-11-15');
   const [isGenerating, setIsGenerating] = useState(false);
   const [weatherForecast, setWeatherForecast] = useState<any>(null);
+  const [activeStepperDay, setActiveStepperDay] = useState<number>(1);
 
   // Custom multi-day itinerary builder
   const [itineraryDays, setItineraryDays] = useState<CustomItineraryDay[]>([
@@ -482,12 +484,29 @@ export default function TravelPlannerPage() {
             </p>
           </div>
 
+          {/* 21st.dev Interactive Journey Timeline Stepper */}
+          <JourneyTimelineStepper
+            days={itineraryDays.map((d) => ({
+              dayNumber: d.dayNumber,
+              title: d.title,
+              activitiesCount: d.activities.length,
+              highlightTheme: d.activities[0] || 'Activities & Sights',
+            }))}
+            activeDay={activeStepperDay}
+            onSelectDay={(dayNum) => setActiveStepperDay(dayNum)}
+            destinationName={destination}
+          />
+
           {/* Day-Wise Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {generatedDayOutfits.map((outfit) => (
               <div
                 key={outfit.dayNumber}
-                className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow flex flex-col justify-between space-y-5"
+                className={`rounded-3xl bg-white border p-6 shadow-md card-shadow flex flex-col justify-between space-y-5 transition-all duration-300 ${
+                  activeStepperDay === outfit.dayNumber
+                    ? 'border-[#B4533C] ring-2 ring-[#B4533C]/20 shadow-xl'
+                    : 'border-[#E7E0D6] opacity-90 hover:opacity-100'
+                }`}
               >
                 <div className="space-y-4">
                   {/* Day Header Badge */}

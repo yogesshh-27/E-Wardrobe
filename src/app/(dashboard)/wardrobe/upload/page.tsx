@@ -25,6 +25,7 @@ import { useWardrobeStore } from '@/store/useWardrobeStore';
 import { visionService } from '@/services/visionService';
 import { storageService } from '@/services/storageService';
 import { ClothingCategory, VisionAnalysisResult } from '@/types';
+import { InteractiveUploadZone } from '@/components/ui/InteractiveUploadZone';
 
 const CATEGORIES: ClothingCategory[] = [
   'Shirts',
@@ -76,6 +77,7 @@ export default function UploadPage() {
   const [selectedFolderId, setSelectedFolderId] = useState('f-shirts');
   const [customTags, setCustomTags] = useState('WHITE · CASUAL · RELAXED');
   const [aiConfidence, setAiConfidence] = useState(96);
+  const [analyzingProgress, setAnalyzingProgress] = useState(0);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -85,9 +87,19 @@ export default function UploadPage() {
       const dataUrl = await storageService.storeImage(file);
       setImagePreview(dataUrl);
       setStage('analyzing');
+      setAnalyzingProgress(20);
+
+      const progressInterval = setInterval(() => {
+        setAnalyzingProgress((prev) => {
+          if (prev >= 88) return prev;
+          return prev + 18;
+        });
+      }, 180);
 
       // AI Vision Inference
       const analysis: VisionAnalysisResult = await visionService.analyze(file);
+      clearInterval(progressInterval);
+      setAnalyzingProgress(100);
 
       setItemName(analysis.name || 'Tailored Garment Piece');
       setCategory(analysis.category);
@@ -109,7 +121,9 @@ export default function UploadPage() {
         setSelectedFolderId(matchedFolder.id);
       }
 
-      setStage('confirm');
+      setTimeout(() => {
+        setStage('confirm');
+      }, 350);
     } catch (err: unknown) {
       setErrorMessage((err as Error).message || 'Failed to process garment image.');
       setStage('upload');
@@ -156,7 +170,7 @@ export default function UploadPage() {
       <div className="border-b border-[#E7E0D6] pb-4">
         <div className="inline-flex items-center gap-2 rounded-full bg-[#B4533C]/10 px-3 py-1 text-xs font-bold text-[#B4533C] uppercase tracking-wider mb-2">
           <Sparkles className="h-3.5 w-3.5" />
-          <span>AI Vision Digitizer</span>
+          <span>AI Vision Digitizer • 21st.dev Upload</span>
         </div>
         <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1917]">
           Add something new to your wardrobe.
@@ -173,96 +187,35 @@ export default function UploadPage() {
         </div>
       )}
 
-      {/* 1. STAGE: UPLOAD */}
-      {stage === 'upload' && (
-        <div
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={handleDrop}
-          className="rounded-3xl border-2 border-dashed border-[#D5CCC0] bg-white p-12 text-center hover:border-[#B4533C] hover:bg-[#FAF8F5] transition-all card-shadow space-y-6"
-        >
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-[#FAF8F5] border border-[#E7E0D6] text-[#B4533C] shadow-xs">
-            <UploadCloud className="h-10 w-10" />
-          </div>
+      {/* 1 & 2. STAGES: UPLOAD & ANALYZING (Integrated with 21st.dev InteractiveUploadZone) */}
+      {(stage === 'upload' || stage === 'analyzing') && (
+        <div className="space-y-4">
+          <InteractiveUploadZone
+            onFileSelect={processFile}
+            isAnalyzing={stage === 'analyzing'}
+            analyzingProgress={analyzingProgress}
+            previewUrl={imagePreview}
+            onClearPreview={() => {
+              setImagePreview(null);
+              setStage('upload');
+            }}
+          />
 
-          <div className="space-y-1.5">
-            <h3 className="font-serif text-2xl font-bold text-[#1C1917]">
-              Drag & Drop your clothing photo
-            </h3>
-            <p className="text-xs sm:text-sm text-[#57534E] max-w-sm mx-auto">
-              Flat-lay on neutral background or hanger photo works best. One item per upload.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-2 rounded-2xl bg-[#1C1917] px-6 py-3.5 text-xs font-semibold text-white shadow-xs hover:bg-[#B4533C] transition-colors"
-            >
-              <UploadCloud className="h-4 w-4" />
-              <span>Choose from Device</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-2 rounded-2xl border border-[#E7E0D6] bg-white px-5 py-3.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
-            >
-              <Camera className="h-4 w-4 text-[#78716C]" />
-              <span>Take Photo</span>
-            </button>
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="hidden"
-            />
-          </div>
-
-          {/* Quick Demo Garment Trigger */}
-          <div className="pt-6 border-t border-[#F4EFEA]">
-            <p className="text-[11px] text-[#78716C] mb-2 font-medium">Or try with sample garment:</p>
-            <button
-              type="button"
-              onClick={() => {
-                setImagePreview('https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&auto=format&fit=crop&q=80');
-                setStage('confirm');
-              }}
-              className="text-xs font-bold text-[#B4533C] hover:underline"
-            >
-              Load Demo White Linen Shirt →
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* 2. STAGE: ANALYZING */}
-      {stage === 'analyzing' && (
-        <div className="rounded-3xl bg-white border border-[#E7E0D6] p-16 text-center space-y-6 card-shadow">
-          <div className="relative mx-auto h-24 w-24 rounded-2xl overflow-hidden border border-[#E7E0D6] bg-[#FAF8F5]">
-            {imagePreview && (
-              <img
-                src={imagePreview}
-                alt="Scanning preview"
-                className="w-full h-full object-cover filter blur-2xs"
-              />
-            )}
-            <div className="animate-scanline" />
-            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-              <Sparkles className="h-8 w-8 text-white animate-spin" />
+          {stage === 'upload' && (
+            <div className="text-center pt-2">
+              <span className="text-[11px] text-[#78716C] mr-2">Or test sample item:</span>
+              <button
+                type="button"
+                onClick={() => {
+                  setImagePreview('https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&auto=format&fit=crop&q=80');
+                  setStage('confirm');
+                }}
+                className="text-xs font-bold text-[#B4533C] hover:underline"
+              >
+                Load Sample White Linen Shirt →
+              </button>
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <h3 className="font-serif text-2xl font-bold text-[#1C1917]">
-              AI Computer Vision Analyzing Garment...
-            </h3>
-            <p className="text-xs text-[#57534E] max-w-sm mx-auto">
-              Extracting color palette, silhouette contours, fabric texture, and category tags.
-            </p>
-          </div>
+          )}
         </div>
       )}
 

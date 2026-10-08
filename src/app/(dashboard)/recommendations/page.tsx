@@ -20,6 +20,7 @@ import {
 import { useWardrobeStore } from '@/store/useWardrobeStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { Card3D } from '@/components/ui/Card3D';
+import { RecommendationFeedbackCard } from '@/components/ui/RecommendationFeedbackCard';
 import { ProductItem } from '@/types';
 
 interface CuratedRecommendation {
@@ -220,86 +221,15 @@ export default function RecommendationsPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredRecs.map((prod) => (
             <Card3D depth={8} key={prod.id}>
-              <div className="rounded-3xl bg-white border border-[#E7E0D6] p-5 shadow-md card-shadow flex flex-col justify-between h-full space-y-4 hover:border-[#B4533C]/60 transition-colors">
-                <div className="space-y-3">
-                  {/* Product Image Frame */}
-                  <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-[#FAF8F5]">
-                    <img
-                      src={prod.imageUrl}
-                      alt={prod.name}
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                    />
-
-                    {/* Brand Pill */}
-                    <span className="absolute top-3 left-3 rounded-full bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#1C1917] shadow-xs">
-                      {prod.brand}
-                    </span>
-
-                    {/* Price Pill */}
-                    <span className="absolute bottom-3 left-3 rounded-full bg-black/75 backdrop-blur-md px-3 py-1 text-xs font-bold text-white shadow-xs">
-                      ₹{prod.price.toLocaleString('en-IN')}
-                    </span>
-                  </div>
-
-                  {/* Title & Style Tags */}
-                  <div>
-                    <h3 className="font-serif text-lg font-bold text-[#1C1917] leading-snug">
-                      {prod.name}
-                    </h3>
-
-                    {/* Tags formatted e.g. CLASSIC · STREETWEAR · LINEN */}
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] mt-1">
-                      {prod.styleTags.join(' · ')}
-                    </p>
-                  </div>
-
-                  {/* Exact Why It Matches The User */}
-                  <div className="rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] p-3 text-xs text-[#57534E] leading-relaxed">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#B4533C] block mb-0.5">
-                      Why It Matches
-                    </span>
-                    &ldquo;{prod.whyItMatches}&rdquo;
-                  </div>
-                </div>
-
-                {/* Exact 3 Buttons: View Product / Save / Not for me */}
-                <div className="pt-3 border-t border-[#F4EFEA] space-y-2">
-                  <div className="flex gap-2">
-                    {/* Button 1: View Product */}
-                    <a
-                      href={prod.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-[#1C1917] py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-[#B4533C] transition-colors"
-                    >
-                      <span>View Product</span>
-                      <ExternalLink className="h-3.5 w-3.5" />
-                    </a>
-
-                    {/* Button 2: Save */}
-                    <button
-                      onClick={() => handleSaveToggle(prod.id)}
-                      className={`flex-1 flex items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-semibold border transition-all ${
-                        prod.saved
-                          ? 'border-[#5F6F52] bg-[#5F6F52] text-white shadow-xs'
-                          : 'border-[#E7E0D6] bg-white text-[#1C1917] hover:bg-[#FAF8F5]'
-                      }`}
-                    >
-                      <Bookmark className={`h-3.5 w-3.5 ${prod.saved ? 'fill-white' : ''}`} />
-                      <span>{prod.saved ? 'Saved' : 'Save'}</span>
-                    </button>
-                  </div>
-
-                  {/* Button 3: Not for me */}
-                  <button
-                    onClick={() => handleNotForMe(prod.id, prod.name)}
-                    className="w-full flex items-center justify-center gap-1.5 rounded-xl py-2 text-[11px] font-semibold text-[#78716C] hover:text-red-600 hover:bg-red-50 transition-colors"
-                  >
-                    <ThumbsDown className="h-3 w-3" />
-                    <span>Not for me</span>
-                  </button>
-                </div>
-              </div>
+              <RecommendationFeedbackCard
+                item={prod}
+                onLike={(id) => {
+                  setFeedbackNotice(`❤️ Liked "${prod.name}" • AI Taste calibrated for ${prod.brand}`);
+                  setTimeout(() => setFeedbackNotice(null), 3000);
+                }}
+                onSave={(id) => handleSaveToggle(id)}
+                onNotForMe={(id) => handleNotForMe(id, prod.name)}
+              />
             </Card3D>
           ))}
         </div>

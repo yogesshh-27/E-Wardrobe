@@ -6,11 +6,14 @@ import { X, Sparkles, AlertCircle, Camera, Check, Eye, Layers, ShieldCheck, Refr
 import { useOutfitStore } from '@/store/useOutfitStore';
 import { useAuthStore } from '@/store/useAuthStore';
 
+import { ImageComparisonSlider } from '@/components/ui/ImageComparisonSlider';
+
 export const VirtualTryOnModal: React.FC = () => {
   const router = useRouter();
   const { activeOutfitForTryOn, isTryOnModalOpen, closeTryOn } = useOutfitStore();
   const { user } = useAuthStore();
 
+  const [interactiveSliderMode, setInteractiveSliderMode] = useState<boolean>(true);
   const [viewMode, setViewMode] = useState<'after' | 'before'>('after');
   const [isSimulating, setIsSimulating] = useState(false);
   const [activeLayer, setActiveLayer] = useState<string>('all');
@@ -20,6 +23,11 @@ export const VirtualTryOnModal: React.FC = () => {
   const userImage =
     user?.profileImage ||
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80';
+
+  // Editorial composite styled avatar image
+  const styledLookImage =
+    activeOutfitForTryOn.items[0]?.image ||
+    'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80';
 
   const handleSimulateRegenerate = () => {
     setIsSimulating(true);
@@ -43,7 +51,7 @@ export const VirtualTryOnModal: React.FC = () => {
                   See the Look
                 </h3>
                 <span className="rounded-full bg-[#B4533C]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#B4533C] uppercase tracking-wide">
-                  Virtual Try-On Preview
+                  Virtual Try-On • 21st.dev Slider
                 </span>
               </div>
               <p className="text-xs text-[#78716C] mt-0.5">{activeOutfitForTryOn.name}</p>
@@ -63,17 +71,25 @@ export const VirtualTryOnModal: React.FC = () => {
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span className="font-medium">
-              Virtual Try-On Preview Simulation • Architecture ready for future image-generation API
+              Interactive 21st.dev Comparison Slider • Silhouette vs Styled Composite
             </span>
           </div>
-          <button
-            onClick={handleSimulateRegenerate}
-            disabled={isSimulating}
-            className="hidden sm:flex items-center gap-1.5 text-[11px] font-bold text-[#1C1917] hover:underline"
-          >
-            <RefreshCw className={`h-3 w-3 ${isSimulating ? 'animate-spin' : ''}`} />
-            <span>Re-render Composite</span>
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setInteractiveSliderMode(!interactiveSliderMode)}
+              className="hidden sm:flex items-center gap-1 text-[11px] font-bold text-[#1C1917] hover:underline"
+            >
+              <span>{interactiveSliderMode ? 'Switch to Static View' : 'Switch to 21st.dev Slider'}</span>
+            </button>
+            <button
+              onClick={handleSimulateRegenerate}
+              disabled={isSimulating}
+              className="hidden sm:flex items-center gap-1.5 text-[11px] font-bold text-[#1C1917] hover:underline"
+            >
+              <RefreshCw className={`h-3 w-3 ${isSimulating ? 'animate-spin' : ''}`} />
+              <span>Re-render Composite</span>
+            </button>
+          </div>
         </div>
 
         {/* Main Body */}
@@ -81,92 +97,101 @@ export const VirtualTryOnModal: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             {/* Visual Canvas (Avatar & Clothing Layers) */}
             <div className="md:col-span-7 flex flex-col items-center">
-              <div className="relative rounded-3xl overflow-hidden border border-[#E7E0D6] bg-[#FAF8F5] aspect-3/4 w-full max-w-sm shadow-xl group">
-                <img
-                  src={userImage}
-                  alt="Avatar preview"
-                  className={`w-full h-full object-cover transition-all duration-300 ${
-                    viewMode === 'after' ? 'contrast-105' : 'grayscale-15'
-                  }`}
-                />
-
-                {/* Outfit Layers Overlay */}
-                {viewMode === 'after' && (
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5">
-                    {/* Layer Pills */}
-                    <div className="mb-2">
-                      <span className="text-[10px] uppercase font-bold tracking-wider text-white/90 block mb-1.5">
-                        Active Outfit Layers:
-                      </span>
-                      <div className="flex gap-2 overflow-x-auto pb-1">
-                        {activeOutfitForTryOn.items.map((garment, gIdx) => (
-                          <div
-                            key={garment.id}
-                            className="flex items-center gap-2 bg-white/95 backdrop-blur-md rounded-xl p-1.5 border border-white shadow-md shrink-0"
-                          >
-                            <img
-                              src={garment.image}
-                              alt={garment.name}
-                              className="h-9 w-9 rounded-lg object-cover"
-                            />
-                            <div className="pr-1 text-left">
-                              <p className="text-[10px] font-bold text-[#1C1917] leading-tight max-w-[80px] truncate">
-                                {garment.name}
-                              </p>
-                              <span className="text-[9px] text-[#B4533C] font-semibold">
-                                Layer {gIdx + 1}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <span className="text-[11px] text-white/80 font-medium">
-                      Simulated silhouette drape & color harmony applied
-                    </span>
+              {interactiveSliderMode ? (
+                <div className="w-full max-w-sm">
+                  <ImageComparisonSlider
+                    beforeImage={userImage}
+                    afterImage={styledLookImage}
+                    beforeLabel="Base Silhouette"
+                    afterLabel="Atelier Look"
+                    className="aspect-3/4"
+                  />
+                  <div className="mt-3 flex items-center justify-center gap-1 text-[11px] text-[#78716C]">
+                    <span>Drag the gold dial or use left/right arrow keys to compare</span>
                   </div>
-                )}
-
-                {/* Loading scanning simulation */}
-                {isSimulating && (
-                  <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex flex-col items-center justify-center text-white space-y-2">
-                    <div className="animate-scanline" />
-                    <Sparkles className="h-8 w-8 animate-spin text-[#C5A059]" />
-                    <p className="text-xs font-bold tracking-wide">Compositing Garment Layers...</p>
-                  </div>
-                )}
-
-                {/* Before / After Switch Toggle */}
-                <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
-                  <div className="flex bg-black/70 backdrop-blur-md rounded-full p-1 border border-white/20 text-white text-xs shadow-lg">
-                    <button
-                      onClick={() => setViewMode('before')}
-                      className={`px-3.5 py-1 rounded-full transition-all ${
-                        viewMode === 'before'
-                          ? 'bg-white text-[#1C1917] font-bold shadow-xs'
-                          : 'text-white/80 hover:text-white'
-                      }`}
-                    >
-                      Before
-                    </button>
-                    <button
-                      onClick={() => setViewMode('after')}
-                      className={`px-3.5 py-1 rounded-full transition-all ${
-                        viewMode === 'after'
-                          ? 'bg-[#B4533C] text-white font-bold shadow-xs'
-                          : 'text-white/80 hover:text-white'
-                      }`}
-                    >
-                      After (Styled)
-                    </button>
-                  </div>
-
-                  <span className="rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-[10px] text-white font-semibold">
-                    {viewMode === 'after' ? 'Look Overlayed' : 'Base Photo'}
-                  </span>
                 </div>
-              </div>
+              ) : (
+                <div className="relative rounded-3xl overflow-hidden border border-[#E7E0D6] bg-[#FAF8F5] aspect-3/4 w-full max-w-sm shadow-xl group">
+                  <img
+                    src={userImage}
+                    alt="Avatar preview"
+                    className={`w-full h-full object-cover transition-all duration-300 ${
+                      viewMode === 'after' ? 'contrast-105' : 'grayscale-15'
+                    }`}
+                  />
+
+                  {/* Outfit Layers Overlay */}
+                  {viewMode === 'after' && (
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5">
+                      <div className="mb-2">
+                        <span className="text-[10px] uppercase font-bold tracking-wider text-white/90 block mb-1.5">
+                          Active Outfit Layers:
+                        </span>
+                        <div className="flex gap-2 overflow-x-auto pb-1">
+                          {activeOutfitForTryOn.items.map((garment, gIdx) => (
+                            <div
+                              key={garment.id}
+                              className="flex items-center gap-2 bg-white/95 backdrop-blur-md rounded-xl p-1.5 border border-white shadow-md shrink-0"
+                            >
+                              <img
+                                src={garment.image}
+                                alt={garment.name}
+                                className="h-9 w-9 rounded-lg object-cover"
+                              />
+                              <div className="pr-1 text-left">
+                                <p className="text-[10px] font-bold text-[#1C1917] leading-tight max-w-[80px] truncate">
+                                  {garment.name}
+                                </p>
+                                <span className="text-[9px] text-[#B4533C] font-semibold">
+                                  Layer {gIdx + 1}
+                                </span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <span className="text-[11px] text-white/80 font-medium">
+                        Simulated silhouette drape & color harmony applied
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Loading scanning simulation */}
+                  {isSimulating && (
+                    <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex flex-col items-center justify-center text-white space-y-2">
+                      <Sparkles className="h-8 w-8 animate-spin text-[#C5A059]" />
+                      <p className="text-xs font-bold tracking-wide">Compositing Garment Layers...</p>
+                    </div>
+                  )}
+
+                  {/* Before / After Switch Toggle */}
+                  <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
+                    <div className="flex bg-black/70 backdrop-blur-md rounded-full p-1 border border-white/20 text-white text-xs shadow-lg">
+                      <button
+                        onClick={() => setViewMode('before')}
+                        className={`px-3.5 py-1 rounded-full transition-all ${
+                          viewMode === 'before'
+                            ? 'bg-white text-[#1C1917] font-bold shadow-xs'
+                            : 'text-white/80 hover:text-white'
+                        }`}
+                      >
+                        Before
+                      </button>
+                      <button
+                        onClick={() => setViewMode('after')}
+                        className={`px-3.5 py-1 rounded-full transition-all ${
+                          viewMode === 'after'
+                            ? 'bg-[#B4533C] text-white font-bold shadow-xs'
+                            : 'text-white/80 hover:text-white'
+                        }`}
+                      >
+                        After
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Right Side: Outfit Layers & Garments Details */}

@@ -16,6 +16,7 @@ import {
   Edit2,
   X,
   Sparkles,
+  Eye,
 } from 'lucide-react';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
 import { ClothingCategory } from '@/types';
@@ -425,18 +426,27 @@ export default function WardrobePage() {
               className="group rounded-3xl border border-[#E7E0D6] bg-white p-3 card-shadow card-shadow-hover cursor-pointer flex flex-col justify-between"
             >
               <div>
-                <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#FAF8F5] mb-3">
+                <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#FAF8F5] mb-3 group/img">
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
+
+                  {/* 21st.dev Hover Reveal Spotlight Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-3 pointer-events-none">
+                    <span className="flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#1C1917] shadow-md transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <Eye className="h-3 w-3 text-[#B4533C]" />
+                      <span>Inspect Details</span>
+                    </span>
+                  </div>
+
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
                       toggleFavorite(item.id);
                     }}
-                    className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-xs text-[#78716C] hover:text-[#B4533C] transition-colors"
+                    className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-xs text-[#78716C] hover:text-[#B4533C] transition-colors z-10"
                   >
                     <Heart
                       className={`h-3.5 w-3.5 ${
@@ -445,7 +455,7 @@ export default function WardrobePage() {
                     />
                   </button>
 
-                  <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 backdrop-blur-xs px-2 py-0.5 text-[9px] font-semibold text-white">
+                  <span className="absolute bottom-2.5 left-2.5 rounded-full bg-black/60 backdrop-blur-xs px-2 py-0.5 text-[9px] font-semibold text-white z-10 group-hover:opacity-0 transition-opacity">
                     {item.category}
                   </span>
                 </div>
