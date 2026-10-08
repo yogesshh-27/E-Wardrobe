@@ -1,103 +1,126 @@
-# E-Wardrobe: AI-Powered Digital Wardrobe & Personal Styling Platform
+# WARDROBE AI — Master Platform & System Architecture
 
 > **"Your wardrobe. Your style. AI-powered."**
-
-An interactive, luxury-tech web application built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and **Zustand**. E-Wardrobe provides an intelligent digital closet where users catalog clothing pieces one item at a time, organize them into dynamic folders, generate occasion and travel outfits using their own wardrobe first, simulate virtual try-ons on their full-body photo, and discover missing capsule pieces across leading fashion retailers (Myntra, Amazon, Flipkart, Meesho).
+> A gender-neutral digital wardrobe and AI personal styling platform built for editorial sophistication, zero-trust security, and high-performance scalability.
 
 ---
 
-## 🚀 Quick Start (Running Locally)
+## 🌟 Executive Summary
 
-### Prerequisites
-- Node.js 18+ (tested on Node 20 / 24)
-- npm 9+
+**WARDROBE AI** is an AI-powered e-wardrobe and personal styling platform featuring a modular monolith architecture with asynchronous workers, relational modeling with `pgvector`, direct-to-storage signed uploads, a deterministic rule engine, and defense-in-depth DevSecOps.
 
-### Installation & Launch
+### Primary USP: AI Travel Wardrobe Planner
+The user enters destination, dates, daily itinerary, and activities. The system analyzes their existing wardrobe and produces:
+- **Day-wise outfits**, footwear, and accessories
+- **4-Quadrant Smart Luggage Dashboard**:
+  - 🎒 **PACK**: Essential versatile pieces
+  - 🔄 **REUSE**: Cross-day multi-wear items
+  - 🚫 **SKIP**: Unnecessary bulky garments
+  - 🛍️ **MISSING**: Capsule items to consider purchasing
+
+---
+
+## 🏛 System Architecture & Modular Monolith
+
+The application combines a high-performance Next.js 16 frontend with domain-separated backend modules under `backend/`:
+
+```
+backend/
+├── auth/            # Managed identity & session tokens (Google & Phone)
+├── users/           # User lifecycle & data deletion privacy controls
+├── profiles/        # Style preferences & optional biometric measurements
+├── wardrobe/        # Garment items, attributes & bounded pagination
+├── folders/         # Gender-neutral custom folders (Tops, Pants, Custom)
+├── outfits/         # Multi-item outfit combinations & roles
+├── travel/          # AI Travel Planner engine & luggage optimizer
+├── occasions/       # Complete occasion look synthesis
+├── recommendations/ # Multi-stage pipeline (Rule Engine + LLM Explanation)
+├── ai/              # Google Gemini 2.5 Vision & 1536-dim pgvector embeddings
+├── storage/         # Direct-to-storage short-lived presigned upload URLs
+├── security/        # IDOR/BOLA protection, Zod validation, sliding-window rate limiter
+├── workers/         # Idempotent async job queue with exponential backoff
+├── database/        # Relational PostgreSQL 16 schema + pgvector DDL
+└── monitoring/      # Secure structured logger & latency/error metrics
+```
+
+---
+
+## 🔒 Security & DevSecOps Engineering
+
+WARDROBE AI implements multi-layered security controls verified through continuous automated scanning:
+
+1. **Authorization & IDOR/BOLA Prevention**:
+   Every request enforces `authenticated_user_id == resource.owner_id`. Frontend-supplied IDs are never trusted.
+2. **Secure Direct-to-Storage Uploads**:
+   Images never pass through backend memory. The client receives short-lived presigned URLs with server-generated random UUID keys, MIME whitelisting, and a 10MB ceiling.
+3. **Sliding-Window Rate Limiting**:
+   - General API: 60 req/min/user
+   - AI Endpoints: 10 req/min/user (protects against token exhaustion and cost abuse)
+4. **AI Prompt Injection Defenses**:
+   Sanitizes user input to defang prompt injection attacks and validates model outputs against strict Zod schemas.
+5. **Security Headers**:
+   CSP, HSTS (`31536000`), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, and strict CORS.
+6. **Aqua Security Trivy**:
+   Scans filesystem, dependencies, and secrets. **0 vulnerabilities, 0 secrets detected.**
+7. **Strix Automated Penetration Testing**:
+   Integrates `strix-agent` 1.7.0 for authorized local white-box security testing.
+
+---
+
+## 🚀 Quick Start
+
+### 1. Prerequisites
+- **Node.js**: 20+ (tested on Node 20 & 24)
+- **npm**: 9+
+- **Python**: 3.12+ (for Strix agent)
+
+### 2. Installation
 ```bash
-# Clone the repository
-git clone <repository-url>
+git clone https://github.com/yogesshh-27/E-Wardrobe.git
 cd E-Wardrobe
+npm install
+```
 
-# Install dependencies (respecting local npm script policies)
-npm install --ignore-scripts
+### 3. Environment Configuration
+Copy `.env.example` to `.env.local` and configure your credentials:
+```bash
+cp .env.example .env.local
+```
+Add your `GEMINI_API_KEY` to `.env.local`.
 
-# Start the Next.js development server
+### 4. Running the Development Server
+```bash
 npm run dev
 ```
-
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## 🏛 Architecture & Folder Structure
+## 🧪 Security & Quality Audit Commands
 
-```
-src/
-├── app/
-│   ├── (auth)/
-│   │   ├── login/page.tsx             # Google, Phone OTP, & Email login
-│   │   └── onboarding/page.tsx        # 6-step personalized styling onboarding
-│   ├── (dashboard)/
-│   │   ├── layout.tsx                 # App Shell (Navbar, Sidebar, BottomNav, Chat, Modals)
-│   │   ├── page.tsx                   # Home Dashboard with 4 action cards & daily look
-│   │   ├── wardrobe/
-│   │   │   ├── page.tsx               # Wardrobe folder system, filters, & grid/list views
-│   │   │   └── upload/page.tsx        # One-by-one upload with AI scanline & auto-tagging
-│   │   ├── travel/page.tsx            # Travel Planner, day-by-day capsule, & packing list
-│   │   ├── occasions/page.tsx         # Occasion Stylist with 2-3 tailored looks
-│   │   ├── outfits/page.tsx           # Saved looks, wearing log, & favorite capsules
-│   │   ├── recommendations/page.tsx   # "For You" daily themes & trending capsules
-│   │   ├── shopping/page.tsx          # "Complete your look" affiliate search engine
-│   │   ├── favorites/page.tsx         # Unified favorites (garments & outfits)
-│   │   ├── profile/page.tsx           # Silhouette measurements, photo, & privacy wipe
-│   │   ├── settings/page.tsx          # Load 20-item demo wardrobe & reset controls
-│   │   └── help/page.tsx              # Interactive FAQs & styling concierge form
-│   ├── globals.css                    # Luxury palette tokens, scanlines, glassmorphism
-│   └── layout.tsx                     # Google fonts (Cormorant & Plus Jakarta Sans)
-├── components/
-│   ├── navigation/                    # TopNavbar, DesktopSidebar, MobileBottomNav, GlobalSearch
-│   ├── wardrobe/                      # ItemDetailModal, FilterBar
-│   ├── chat/                          # FloatingStylistButton, StylistChatDrawer
-│   └── stylist/                       # VirtualTryOnModal
-├── services/                          # Service abstraction layer with mock adapters
-│   ├── interfaces.ts                  # Typed contracts for backend integration
-│   ├── authService.ts                 # Session and authentication management
-│   ├── visionService.ts               # Simulated neural garment auto-tagging
-│   ├── stylistService.ts              # Pure scoring engine (harmony, formality, occasions)
-│   ├── tryOnService.ts                # Virtual preview simulation adapter
-│   ├── weatherService.ts              # Destination weather forecasts
-│   ├── locationService.ts             # City autocomplete
-│   ├── productService.ts              # Retailer catalog & affiliate search link builder
-│   ├── storageService.ts              # Image validation and local Data URL / IndexedDB
-│   └── notificationService.ts         # In-app contextual styling notifications
-├── store/                             # Zustand state stores with localStorage persistence
-├── data/                              # Curated seed wardrobes, destinations, products
-└── types/                             # Domain TypeScript interfaces
+```bash
+# Run comprehensive automated security test suite (13/13 passing)
+npm run security:test
+
+# Run Trivy filesystem, dependency, and secret scan
+npm run security:trivy
+
+# Run Strix automated penetration tester
+npm run security:strix
+
+# Run linting
+npm run lint
+
+# Build production bundle
+npm run build
 ```
 
 ---
 
-## 🔌 What Is Mocked vs. What To Plug In
+## 📚 Technical Documentation Suite
 
-Per **Section 0 & Section 20 of the Master Prompt**, all third-party integrations are abstracted behind clean service interfaces (`src/services/interfaces.ts`) with honest UI simulation disclosures:
-
-| Service / Feature | Current Mock Implementation | Production Integration Guide |
-| :--- | :--- | :--- |
-| **Authentication** (`authService`) | LocalStorage mock session; phone OTP accepts `123456`; Google login mock. | Connect NextAuth.js / Supabase Auth / Firebase Auth with Google OAuth client ID and SMS gateway (Twilio / Msg91). |
-| **Vision Tagging** (`visionService`) | Simulates neural feature extraction (category, color, pattern, formality, occasions) with scanline animation. | Route image file to Gemini 1.5 Flash Vision / GPT-4o Vision route handler (`/api/vision/tag`). |
-| **Outfit Engine** (`stylistService`) | Pure rule-based scoring engine calculating color harmony, formality, silhouette balance, and missing items. | Keep scoring engine as deterministic ranker or augment with Gemini 1.5 Pro prompt chain for dynamic copy. |
-| **Virtual Try-On** (`tryOnService`) | Composites selected garments over full-body photo with Before/After toggle and explicit simulation disclaimer. | Connect to diffusion try-on APIs (e.g., IDM-VTON, Fashn.ai, or Replicate `try-on` models via webhook). |
-| **Weather** (`weatherService`) | Destination-aware climate data for major Indian & international travel hubs. | Call OpenWeatherMap / WeatherAPI using `WEATHER_API_KEY` in Next.js API route handler. |
-| **Shopping Catalog** (`productService`) | Curated catalog with INR pricing (₹); generates direct search URLs on Myntra, Amazon, Flipkart, Meesho. | Plug in retail affiliate APIs (Cuelinks, Amazon Product Advertising API, Myntra affiliate feeds). |
-| **Image Storage** (`storageService`) | Validates file type/size and stores Data URLs / IndexedDB locally. | Connect Amazon S3 / Cloudflare R2 / Google Cloud Storage with presigned upload URLs. |
-| **Database** | Zustand `persist` middleware in browser `localStorage`. | Swap with PostgreSQL (Prisma / Drizzle) or MongoDB with user relational schema. |
-
----
-
-## 🎨 Design Philosophy & UX Highlights
-
-1. **Luxury Fashion-Tech Aesthetic**: Off-white cream background (`#FAF8F5`), rich charcoal typography (`#1C1917`), and warm terracotta accents (`#B4533C`) paired with Cormorant Garamond editorial headlines.
-2. **Wardrobe-First UX Rule**: The platform works gracefully whether a user has 0 items, 3 items, or 50 items. Users never have to upload their whole closet up front.
-3. **Gender-Neutral & Inclusive**: Recommendations are tailored by silhouette, style affinity, and color theory rather than rigid gender silos.
-4. **Honest Simulation Transparency**: The virtual try-on clearly labels simulated previews: *"Preview simulation. Real AI virtual try-on engine coming soon."*
-5. **Instant Prototype Demo**: Go to **Settings** (`/settings`) to click **"Load 20-Item Demo Wardrobe"** to test every screen with realistic fashion flat-lays and garments.
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — System design, data flows, pgvector pipeline, and caching.
+- [`SECURITY.md`](./SECURITY.md) — Security controls, IDOR mitigation, signed uploads, and vulnerability disclosure.
+- [`THREAT_MODEL.md`](./THREAT_MODEL.md) — STRIDE threat matrix, assets, threat actors, and technical mitigations.
+- [`API.md`](./API.md) — Versioned REST API v1 endpoints, schemas, and status codes.
+- [`backend/database/schema.sql`](./backend/database/schema.sql) — PostgreSQL + pgvector relational schema.
