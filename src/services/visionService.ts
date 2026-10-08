@@ -1,73 +1,62 @@
 import { ClothingCategory, VisionAnalysisResult } from '@/types';
 import { IVisionService } from './interfaces';
 
-const MOCK_CATEGORIES: ClothingCategory[] = [
-  'Shirts',
-  'T-Shirts',
-  'Tops',
-  'Trousers',
-  'Jeans',
-  'Blazers',
-  'Kurtas',
-  'Sarees',
-  'Dresses',
-  'Jackets',
-  'Sweaters',
-  'Sneakers',
-  'Shoes',
-  'Sandals',
-  'Accessories',
-  'Bags',
-];
-
-const MOCK_COLORS = [
-  'White',
-  'Black',
-  'Charcoal Grey',
-  'Navy Blue',
-  'Beige',
-  'Camel',
-  'Olive Green',
-  'Emerald Green',
-  'Burgundy',
-  'Sky Blue',
-  'Cream',
-  'Tan Brown',
-];
-
-const MOCK_PATTERNS = ['Solid', 'Stripes', 'Checks', 'Floral', 'Minimal patterns', 'Textured'];
-
-const MOCK_STYLES = [
-  'Minimalist / Classic',
-  'Smart Casual',
-  'Old Money / Elegant',
-  'Traditional / Ethnic',
-  'Streetwear',
-  'Casual',
-  'Bohemian',
-];
-
-const MOCK_MATERIALS = [
-  '100% Breathable Cotton',
-  'Silk Chanderi',
-  'Pure Linen Blend',
-  'Merino Wool',
-  'Rigid Selvedge Denim',
-  'Cashmere Blend',
-  'Full Grain Nappa Leather',
-];
-
 export class VisionService implements IVisionService {
   async analyze(imageFileOrUrl: string | File): Promise<VisionAnalysisResult> {
-    // Artificial slight delay to simulate high-tech neural network image inference
-    await new Promise((resolve) => setTimeout(resolve, 1400));
+    try {
+      let base64 = '';
+      let mimeType = 'image/jpeg';
 
+      if (typeof imageFileOrUrl === 'string') {
+        base64 = imageFileOrUrl;
+        if (imageFileOrUrl.startsWith('data:image/png')) mimeType = 'image/png';
+        else if (imageFileOrUrl.startsWith('data:image/webp')) mimeType = 'image/webp';
+      } else {
+        mimeType = imageFileOrUrl.type || 'image/jpeg';
+        base64 = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(imageFileOrUrl);
+        });
+      }
+
+      // Call server-side Vision API (backed by Google Gemini)
+      const res = await fetch('/api/vision', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: base64, mimeType }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (data.analysis) {
+          const a = data.analysis;
+          return {
+            category: (a.category as ClothingCategory) || 'Shirts',
+            name: a.name || 'Tailored Garment',
+            color: a.color || 'White',
+            pattern: a.pattern || 'Solid',
+            style: a.style || 'Casual',
+            material: a.material || 'Cotton',
+            formality: a.formality || 'Smart Casual',
+            fit: a.fit || 'Relaxed',
+            occasion: a.occasion || ['Casual Outing', 'Dinner'],
+            season: ['All Season'],
+            confidence: a.confidence || 95,
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('API Vision endpoint fallback triggered:', e);
+    }
+
+    // Client-side fallback
     let filename = '';
     if (typeof imageFileOrUrl !== 'string' && imageFileOrUrl?.name) {
       filename = imageFileOrUrl.name.toLowerCase();
     }
 
-    // Heuristics based on filename if available
     let category: ClothingCategory = 'Shirts';
     let name = 'Tailored Cotton Garment';
     let color = 'White';
@@ -92,64 +81,32 @@ export class VisionService implements IVisionService {
       color = 'Olive Green';
       formality = 'Festive';
       occasion = ['Festival', 'Puja', 'Family Function', 'Wedding'];
-    } else if (filename.includes('saree')) {
-      category = 'Sarees';
-      name = 'Woven Zari Silk Saree';
-      color = 'Emerald Green';
-      formality = 'Festive';
-      occasion = ['Wedding', 'Festival', 'Puja'];
     } else if (filename.includes('blazer') || filename.includes('suit')) {
       category = 'Blazers';
       name = 'Structured Tailored Blazer';
       color = 'Charcoal Grey';
       formality = 'Formal';
       occasion = ['Office', 'Business Meeting', 'Dinner'];
-    } else if (filename.includes('dress')) {
-      category = 'Dresses';
-      name = 'Flowy Midi Wrap Dress';
-      color = 'Sky Blue';
-      formality = 'Smart Casual';
-      occasion = ['Date', 'Dinner', 'Brunch'];
     } else if (filename.includes('shoe') || filename.includes('sneaker')) {
       category = 'Sneakers';
       name = 'Low-Top Minimalist Sneakers';
       color = 'White';
       formality = 'Casual';
       occasion = ['Casual Outing', 'Travel'];
-    } else if (filename.includes('tshirt') || filename.includes('tee')) {
-      category = 'T-Shirts';
-      name = 'Boxy Heavyweight Tee';
-      color = 'Black';
-      formality = 'Casual';
-      occasion = ['Casual Outing', 'College Event'];
-    } else {
-      // Pick random varied realistic traits
-      const randCat = MOCK_CATEGORIES[Math.floor(Math.random() * MOCK_CATEGORIES.length)];
-      category = randCat;
-      color = MOCK_COLORS[Math.floor(Math.random() * MOCK_COLORS.length)];
-      name = `${color} ${randCat.slice(0, -1) || randCat}`;
     }
-
-    const pattern = MOCK_PATTERNS[Math.floor(Math.random() * MOCK_PATTERNS.length)];
-    const style = MOCK_STYLES[Math.floor(Math.random() * MOCK_STYLES.length)];
-    const material = MOCK_MATERIALS[Math.floor(Math.random() * MOCK_MATERIALS.length)];
-    const fits = ['Fitted', 'Relaxed', 'Slim', 'Oversized'];
-    const fit = fits[Math.floor(Math.random() * fits.length)];
-    const seasons = [['Spring', 'Summer'], ['Autumn', 'Winter'], ['All Season']];
-    const season = seasons[Math.floor(Math.random() * seasons.length)];
 
     return {
       category,
       name,
       color,
-      pattern,
-      style,
-      material,
-      occasion,
-      season,
+      pattern: 'Solid',
+      style: 'Casual / Minimalist',
+      material: '100% Breathable Cotton',
       formality,
-      fit,
-      confidence: Math.round(92 + Math.random() * 6),
+      fit: 'Relaxed',
+      occasion,
+      season: ['All Season'],
+      confidence: 94,
     };
   }
 }

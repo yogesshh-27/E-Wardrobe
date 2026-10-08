@@ -275,6 +275,58 @@ export class StylistService implements IStylistService {
   }): Promise<Trip> {
     const { destination, startDate, endDate, activities, tripStyle, wardrobe, userProfile } = params;
 
+    try {
+      const res = await fetch('/api/stylist/travel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.source === 'gemini-ai' && data.plan) {
+          const p = data.plan;
+          const dayPlans: DayOutfitPlan[] = (p.dayOutfits || []).map((d: any) => ({
+            dayNumber: d.dayNumber,
+            dateStr: `Day ${d.dayNumber}`,
+            activityTitle: d.themeTitle,
+            vibe: d.reason,
+            temperature: '26°C',
+            top: wardrobe.find((w) => w.name.toLowerCase().includes(d.topName?.toLowerCase())) || wardrobe[0] || null,
+            bottom: wardrobe.find((w) => w.name.toLowerCase().includes(d.bottomName?.toLowerCase())) || wardrobe[1] || null,
+            footwear: wardrobe.find((w) => w.name.toLowerCase().includes(d.shoesName?.toLowerCase())) || wardrobe[2] || null,
+            accessories: wardrobe.find((w) => w.name.toLowerCase().includes(d.accessoriesName?.toLowerCase())) || null,
+            reason: d.reason,
+          }));
+
+          return {
+            id: `trip-${Date.now()}`,
+            userId: userProfile.id,
+            destination,
+            startDate,
+            endDate,
+            activities,
+            tripStyle: (tripStyle as any) || 'Stylish',
+            weather: {
+              summary: 'Sunny & Pleasant',
+              temperatureRange: '22°C - 29°C',
+              icon: 'Sun',
+            },
+            generatedOutfits: dayPlans,
+            packingList: (p.smartPacking?.packingList || []).map((item: any, idx: number) => ({
+              id: `pack-${idx + 1}`,
+              name: item.name,
+              category: item.category || 'Clothing',
+              isPacked: item.isPacked || false,
+              quantity: 1,
+            })),
+            createdAt: new Date().toISOString(),
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('Live AI travel endpoint fallback:', e);
+    }
+
     // Calculate trip length (default 3 days if missing)
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -393,11 +445,31 @@ export class StylistService implements IStylistService {
 
   async chat(
     userMessage: string,
-    _history: ChatMessage[],
+    history: ChatMessage[],
     wardrobe: WardrobeItem[],
     userProfile: UserProfile
   ): Promise<{ reply: string; outfits?: Outfit[]; products?: ProductItem[] }> {
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    try {
+      const res = await fetch('/api/stylist/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [...history, { sender: 'user', text: userMessage }],
+          userProfile,
+          wardrobe,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.reply) {
+          return { reply: data.reply };
+        }
+      }
+    } catch (e) {
+      console.warn('Live chat API fallback:', e);
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 600));
     const msg = userMessage.toLowerCase();
 
     if (msg.includes('wedding')) {
