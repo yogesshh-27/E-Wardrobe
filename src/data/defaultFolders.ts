@@ -1,0 +1,26 @@
+import { WardrobeFolder } from '@/types';
+
+export const DEFAULT_FOLDERS: Omit<WardrobeFolder, 'userId'>[] = [
+  { id: 'f-tshirts', name: 'T-Shirts', category: 'T-Shirts', isDefault: true },
+  { id: 'f-shirts', name: 'Shirts', category: 'Shirts', isDefault: true },
+  { id: 'f-tops', name: 'Tops', category: 'Tops', isDefault: true },
+  { id: 'f-jeans', name: 'Jeans', category: 'Jeans', isDefault: true },
+  { id: 'f-trousers', name: 'Trousers', category: 'Trousers', isDefault: true },
+  { id: 'f-skirts', name: 'Skirts', category: 'Skirts', isDefault: true },
+  { id: 'f-dresses', name: 'Dresses', category: 'Dresses', isDefault: true },
+  { id: 'f-kurtas', name: 'Kurtas', category: 'Kurtas', isDefault: true },
+  { id: 'f-sarees', name: 'Sarees', category: 'Sarees', isDefault: true },
+  { id: 'f-blazers', name: 'Blazers', category: 'Blazers', isDefault: true },
+  { id: 'f-suits', name: 'Suits', category: 'Suits', isDefault: true },
+  { id: 'f-jackets', name: 'Jackets', category: 'Jackets', isDefault: true },
+  { id: 'f-hoodies', name: 'Hoodies', category: 'Hoodies', isDefault: true },
+  { id: 'f-sweaters', name: 'Sweaters', category: 'Sweaters', isDefault: true },
+  { id: 'f-sneakers', name: 'Sneakers', category: 'Sneakers', isDefault: true },
+  { id: 'f-shoes', name: 'Shoes', category: 'Shoes', isDefault: true },
+  { id: 'f-sandals', name: 'Sandals', category: 'Sandals', isDefault: true },
+  { id: 'f-accessories', name: 'Accessories', category: 'Accessories', isDefault: true },
+  { id: 'f-bags', name: 'Bags', category: 'Bags', isDefault: true },
+  { id: 'f-watches', name: 'Watches', category: 'Watches', isDefault: true },
+  { id: 'f-jewellery', name: 'Jewellery', category: 'Jewellery', isDefault: true },
+  { id: 'f-other', name: 'Other', category: 'Other', isDefault: true },
+];
