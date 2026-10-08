@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { X, Sparkles, AlertCircle, Camera, Check, Eye } from 'lucide-react';
+import { X, Sparkles, AlertCircle, Camera, Check, Eye, Layers, ShieldCheck, RefreshCw } from 'lucide-react';
 import { useOutfitStore } from '@/store/useOutfitStore';
 import { useAuthStore } from '@/store/useAuthStore';
 
@@ -13,124 +13,136 @@ export const VirtualTryOnModal: React.FC = () => {
 
   const [viewMode, setViewMode] = useState<'after' | 'before'>('after');
   const [isSimulating, setIsSimulating] = useState(false);
+  const [activeLayer, setActiveLayer] = useState<string>('all');
 
   if (!isTryOnModalOpen || !activeOutfitForTryOn) return null;
 
-  const hasPhoto = !!user?.profileImage;
+  const userImage =
+    user?.profileImage ||
+    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80';
 
   const handleSimulateRegenerate = () => {
     setIsSimulating(true);
     setTimeout(() => {
       setIsSimulating(false);
-    }, 1200);
+    }, 1000);
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="w-full max-w-3xl rounded-3xl bg-white shadow-2xl border border-[#E7E0D6] overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="w-full max-w-4xl rounded-3xl bg-white shadow-2xl border border-[#E7E0D6] overflow-hidden flex flex-col max-h-[92vh]">
         {/* Modal Header */}
         <div className="flex items-center justify-between border-b border-[#E7E0D6] px-6 py-4 bg-[#FAF8F5]">
-          <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#B4533C] text-white">
-              <Sparkles className="h-4 w-4" />
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#B4533C] text-white shadow-xs">
+              <Sparkles className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-serif font-bold text-lg text-[#1C1917]">
-                Virtual Preview (&ldquo;See it on you&rdquo;)
-              </h3>
-              <p className="text-xs text-[#78716C]">{activeOutfitForTryOn.name}</p>
+              <div className="flex items-center gap-2">
+                <h3 className="font-serif font-bold text-xl text-[#1C1917]">
+                  See the Look
+                </h3>
+                <span className="rounded-full bg-[#B4533C]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#B4533C] uppercase tracking-wide">
+                  Virtual Try-On Preview
+                </span>
+              </div>
+              <p className="text-xs text-[#78716C] mt-0.5">{activeOutfitForTryOn.name}</p>
             </div>
           </div>
+
           <button
             onClick={closeTryOn}
-            className="rounded-full p-1.5 text-[#57534E] hover:bg-[#E7E0D6] transition-colors"
+            className="rounded-full p-2 text-[#57534E] hover:bg-[#E7E0D6] transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* Mandatory Simulation Disclosure Banner (Section 14) */}
-        <div className="bg-[#FAF8F5] border-b border-[#E7E0D6] px-6 py-2.5 flex items-center gap-2 text-xs text-[#B4533C]">
-          <AlertCircle className="h-4 w-4 shrink-0" />
-          <span className="font-medium">
-            Preview simulation. Real AI virtual try-on engine coming soon.
-          </span>
+        {/* Clear Truthful Architecture Notice */}
+        <div className="bg-[#FAF8F5] border-b border-[#E7E0D6] px-6 py-2.5 flex items-center justify-between text-xs text-[#B4533C]">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="h-4 w-4 shrink-0" />
+            <span className="font-medium">
+              Virtual Try-On Preview Simulation • Architecture ready for future image-generation API
+            </span>
+          </div>
+          <button
+            onClick={handleSimulateRegenerate}
+            disabled={isSimulating}
+            className="hidden sm:flex items-center gap-1.5 text-[11px] font-bold text-[#1C1917] hover:underline"
+          >
+            <RefreshCw className={`h-3 w-3 ${isSimulating ? 'animate-spin' : ''}`} />
+            <span>Re-render Composite</span>
+          </button>
         </div>
 
-        {/* Content Body */}
-        <div className="flex-1 overflow-y-auto p-6">
-          {!hasPhoto ? (
-            <div className="text-center py-12 px-4 space-y-4">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FAF8F5] border border-[#E7E0D6] text-[#B4533C]">
-                <Camera className="h-8 w-8" />
-              </div>
-              <h4 className="font-serif font-bold text-xl text-[#1C1917]">
-                Add your photo to unlock personalized outfit previews
-              </h4>
-              <p className="text-xs text-[#57534E] max-w-md mx-auto">
-                Upload a full-body photo to visualize garments, fit proportions, and style color harmony directly on your silhouette.
-              </p>
-              <button
-                onClick={() => {
-                  closeTryOn();
-                  router.push('/profile');
-                }}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#B4533C] px-5 py-2.5 text-xs font-semibold text-white shadow-sm hover:bg-[#9E4530] transition-colors"
-              >
-                <Camera className="h-4 w-4" />
-                Add Photo in Profile
-              </button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-              {/* Preview Canvas with Before/After */}
-              <div className="relative rounded-2xl overflow-hidden border border-[#E7E0D6] bg-[#FAF8F5] aspect-3/4 flex items-center justify-center shadow-inner group">
+        {/* Main Body */}
+        <div className="flex-1 overflow-y-auto p-6 md:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            {/* Visual Canvas (Avatar & Clothing Layers) */}
+            <div className="md:col-span-7 flex flex-col items-center">
+              <div className="relative rounded-3xl overflow-hidden border border-[#E7E0D6] bg-[#FAF8F5] aspect-3/4 w-full max-w-sm shadow-xl group">
                 <img
-                  src={user.profileImage}
-                  alt="User preview"
-                  className={`w-full h-full object-cover transition-opacity duration-300 ${
-                    viewMode === 'after' ? 'filter contrast-105' : 'filter grayscale-20'
+                  src={userImage}
+                  alt="Avatar preview"
+                  className={`w-full h-full object-cover transition-all duration-300 ${
+                    viewMode === 'after' ? 'contrast-105' : 'grayscale-15'
                   }`}
                 />
 
-                {/* Simulated Garment Overlay when viewMode === 'after' */}
+                {/* Outfit Layers Overlay */}
                 {viewMode === 'after' && (
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent flex flex-col justify-end p-4">
-                    <div className="flex gap-2 overflow-x-auto pb-1">
-                      {activeOutfitForTryOn.items.map((garment) => (
-                        <div
-                          key={garment.id}
-                          className="shrink-0 rounded-lg overflow-hidden border-2 border-white shadow-md w-12 h-12 bg-white"
-                        >
-                          <img
-                            src={garment.image}
-                            alt={garment.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                      ))}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-5">
+                    {/* Layer Pills */}
+                    <div className="mb-2">
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-white/90 block mb-1.5">
+                        Active Outfit Layers:
+                      </span>
+                      <div className="flex gap-2 overflow-x-auto pb-1">
+                        {activeOutfitForTryOn.items.map((garment, gIdx) => (
+                          <div
+                            key={garment.id}
+                            className="flex items-center gap-2 bg-white/95 backdrop-blur-md rounded-xl p-1.5 border border-white shadow-md shrink-0"
+                          >
+                            <img
+                              src={garment.image}
+                              alt={garment.name}
+                              className="h-9 w-9 rounded-lg object-cover"
+                            />
+                            <div className="pr-1 text-left">
+                              <p className="text-[10px] font-bold text-[#1C1917] leading-tight max-w-[80px] truncate">
+                                {garment.name}
+                              </p>
+                              <span className="text-[9px] text-[#B4533C] font-semibold">
+                                Layer {gIdx + 1}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <span className="text-[10px] text-white/90 mt-1 font-medium">
-                      Simulated garment layer active
+
+                    <span className="text-[11px] text-white/80 font-medium">
+                      Simulated silhouette drape & color harmony applied
                     </span>
                   </div>
                 )}
 
-                {/* Loading scanning overlay */}
+                {/* Loading scanning simulation */}
                 {isSimulating && (
-                  <div className="absolute inset-0 bg-black/40 backdrop-blur-2xs flex flex-col items-center justify-center text-white space-y-2">
+                  <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex flex-col items-center justify-center text-white space-y-2">
                     <div className="animate-scanline" />
-                    <Sparkles className="h-6 w-6 animate-spin text-[#C5A059]" />
-                    <p className="text-xs font-medium">Compositing garments...</p>
+                    <Sparkles className="h-8 w-8 animate-spin text-[#C5A059]" />
+                    <p className="text-xs font-bold tracking-wide">Compositing Garment Layers...</p>
                   </div>
                 )}
 
-                {/* Top Toggle Pills */}
-                <div className="absolute top-3 left-3 right-3 flex justify-between items-center">
-                  <div className="flex bg-black/60 backdrop-blur-md rounded-full p-1 border border-white/20 text-white text-xs">
+                {/* Before / After Switch Toggle */}
+                <div className="absolute top-4 left-4 right-4 flex justify-between items-center">
+                  <div className="flex bg-black/70 backdrop-blur-md rounded-full p-1 border border-white/20 text-white text-xs shadow-lg">
                     <button
                       onClick={() => setViewMode('before')}
-                      className={`px-3 py-1 rounded-full transition-all ${
+                      className={`px-3.5 py-1 rounded-full transition-all ${
                         viewMode === 'before'
                           ? 'bg-white text-[#1C1917] font-bold shadow-xs'
                           : 'text-white/80 hover:text-white'
@@ -140,7 +152,7 @@ export const VirtualTryOnModal: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setViewMode('after')}
-                      className={`px-3 py-1 rounded-full transition-all ${
+                      className={`px-3.5 py-1 rounded-full transition-all ${
                         viewMode === 'after'
                           ? 'bg-[#B4533C] text-white font-bold shadow-xs'
                           : 'text-white/80 hover:text-white'
@@ -150,71 +162,76 @@ export const VirtualTryOnModal: React.FC = () => {
                     </button>
                   </div>
 
-                  <span className="rounded-full bg-black/50 backdrop-blur-xs px-2.5 py-1 text-[10px] text-white font-medium">
-                    {viewMode === 'after' ? 'Look Applied' : 'Base Photo'}
+                  <span className="rounded-full bg-black/60 backdrop-blur-md px-3 py-1 text-[10px] text-white font-semibold">
+                    {viewMode === 'after' ? 'Look Overlayed' : 'Base Photo'}
                   </span>
                 </div>
               </div>
+            </div>
 
-              {/* Outfit Breakdown Details */}
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-serif font-bold text-lg text-[#1C1917]">
-                    {activeOutfitForTryOn.name}
-                  </h4>
-                  <p className="text-xs text-[#57534E] mt-1 leading-relaxed">
-                    {activeOutfitForTryOn.reason}
-                  </p>
+            {/* Right Side: Outfit Layers & Garments Details */}
+            <div className="md:col-span-5 space-y-6">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+                  Styling Synthesis
+                </span>
+                <h4 className="font-serif text-2xl font-bold text-[#1C1917] mt-0.5">
+                  {activeOutfitForTryOn.name}
+                </h4>
+                <p className="text-xs text-[#57534E] mt-1.5 leading-relaxed">
+                  {activeOutfitForTryOn.reason}
+                </p>
+              </div>
+
+              {/* Garments in this Look */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#1C1917] flex items-center gap-1.5">
+                    <Layers className="h-4 w-4 text-[#B4533C]" />
+                    <span>Selected Outfit Layers ({activeOutfitForTryOn.items.length})</span>
+                  </span>
                 </div>
 
-                <div className="space-y-2">
-                  <p className="text-[11px] font-semibold tracking-wider uppercase text-[#78716C]">
-                    Garments in this combination
-                  </p>
-                  <div className="space-y-2">
-                    {activeOutfitForTryOn.items.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center gap-3 p-2 rounded-xl border border-[#E7E0D6] bg-[#FAF8F5]"
-                      >
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="h-10 w-10 rounded-lg object-cover border border-[#E7E0D6]"
-                        />
-                        <div className="min-w-0 flex-1">
-                          <p className="text-xs font-bold text-[#1C1917] truncate">{item.name}</p>
-                          <p className="text-[10px] text-[#78716C]">
-                            {item.color} • {item.category} • {item.formality}
-                          </p>
-                        </div>
-                        <span className="text-[10px] text-[#5F6F52] font-semibold bg-[#5F6F52]/10 px-2 py-0.5 rounded-full">
-                          Owned
-                        </span>
+                <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
+                  {activeOutfitForTryOn.items.map((item, idx) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 p-3 rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] shadow-2xs"
+                    >
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="h-12 w-12 rounded-xl object-cover border border-[#E7E0D6] shrink-0"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-bold text-[#1C1917] truncate">{item.name}</p>
+                        <p className="text-[10px] text-[#78716C] mt-0.5">
+                          {item.color} • {item.category} • {item.style}
+                        </p>
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="pt-2 flex gap-3">
-                  <button
-                    onClick={handleSimulateRegenerate}
-                    disabled={isSimulating}
-                    className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-[#E7E0D6] bg-white py-2.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
-                  >
-                    <Eye className="h-4 w-4 text-[#78716C]" />
-                    Re-render Preview
-                  </button>
-                  <button
-                    onClick={closeTryOn}
-                    className="flex-1 rounded-xl bg-[#B4533C] py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-[#9E4530] transition-colors"
-                  >
-                    Done
-                  </button>
+                      <span className="text-[10px] font-bold text-[#5F6F52] bg-[#5F6F52]/10 px-2.5 py-1 rounded-full shrink-0">
+                        Layer {idx + 1}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
+
+              {/* Close & Action Buttons */}
+              <div className="pt-4 border-t border-[#E7E0D6] space-y-2">
+                <button
+                  onClick={closeTryOn}
+                  className="w-full rounded-2xl bg-[#1C1917] py-3 text-xs font-semibold text-white shadow-xs hover:bg-[#B4533C] transition-colors"
+                >
+                  Save & Apply to Wardrobe Rotation
+                </button>
+
+                <p className="text-[10px] text-[#78716C] text-center">
+                  Preview rendered at native viewport resolution.
+                </p>
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>

@@ -16,14 +16,15 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'E-Wardrobe | Your Wardrobe. Your Style. AI-Powered.',
+  title: 'WARDROBE AI | Your Wardrobe. Your Style. Your AI Stylist.',
   description:
-    'An intelligent personal styling platform. Organize your wardrobe, discover daily and occasion looks, preview outfits virtually, and complete your capsule wardrobe with curated recommendations.',
+    'A luxury fashion-tech platform and AI personal stylist. Digitally organize your clothing, plan travel capsules, curate event looks, preview outfits virtually, and evolve your personal Style DNA.',
   keywords: [
+    'WARDROBE AI',
     'AI wardrobe',
     'personal stylist',
-    'capsule wardrobe',
-    'outfit generator',
+    'travel packing',
+    'smart capsule',
     'virtual try on',
     'fashion tech',
   ],

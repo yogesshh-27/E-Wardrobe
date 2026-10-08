@@ -90,7 +90,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onToggleSidebar }) => {
             </div>
             <div className="flex flex-col">
               <span className="font-serif text-xl font-bold tracking-tight text-[#1C1917]">
-                E-Wardrobe
+                WARDROBE AI
               </span>
             </div>
           </Link>

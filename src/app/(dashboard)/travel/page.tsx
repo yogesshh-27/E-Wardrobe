@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import {
   Plane,
   Calendar,
-  CloudSun,
   Sparkles,
   CheckCircle2,
   Circle,
@@ -15,80 +15,228 @@ import {
   ArrowRight,
   Sun,
   ShieldCheck,
+  RefreshCw,
+  Repeat,
+  Ban,
+  Luggage,
+  Check,
+  Layers,
+  Eye,
 } from 'lucide-react';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useTravelStore } from '@/store/useTravelStore';
-import { locationService } from '@/services/locationService';
+import { useOutfitStore } from '@/store/useOutfitStore';
 import { weatherService } from '@/services/weatherService';
-import { stylistService } from '@/services/stylistService';
+import { Card3D } from '@/components/ui/Card3D';
 import { POPULAR_DESTINATIONS } from '@/data/mockDestinations';
-import { PackingListItem } from '@/types';
+import { WardrobeItem } from '@/types';
 
-const ACTIVITIES_LIST = [
-  'Sightseeing',
-  'Beach',
-  'Hiking',
-  'Shopping',
-  'Dinner',
-  'Party',
-  'Business',
-  'Religious visit',
-  'Casual exploration',
-  'Wedding',
-  'Adventure',
-];
+interface CustomItineraryDay {
+  dayNumber: number;
+  title: string;
+  activities: string[];
+}
 
-const TRIP_STYLES = [
-  'Relaxed',
-  'Stylish',
-  'Minimal luggage',
-  'Fashion-focused',
-  'Comfortable',
-] as const;
+interface TravelOutfitPlan {
+  dayNumber: number;
+  themeTitle: string;
+  top: { name: string; image: string; tag: string };
+  bottom: { name: string; image: string; tag: string };
+  shoes: { name: string; image: string; tag: string };
+  accessories: { name: string; image: string; tag: string };
+  reason: string;
+}
 
 export default function TravelPlannerPage() {
   const { items, setSelectedItem } = useWardrobeStore();
   const { user } = useAuthStore();
-  const {
-    currentTrip,
-    setCurrentTrip,
-    saveTrip,
-    togglePackingItem,
-    addPackingItem,
-    removePackingItem,
-  } = useTravelStore();
+  const { openTryOn } = useOutfitStore();
+  const { togglePackingItem, addPackingItem, removePackingItem } = useTravelStore();
 
-  const [destination, setDestination] = useState('Goa');
-  const [destSuggestions, setDestSuggestions] = useState<any[]>([]);
-  const [startDate, setStartDate] = useState('2026-11-10');
-  const [endDate, setEndDate] = useState('2026-11-14');
-  const [selectedActivities, setSelectedActivities] = useState<string[]>([
-    'Beach',
-    'Dinner',
-    'Casual exploration',
-  ]);
-  const [tripStyle, setTripStyle] = useState<typeof TRIP_STYLES[number]>('Minimal luggage');
-  const [weatherForecast, setWeatherForecast] = useState<any>(null);
+  const [destination, setDestination] = useState('Jaipur');
+  const [startDate, setStartDate] = useState('2026-11-12');
+  const [endDate, setEndDate] = useState('2026-11-15');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [newPackingName, setNewPackingName] = useState('');
-  const [newPackingCategory, setNewPackingCategory] = useState<PackingListItem['category']>('Clothing');
+  const [weatherForecast, setWeatherForecast] = useState<any>(null);
 
-  // Auto-fetch weather when destination changes
+  // Custom multi-day itinerary builder
+  const [itineraryDays, setItineraryDays] = useState<CustomItineraryDay[]>([
+    {
+      dayNumber: 1,
+      title: 'City sightseeing',
+      activities: ['City sightseeing', 'Hawa Mahal exploration', 'Local market walk'],
+    },
+    {
+      dayNumber: 2,
+      title: 'Fort visit & Dinner',
+      activities: ['Amber Fort visit', 'Heritage courtyards', 'Rooftop fine dinner'],
+    },
+    {
+      dayNumber: 3,
+      title: 'Shopping & Café',
+      activities: ['Textile bazaar shopping', 'Specialty café hopping', 'Sunset terrace'],
+    },
+  ]);
+
+  // Selected activities chips
+  const [selectedActivities, setSelectedActivities] = useState<string[]>([
+    'City sightseeing',
+    'Fort visit',
+    'Dinner',
+    'Shopping',
+    'Café',
+  ]);
+
+  // Generated Result state
+  const [hasGeneratedPlan, setHasGeneratedPlan] = useState(true);
+  const [generatedDayOutfits, setGeneratedDayOutfits] = useState<TravelOutfitPlan[]>([
+    {
+      dayNumber: 1,
+      themeTitle: 'DAY 1 — CITY EXPLORATION',
+      top: {
+        name: 'White Oversized Tee',
+        image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600&auto=format&fit=crop&q=80',
+        tag: 'WHITE · CASUAL · OVERSIZED',
+      },
+      bottom: {
+        name: 'Blue Straight Jeans',
+        image: 'https://images.unsplash.com/photo-1542272604-780c96856592?w=600&auto=format&fit=crop&q=80',
+        tag: 'BLUE · DENIM · STRAIGHT',
+      },
+      shoes: {
+        name: 'White Sneakers',
+        image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&auto=format&fit=crop&q=80',
+        tag: 'WHITE · LEATHER · LOW-TOP',
+      },
+      accessories: {
+        name: 'Watch + Sunglasses',
+        image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&auto=format&fit=crop&q=80',
+        tag: 'METALLIC · MINIMAL · UV-PROTECT',
+      },
+      reason: 'Comfortable for walking while matching your casual style.',
+    },
+    {
+      dayNumber: 2,
+      themeTitle: 'DAY 2 — DINNER & FORT VISIT',
+      top: {
+        name: 'Black Shirt',
+        image: 'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&auto=format&fit=crop&q=80',
+        tag: 'BLACK · COTTON · RELAXED',
+      },
+      bottom: {
+        name: 'Beige Trousers',
+        image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&auto=format&fit=crop&q=80',
+        tag: 'BEIGE · CHINO · TAILORED',
+      },
+      shoes: {
+        name: 'Loafers',
+        image: 'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=600&auto=format&fit=crop&q=80',
+        tag: 'BROWN · SUEDE · SLIP-ON',
+      },
+      accessories: {
+        name: 'Minimal Watch',
+        image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600&auto=format&fit=crop&q=80',
+        tag: 'LEATHER STRAP · TIMEPIECE',
+      },
+      reason: 'Sophisticated contrast tailored for heritage evening dining and fort courtyards.',
+    },
+    {
+      dayNumber: 3,
+      themeTitle: 'DAY 3 — SHOPPING & CAFÉ',
+      top: {
+        name: 'Linen Mandarin Kurta',
+        image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&auto=format&fit=crop&q=80',
+        tag: 'IVORY · LINEN · BREATHABLE',
+      },
+      bottom: {
+        name: 'Beige Trousers (Reused)',
+        image: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&auto=format&fit=crop&q=80',
+        tag: 'BEIGE · CHINO · VERSATILE',
+      },
+      shoes: {
+        name: 'White Sneakers',
+        image: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&auto=format&fit=crop&q=80',
+        tag: 'WHITE · LEATHER · COMFORT',
+      },
+      accessories: {
+        name: 'Canvas Tote + Sunglasses',
+        image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&auto=format&fit=crop&q=80',
+        tag: 'TOTE · CASUAL · ACCESSORY',
+      },
+      reason: 'Breathable linen comfort ideal for bazaar shopping and warm afternoon café terraces.',
+    },
+  ]);
+
+  // Smart Packing list
+  const [packingChecklist, setPackingChecklist] = useState<{ id: string; name: string; isPacked: boolean; category: string }[]>([
+    { id: 'p1', name: 'White Oversized Tee', isPacked: true, category: 'Clothing' },
+    { id: 'p2', name: 'Black Shirt', isPacked: true, category: 'Clothing' },
+    { id: 'p3', name: 'Linen Mandarin Kurta', isPacked: false, category: 'Clothing' },
+    { id: 'p4', name: 'Blue Straight Jeans', isPacked: true, category: 'Clothing' },
+    { id: 'p5', name: 'Beige Trousers', isPacked: true, category: 'Clothing' },
+    { id: 'p6', name: 'Tailored Linen Blazer', isPacked: false, category: 'Clothing' },
+    { id: 'p7', name: 'White Sneakers', isPacked: true, category: 'Shoes' },
+    { id: 'p8', name: 'Brown Suede Loafers', isPacked: false, category: 'Shoes' },
+    { id: 'p9', name: 'Minimal Watch', isPacked: true, category: 'Accessories' },
+    { id: 'p10', name: 'UV Protection Sunglasses', isPacked: true, category: 'Accessories' },
+    { id: 'p11', name: 'Canvas Shopping Tote', isPacked: false, category: 'Accessories' },
+  ]);
+
+  // Fetch destination weather
   useEffect(() => {
     weatherService.getWeatherForCity(destination).then((res) => {
       setWeatherForecast(res);
     });
   }, [destination]);
 
-  // Destination autocomplete
-  const handleDestinationInput = async (val: string) => {
-    setDestination(val);
-    const results = await locationService.searchDestinations(val);
-    setDestSuggestions(results);
+  const togglePackingCheck = (id: string) => {
+    setPackingChecklist((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, isPacked: !item.isPacked } : item))
+    );
   };
 
-  const toggleActivity = (act: string) => {
+  const handleAddDay = () => {
+    const nextNum = itineraryDays.length + 1;
+    setItineraryDays([
+      ...itineraryDays,
+      {
+        dayNumber: nextNum,
+        title: `Day ${nextNum} Exploration`,
+        activities: ['Leisure excursion', 'Local cuisine'],
+      },
+    ]);
+  };
+
+  const handleRemoveDay = (index: number) => {
+    if (itineraryDays.length <= 1) return;
+    setItineraryDays(itineraryDays.filter((_, i) => i !== index));
+  };
+
+  const handleGenerate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsGenerating(true);
+    setTimeout(() => {
+      setIsGenerating(false);
+      setHasGeneratedPlan(true);
+    }, 1000);
+  };
+
+  const availableActivities = [
+    'City sightseeing',
+    'Fort visit',
+    'Dinner',
+    'Shopping',
+    'Café',
+    'Heritage Walk',
+    'Museum',
+    'Photography',
+    'Brunch',
+    'Desert Safari',
+    'Cocktails',
+  ];
+
+  const toggleActivityChip = (act: string) => {
     if (selectedActivities.includes(act)) {
       setSelectedActivities(selectedActivities.filter((a) => a !== act));
     } else {
@@ -96,171 +244,205 @@ export default function TravelPlannerPage() {
     }
   };
 
-  const handleGenerate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!user) return;
-    setIsGenerating(true);
-    try {
-      const trip = await stylistService.generateTravelWardrobe({
-        destination,
-        startDate,
-        endDate,
-        activities: selectedActivities,
-        tripStyle,
-        wardrobe: items,
-        userProfile: user,
-      });
-      setCurrentTrip(trip);
-      saveTrip(trip);
-    } finally {
-      setIsGenerating(false);
-    }
-  };
-
-  const handleAddCustomPacking = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newPackingName.trim()) return;
-    addPackingItem(newPackingName.trim(), newPackingCategory);
-    setNewPackingName('');
-  };
-
-  // Packing list stats
-  const totalPacking = currentTrip?.packingList?.length || 0;
-  const packedCount = currentTrip?.packingList?.filter((i) => i.isPacked).length || 0;
-  const packedPercentage = totalPacking > 0 ? Math.round((packedCount / totalPacking) * 100) : 0;
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
-      {/* Header */}
-      <div className="border-b border-[#E7E0D6] pb-6">
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1917]">
-          Travel Wardrobe Planner
-        </h1>
-        <p className="text-xs sm:text-sm text-[#57534E] mt-1 font-sans">
-          Pack light, dress smart. AI creates day-by-day outfits and packing lists with intelligent capsule reuse.
-        </p>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+      {/* 1. EDITORIAL HEADER */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#E7E0D6] pb-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#B4533C]/10 px-3 py-1 text-xs font-bold text-[#B4533C] uppercase tracking-wider">
+            <Plane className="h-3.5 w-3.5" />
+            <span>Core USP • Intelligent Travel Stylist</span>
+          </div>
+          <h1 className="font-serif text-4xl sm:text-5xl font-bold tracking-tight text-[#1C1917]">
+            Pack Smarter.
+          </h1>
+          <p className="text-base sm:text-lg text-[#57534E] font-sans">
+            Let your wardrobe plan the trip.
+          </p>
+        </div>
+
+        {weatherForecast && (
+          <div className="flex items-center gap-3 bg-white border border-[#E7E0D6] rounded-2xl p-3 shadow-xs">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+              <Sun className="h-5 w-5" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-[#1C1917]">
+                {destination} Weather
+              </p>
+              <p className="text-[11px] text-[#78716C]">
+                {weatherForecast.temperatureCelsius}°C • {weatherForecast.condition}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Trip Configuration Form */}
+      {/* 2. TRIP CONFIGURATION & ITINERARY BUILDER */}
       <form
         onSubmit={handleGenerate}
-        className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-6"
+        className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-8"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Destination with Autocomplete */}
-          <div className="relative">
-            <label className="text-[11px] font-semibold uppercase tracking-wider text-[#78716C] block mb-1.5">
-              Destination City
+          {/* Destination */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#78716C] block">
+              Destination
             </label>
-            <div className="flex items-center rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 focus-within:border-[#B4533C] focus-within:bg-white">
-              <Plane className="h-4 w-4 text-[#B4533C] mr-2 shrink-0" />
+            <div className="flex items-center rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-4 py-3 focus-within:border-[#B4533C] focus-within:bg-white">
+              <Plane className="h-4 w-4 text-[#B4533C] mr-2.5 shrink-0" />
               <input
                 type="text"
                 value={destination}
-                onChange={(e) => handleDestinationInput(e.target.value)}
-                placeholder="e.g. Goa, Paris, Jaipur..."
-                className="w-full bg-transparent text-xs font-bold text-[#1C1917] focus:outline-hidden"
+                onChange={(e) => setDestination(e.target.value)}
+                placeholder="e.g. Jaipur, Florence, Tokyo..."
+                className="w-full bg-transparent text-sm font-bold text-[#1C1917] focus:outline-hidden"
               />
             </div>
 
-            {/* Quick popular destination chips */}
-            <div className="flex flex-wrap gap-1.5 mt-2">
-              {POPULAR_DESTINATIONS.slice(0, 5).map((d) => (
+            {/* Quick destination chips */}
+            <div className="flex flex-wrap gap-1.5 pt-1">
+              {['Jaipur', 'Goa', 'Paris', 'Tokyo', 'Mumbai', 'Udaipur'].map((city) => (
                 <button
-                  key={d.city}
+                  key={city}
                   type="button"
-                  onClick={() => setDestination(d.city)}
-                  className={`text-[10px] px-2 py-0.5 rounded-full border transition-all ${
-                    destination.toLowerCase() === d.city.toLowerCase()
-                      ? 'border-[#B4533C] bg-[#B4533C]/10 text-[#B4533C] font-bold'
-                      : 'border-[#E7E0D6] bg-white text-[#78716C]'
+                  onClick={() => setDestination(city)}
+                  className={`text-[10px] px-2.5 py-1 rounded-full border transition-all ${
+                    destination.toLowerCase() === city.toLowerCase()
+                      ? 'border-[#B4533C] bg-[#B4533C] text-white font-bold'
+                      : 'border-[#E7E0D6] bg-white text-[#57534E] hover:border-[#D5CCC0]'
                   }`}
                 >
-                  {d.city}
+                  {city}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Dates */}
-          <div>
-            <label className="text-[11px] font-semibold uppercase tracking-wider text-[#78716C] block mb-1.5">
+          {/* Travel Dates */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#78716C] block">
               Travel Dates
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <span className="text-[10px] text-[#78716C] block mb-0.5">Start</span>
+                <span className="text-[10px] text-[#78716C] block mb-1">Start Date</span>
                 <input
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                  className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white"
                 />
               </div>
               <div>
-                <span className="text-[10px] text-[#78716C] block mb-0.5">End</span>
+                <span className="text-[10px] text-[#78716C] block mb-1">End Date</span>
                 <input
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                  className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white"
                 />
               </div>
             </div>
           </div>
 
-          {/* Trip Style & Weather Pill */}
-          <div className="space-y-3">
-            <div>
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#78716C] block mb-1.5">
-                Packing Philosophy
-              </label>
-              <select
-                value={tripStyle}
-                onChange={(e) => setTripStyle(e.target.value as any)}
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917]"
-              >
-                {TRIP_STYLES.map((style) => (
-                  <option key={style} value={style}>
-                    {style}
-                  </option>
-                ))}
-              </select>
+          {/* Packing Philosophy */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-wider text-[#78716C] block">
+              Capsule Strategy
+            </label>
+            <div className="rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] p-3 text-xs text-[#57534E] space-y-1">
+              <p className="font-bold text-[#1C1917] flex items-center gap-1.5">
+                <Repeat className="h-4 w-4 text-[#B4533C]" />
+                <span>Maximized Capsule Reuse</span>
+              </p>
+              <p className="text-[11px] text-[#78716C]">
+                Calculates repeated bottoms & outerwear pairings to keep your luggage ultra-light.
+              </p>
             </div>
-
-            {weatherForecast && (
-              <div className="rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] p-2.5 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2">
-                  <Sun className="h-4 w-4 text-amber-500" />
-                  <span className="font-semibold text-[#1C1917]">
-                    {weatherForecast.condition} ({weatherForecast.temperatureCelsius}°C)
-                  </span>
-                </div>
-                <span className="text-[10px] text-[#78716C] truncate max-w-[120px]">
-                  {weatherForecast.description}
-                </span>
-              </div>
-            )}
           </div>
         </div>
 
-        {/* Activities Multi-select */}
-        <div className="border-t border-[#E7E0D6] pt-5 space-y-2">
-          <label className="text-[11px] font-semibold uppercase tracking-wider text-[#78716C] block">
+        {/* Dynamic Itinerary Section */}
+        <div className="space-y-4 border-t border-[#E7E0D6] pt-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-serif text-xl font-bold text-[#1C1917]">
+                Trip Itinerary (Day-by-Day)
+              </h3>
+              <p className="text-xs text-[#78716C]">
+                Specify planned occasions and destinations per day for contextual styling.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAddDay}
+              className="inline-flex items-center gap-1.5 rounded-xl border border-[#E7E0D6] bg-white px-3 py-1.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5]"
+            >
+              <Plus className="h-3.5 w-3.5 text-[#B4533C]" />
+              <span>+ Add Day</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {itineraryDays.map((d, idx) => (
+              <div
+                key={idx}
+                className="rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] p-4 space-y-2.5 relative group"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="rounded-full bg-[#B4533C]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#B4533C]">
+                    Day {d.dayNumber}
+                  </span>
+                  {itineraryDays.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveDay(idx)}
+                      className="text-[#78716C] hover:text-red-600 transition-colors"
+                      title="Remove day"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                <input
+                  type="text"
+                  value={d.title}
+                  onChange={(e) => {
+                    const updated = [...itineraryDays];
+                    updated[idx].title = e.target.value;
+                    setItineraryDays(updated);
+                  }}
+                  className="w-full bg-white rounded-xl border border-[#E7E0D6] px-3 py-1.5 text-xs font-bold text-[#1C1917] focus:border-[#B4533C] focus:outline-hidden"
+                />
+
+                <p className="text-[11px] text-[#78716C]">
+                  {d.activities.join(' • ')}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Activities Multi-selection */}
+        <div className="space-y-2 border-t border-[#E7E0D6] pt-6">
+          <label className="text-xs font-bold uppercase tracking-wider text-[#78716C] block">
             Trip Activities & Excursions
           </label>
           <div className="flex flex-wrap gap-2">
-            {ACTIVITIES_LIST.map((act) => {
+            {availableActivities.map((act) => {
               const isSelected = selectedActivities.includes(act);
               return (
                 <button
                   key={act}
                   type="button"
-                  onClick={() => toggleActivity(act)}
+                  onClick={() => toggleActivityChip(act)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                     isSelected
-                      ? 'border-[#B4533C] bg-[#B4533C] text-white shadow-2xs'
-                      : 'border-[#E7E0D6] bg-[#FAF8F5] text-[#57534E] hover:bg-white'
+                      ? 'border-[#B4533C] bg-[#B4533C] text-white shadow-xs'
+                      : 'border-[#E7E0D6] bg-[#FAF8F5] text-[#57534E] hover:border-[#D5CCC0] hover:bg-white'
                   }`}
                 >
                   {act}
@@ -270,7 +452,7 @@ export default function TravelPlannerPage() {
           </div>
         </div>
 
-        {/* Generate Button */}
+        {/* Submit */}
         <div className="flex justify-end pt-2 border-t border-[#E7E0D6]">
           <button
             type="submit"
@@ -279,215 +461,343 @@ export default function TravelPlannerPage() {
           >
             <Sparkles className="h-4 w-4" />
             <span>
-              {isGenerating ? 'Optimizing Capsule Wardrobe...' : 'Generate My Travel Wardrobe'}
+              {isGenerating ? 'Synthesizing Capsule...' : `Generate ${destination} Wardrobe Plan`}
             </span>
           </button>
         </div>
       </form>
 
-      {/* Generated Travel Plan View (Section 12) */}
-      {currentTrip && (
-        <div className="space-y-10 animate-in fade-in">
-          {/* Day-by-Day Outfit Plan */}
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="font-serif text-2xl font-bold text-[#1C1917]">
-                  Day-by-Day Outfit Capsule for {currentTrip.destination}
-                </h2>
-                <p className="text-xs text-[#78716C]">
-                  {currentTrip.generatedOutfits.length} curated day itineraries • Minimal luggage reuse strategy applied
-                </p>
-              </div>
-            </div>
+      {/* 3. TRAVEL AI RESULT — DAY-WISE OUTFIT CARDS */}
+      {hasGeneratedPlan && (
+        <section className="space-y-8 animate-in fade-in">
+          <div className="border-b border-[#E7E0D6] pb-4">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+              AI Stylist Result
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#1C1917] mt-1">
+              Your {destination} Wardrobe Plan
+            </h2>
+            <p className="text-xs sm:text-sm text-[#57534E] mt-1">
+              Curated day-wise ensembles crafted from your existing wardrobe to minimize luggage bulk.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {currentTrip.generatedOutfits.map((day) => (
-                <div
-                  key={day.dayNumber}
-                  className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-sm card-shadow flex flex-col justify-between space-y-4"
-                >
-                  <div>
-                    {/* Day Badge */}
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="rounded-full bg-[#B4533C]/10 px-3 py-1 text-[11px] font-bold text-[#B4533C]">
-                        {day.dateStr}
-                      </span>
-                      <span className="text-xs text-[#78716C]">{day.temperature}</span>
-                    </div>
-
+          {/* Day-Wise Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {generatedDayOutfits.map((outfit) => (
+              <div
+                key={outfit.dayNumber}
+                className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow flex flex-col justify-between space-y-5"
+              >
+                <div className="space-y-4">
+                  {/* Day Header Badge */}
+                  <div className="flex items-center justify-between border-b border-[#F4EFEA] pb-3">
                     <h3 className="font-serif text-lg font-bold text-[#1C1917]">
-                      {day.activityTitle}
+                      {outfit.themeTitle}
                     </h3>
-                    <p className="text-xs text-[#57534E] mb-3">{day.vibe}</p>
+                    <span className="text-xs font-bold text-[#5F6F52] bg-[#5F6F52]/10 px-2 py-0.5 rounded-full">
+                      Ready
+                    </span>
+                  </div>
 
-                    {/* Garments in this day */}
-                    <div className="space-y-2 border-t border-[#F4EFEA] pt-3">
-                      {[
-                        { role: 'Top', item: day.top },
-                        { role: 'Bottom', item: day.bottom },
-                        { role: 'Footwear', item: day.footwear },
-                        { role: 'Outerwear', item: day.outerwear },
-                        { role: 'Accessory', item: day.accessories },
-                      ]
-                        .filter((x) => x.item)
-                        .map((slot, sIdx) => (
-                          <div
-                            key={sIdx}
-                            onClick={() => slot.item && setSelectedItem(slot.item)}
-                            className="flex items-center justify-between p-2 rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] cursor-pointer hover:border-[#B4533C] transition-colors"
-                          >
-                            <div className="flex items-center gap-2.5 min-w-0">
-                              <img
-                                src={slot.item!.image}
-                                alt={slot.item!.name}
-                                className="h-8 w-8 rounded-lg object-cover"
-                              />
-                              <div className="min-w-0">
-                                <p className="text-[11px] font-bold text-[#1C1917] truncate">
-                                  {slot.item!.name}
-                                </p>
-                                <p className="text-[9px] text-[#78716C]">{slot.role}</p>
-                              </div>
-                            </div>
-                            <span className="text-[9px] font-semibold text-[#5F6F52] bg-[#5F6F52]/10 px-2 py-0.5 rounded-full shrink-0">
-                              From Wardrobe
-                            </span>
-                          </div>
-                        ))}
-                    </div>
-
-                    {/* Missing Suggestion if applicable */}
-                    {day.missingSuggestion && (
-                      <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-2.5 space-y-1">
-                        <div className="flex items-center gap-1.5 text-[11px] font-bold text-amber-900">
-                          <ShoppingBag className="h-3 w-3 text-amber-700" />
-                          <span>You May Want to Add:</span>
-                        </div>
-                        <p className="text-[10px] text-amber-800">
-                          {day.missingSuggestion.name} — {day.missingSuggestion.reason}
+                  {/* Garment Breakdown */}
+                  <div className="space-y-3">
+                    {/* Top */}
+                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6]">
+                      <img
+                        src={outfit.top.image}
+                        alt={outfit.top.name}
+                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E7E0D6]"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] block">
+                          Top
+                        </span>
+                        <p className="text-xs font-bold text-[#1C1917] truncate">
+                          {outfit.top.name}
+                        </p>
+                        <p className="text-[9px] text-[#78716C] truncate mt-0.5">
+                          {outfit.top.tag}
                         </p>
                       </div>
-                    )}
+                    </div>
+
+                    {/* Bottom */}
+                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6]">
+                      <img
+                        src={outfit.bottom.image}
+                        alt={outfit.bottom.name}
+                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E7E0D6]"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] block">
+                          Bottom
+                        </span>
+                        <p className="text-xs font-bold text-[#1C1917] truncate">
+                          {outfit.bottom.name}
+                        </p>
+                        <p className="text-[9px] text-[#78716C] truncate mt-0.5">
+                          {outfit.bottom.tag}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Shoes */}
+                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6]">
+                      <img
+                        src={outfit.shoes.image}
+                        alt={outfit.shoes.name}
+                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E7E0D6]"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] block">
+                          Shoes
+                        </span>
+                        <p className="text-xs font-bold text-[#1C1917] truncate">
+                          {outfit.shoes.name}
+                        </p>
+                        <p className="text-[9px] text-[#78716C] truncate mt-0.5">
+                          {outfit.shoes.tag}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Accessories */}
+                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6]">
+                      <img
+                        src={outfit.accessories.image}
+                        alt={outfit.accessories.name}
+                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E7E0D6]"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] block">
+                          Accessories
+                        </span>
+                        <p className="text-xs font-bold text-[#1C1917] truncate">
+                          {outfit.accessories.name}
+                        </p>
+                        <p className="text-[9px] text-[#78716C] truncate mt-0.5">
+                          {outfit.accessories.tag}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Reason Callout */}
+                  <div className="rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] p-3.5">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#B4533C] block">
+                      Reason
+                    </span>
+                    <p className="text-xs text-[#57534E] mt-1 leading-relaxed">
+                      &ldquo;{outfit.reason}&rdquo;
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
+
+                {/* Card footer action */}
+                <div className="pt-2 border-t border-[#F4EFEA]">
+                  <button
+                    onClick={() => {
+                      // Trigger virtual try-on simulation
+                      openTryOn({
+                        id: `outfit-travel-${outfit.dayNumber}`,
+                        userId: user?.id || 'demo',
+                        name: outfit.themeTitle,
+                        items: items.slice(0, 3),
+                        occasion: 'Travel',
+                        style: 'Capsule',
+                        saved: true,
+                        favorite: false,
+                        generatedByAI: true,
+                        reason: outfit.reason,
+                        createdAt: new Date().toISOString(),
+                      });
+                    }}
+                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-[#E7E0D6] py-2.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
+                  >
+                    <Eye className="h-4 w-4 text-[#78716C]" />
+                    <span>See Look on Avatar</span>
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
 
-          {/* Smart Packing Checklist Section (Section 12) */}
-          <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E7E0D6] pb-4">
-              <div>
-                <h3 className="font-serif text-2xl font-bold text-[#1C1917]">
-                  Smart Packing Checklist
-                </h3>
-                <p className="text-xs text-[#57534E]">
-                  Track packed luggage items so you never forget a piece.
+          {/* 4. SMART PACKING DASHBOARD (PACK, REUSE, SKIP, MISSING) */}
+          <div className="space-y-6 pt-6">
+            <div className="border-b border-[#E7E0D6] pb-3">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#5F6F52]">
+                Luggage Optimization
+              </span>
+              <h2 className="font-serif text-3xl font-bold text-[#1C1917]">
+                Smart Packing Dashboard
+              </h2>
+              <p className="text-xs sm:text-sm text-[#57534E]">
+                Capsule reuse analytics to travel light with high styling versatility.
+              </p>
+            </div>
+
+            {/* 4 Core Prominent Metric Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Card 1: 🧳 PACK */}
+              <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#5F6F52]/10 text-[#5F6F52]">
+                  <Luggage className="h-6 w-6" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#78716C] block">
+                    Total In Suitcase
+                  </span>
+                  <h3 className="font-serif text-2xl font-bold text-[#1C1917] mt-0.5">
+                    PACK
+                  </h3>
+                </div>
+
+                <div className="space-y-1.5 border-t border-[#F4EFEA] pt-3 text-xs font-bold text-[#1C1917]">
+                  <div className="flex justify-between">
+                    <span>Clothing Items</span>
+                    <span className="text-[#B4533C]">6</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Shoes</span>
+                    <span className="text-[#B4533C]">2</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Accessories</span>
+                    <span className="text-[#B4533C]">3</span>
+                  </div>
+                </div>
+                <p className="text-[10px] text-[#78716C]">
+                  Optimized for a 50cm carry-on overhead cabin bag.
                 </p>
               </div>
 
-              {/* Progress counter */}
-              <div className="flex items-center gap-3 bg-[#FAF8F5] border border-[#E7E0D6] rounded-2xl px-4 py-2">
-                <div className="text-right">
-                  <p className="text-xs font-bold text-[#1C1917]">
-                    {packedCount} of {totalPacking} Packed
-                  </p>
-                  <p className="text-[10px] text-[#78716C]">{packedPercentage}% completed</p>
+              {/* Card 2: 🔄 REUSE */}
+              <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#B4533C]/10 text-[#B4533C]">
+                  <Repeat className="h-6 w-6" />
                 </div>
-                <div className="h-8 w-8 rounded-full border-2 border-[#B4533C] flex items-center justify-center font-bold text-[10px] text-[#B4533C]">
-                  {packedPercentage}%
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#78716C] block">
+                    Capsule Harmony
+                  </span>
+                  <h3 className="font-serif text-2xl font-bold text-[#1C1917] mt-0.5">
+                    REUSE
+                  </h3>
                 </div>
+
+                <div className="rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6] p-3 text-xs text-[#1C1917] font-semibold leading-relaxed">
+                  &ldquo;Your beige trousers work with 3 outfits.&rdquo;
+                </div>
+                <p className="text-[10px] text-[#78716C]">
+                  Neutral bottom pairings eliminate packing 2 unnecessary trousers.
+                </p>
+              </div>
+
+              {/* Card 3: 🚫 SKIP */}
+              <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-700">
+                  <Ban className="h-6 w-6" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#78716C] block">
+                    Weight Saver
+                  </span>
+                  <h3 className="font-serif text-2xl font-bold text-[#1C1917] mt-0.5">
+                    SKIP
+                  </h3>
+                </div>
+
+                <div className="rounded-2xl bg-amber-50/70 border border-amber-200 p-3 text-xs text-amber-900 font-semibold leading-relaxed">
+                  &ldquo;You don&apos;t need to pack another pair of sneakers.&rdquo;
+                </div>
+                <p className="text-[10px] text-[#78716C]">
+                  White low-top sneakers comfortably transition between sightseeing and casual dining.
+                </p>
+              </div>
+
+              {/* Card 4: ✨ MISSING */}
+              <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#C5A059]/10 text-[#C5A059]">
+                  <ShoppingBag className="h-6 w-6" />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#78716C] block">
+                    Capsule Completion
+                  </span>
+                  <h3 className="font-serif text-2xl font-bold text-[#1C1917] mt-0.5">
+                    MISSING
+                  </h3>
+                </div>
+
+                <div className="rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6] p-3 text-xs text-[#1C1917] font-semibold leading-relaxed">
+                  &ldquo;You may want one lightweight overshirt.&rdquo;
+                </div>
+                <Link
+                  href="/recommendations"
+                  className="inline-flex items-center gap-1 text-[11px] font-bold text-[#B4533C] hover:underline"
+                >
+                  <span>View Curation</span>
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
               </div>
             </div>
 
-            {/* Checklist items by category */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {(['Clothing', 'Footwear', 'Accessories', 'Toiletries'] as const).map((cat) => {
-                const catItems = currentTrip.packingList.filter((i) => i.category === cat);
-                if (catItems.length === 0) return null;
+            {/* Interactive Packing Checklist */}
+            <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E7E0D6] pb-4">
+                <div>
+                  <h3 className="font-serif text-xl font-bold text-[#1C1917]">
+                    Luggage Packing Checklist
+                  </h3>
+                  <p className="text-xs text-[#78716C]">
+                    Check items off as you place them into your travel bag.
+                  </p>
+                </div>
 
-                return (
-                  <div key={cat} className="space-y-3">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#78716C] border-b border-[#F4EFEA] pb-1.5">
-                      {cat} ({catItems.length})
-                    </h4>
-                    <div className="space-y-2">
-                      {catItems.map((item) => (
-                        <div
-                          key={item.id}
-                          onClick={() => togglePackingItem(item.id)}
-                          className={`group flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition-all ${
-                            item.isPacked
-                              ? 'border-[#5F6F52]/30 bg-[#5F6F52]/5 text-[#57534E]'
-                              : 'border-[#E7E0D6] bg-[#FAF8F5] text-[#1C1917] hover:bg-white'
-                          }`}
-                        >
-                          <div className="flex items-center gap-2.5 min-w-0">
-                            {item.isPacked ? (
-                              <CheckCircle2 className="h-4 w-4 text-[#5F6F52] shrink-0" />
-                            ) : (
-                              <Circle className="h-4 w-4 text-[#78716C] shrink-0" />
-                            )}
-                            <span
-                              className={`text-xs font-medium truncate ${
-                                item.isPacked ? 'line-through text-[#78716C]' : ''
-                              }`}
-                            >
-                              {item.name} {item.quantity && item.quantity > 1 ? `(x${item.quantity})` : ''}
-                            </span>
-                          </div>
+                <div className="flex items-center gap-2 bg-[#FAF8F5] border border-[#E7E0D6] px-3.5 py-1.5 rounded-full text-xs font-bold text-[#1C1917]">
+                  <CheckCircle2 className="h-4 w-4 text-[#5F6F52]" />
+                  <span>
+                    {packingChecklist.filter((i) => i.isPacked).length} of {packingChecklist.length} Packed
+                  </span>
+                </div>
+              </div>
 
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              removePackingItem(item.id);
-                            }}
-                            className="opacity-0 group-hover:opacity-100 p-1 text-[#78716C] hover:text-red-600 transition-opacity"
-                            title="Remove item"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      ))}
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {packingChecklist.map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => togglePackingCheck(item.id)}
+                    className={`flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition-all ${
+                      item.isPacked
+                        ? 'border-[#5F6F52]/40 bg-[#5F6F52]/5 text-[#57534E]'
+                        : 'border-[#E7E0D6] bg-[#FAF8F5] hover:bg-white text-[#1C1917]'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      {item.isPacked ? (
+                        <CheckCircle2 className="h-4 w-4 text-[#5F6F52] shrink-0" />
+                      ) : (
+                        <Circle className="h-4 w-4 text-[#78716C] shrink-0" />
+                      )}
+                      <span
+                        className={`text-xs font-medium truncate ${
+                          item.isPacked ? 'line-through text-[#78716C]' : ''
+                        }`}
+                      >
+                        {item.name}
+                      </span>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
 
-            {/* Add Custom Item to Packing List */}
-            <form
-              onSubmit={handleAddCustomPacking}
-              className="border-t border-[#E7E0D6] pt-4 flex flex-col sm:flex-row items-center gap-3"
-            >
-              <input
-                type="text"
-                placeholder="Add custom packing item (e.g. Passport, Power Bank)..."
-                value={newPackingName}
-                onChange={(e) => setNewPackingName(e.target.value)}
-                className="flex-1 w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
-              />
-              <select
-                value={newPackingCategory}
-                onChange={(e) => setNewPackingCategory(e.target.value as any)}
-                className="w-full sm:w-auto rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
-              >
-                <option value="Clothing">Clothing</option>
-                <option value="Footwear">Footwear</option>
-                <option value="Accessories">Accessories</option>
-                <option value="Toiletries">Toiletries</option>
-              </select>
-              <button
-                type="submit"
-                className="w-full sm:w-auto flex items-center justify-center gap-1.5 rounded-xl bg-[#1C1917] px-4 py-2 text-xs font-semibold text-white hover:bg-[#B4533C] transition-colors"
-              >
-                <Plus className="h-3.5 w-3.5" />
-                <span>Add Item</span>
-              </button>
-            </form>
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#78716C] bg-white px-2 py-0.5 rounded-md border border-[#E7E0D6] shrink-0">
+                      {item.category}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
       )}
     </div>
   );

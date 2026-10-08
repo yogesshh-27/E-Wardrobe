@@ -101,3 +101,42 @@ body {
   box-shadow: 0 0 15px #B4533C;
   animation: scanline 2s ease-in-out infinite alternate;
 }
+
+/* 3D Perspective and Floating Keyframes */
+@keyframes float3D {
+  0% {
+    transform: translate(-50%, -50%) translateZ(var(--tz, 30px)) translateY(0px) rotate(var(--rot, 0deg));
+  }
+  50% {
+    transform: translate(-50%, -50%) translateZ(var(--tz, 30px)) translateY(-14px) rotate(calc(var(--rot, 0deg) + 2deg));
+  }
+  100% {
+    transform: translate(-50%, -50%) translateZ(var(--tz, 30px)) translateY(6px) rotate(calc(var(--rot, 0deg) - 2deg));
+  }
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+

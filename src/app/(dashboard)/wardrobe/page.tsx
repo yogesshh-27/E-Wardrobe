@@ -450,15 +450,15 @@ export default function WardrobePage() {
                   </span>
                 </div>
 
-                <h4 className="text-xs font-bold text-[#1C1917] truncate">{item.name}</h4>
-                <p className="text-[11px] text-[#78716C] mt-0.5">
-                  {item.color} • {item.style}
+                <h4 className="text-xs font-bold text-[#1C1917] truncate leading-tight group-hover:text-[#B4533C] transition-colors">{item.name}</h4>
+                <p className="text-[9px] font-bold tracking-wider text-[#78716C] mt-1 uppercase truncate">
+                  {item.color.toUpperCase()} · {item.formality.toUpperCase()} · {(item.fit || item.style).split(' ')[0].toUpperCase()}
                 </p>
               </div>
 
               <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#F4EFEA]">
                 <span className="text-[10px] text-[#5F6F52] font-semibold">
-                  {item.formality}
+                  {item.style}
                 </span>
                 <span className="text-[10px] text-[#78716C]">
                   {item.occasion[0]}

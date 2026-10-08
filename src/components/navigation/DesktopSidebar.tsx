@@ -6,16 +6,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   Home,
   Shirt,
-  UploadCloud,
   Plane,
   Sparkles,
   Compass,
-  Layers,
-  Heart,
-  ShoppingBag,
+  Dna,
   User,
   Sliders,
-  HelpCircle,
   LogOut,
   ChevronLeft,
 } from 'lucide-react';
@@ -29,24 +25,17 @@ interface DesktopSidebarProps {
 export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose }) => {
   const pathname = usePathname();
   const router = useRouter();
-  const { logout } = useAuthStore();
+  const { user, logout } = useAuthStore();
 
   const navLinks = [
     { label: 'Home', href: '/', icon: Home },
     { label: 'My Wardrobe', href: '/wardrobe', icon: Shirt },
-    { label: 'Upload Clothes', href: '/wardrobe/upload', icon: UploadCloud, badge: 'AI' },
-    { label: 'Travel Planner', href: '/travel', icon: Plane },
-    { label: 'Occasion Stylist', href: '/occasions', icon: Sparkles },
-    { label: 'AI Recommendations', href: '/recommendations', icon: Compass },
-    { label: 'My Outfits', href: '/outfits', icon: Layers },
-    { label: 'Favorites', href: '/favorites', icon: Heart },
-    { label: 'Shopping', href: '/shopping', icon: ShoppingBag },
-  ];
-
-  const bottomLinks = [
-    { label: 'Style Profile', href: '/profile', icon: User },
+    { label: 'Travel', href: '/travel', icon: Plane, badge: 'USP' },
+    { label: 'Occasion', href: '/occasions', icon: Sparkles },
+    { label: 'Recommendations', href: '/recommendations', icon: Compass },
+    { label: 'Style Profile', href: '/style-profile', icon: Dna },
+    { label: 'Profile', href: '/profile', icon: User },
     { label: 'Settings', href: '/settings', icon: Sliders },
-    { label: 'Help & Support', href: '/help', icon: HelpCircle },
   ];
 
   const handleLogout = async () => {
@@ -54,13 +43,20 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
     router.push('/login');
   };
 
+  const styleSummary =
+    user?.stylePreferences && user.stylePreferences.length > 0
+      ? user.stylePreferences.slice(0, 2).join(' × ')
+      : 'Classic × Streetwear';
+
+  const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'W';
+
   return (
     <>
       {/* Mobile Backdrop overlay */}
       {isOpen && (
         <div
           onClick={onClose}
-          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-xs lg:hidden"
         />
       )}
 
@@ -70,15 +66,20 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        {/* Header */}
-        <div className="flex h-16 items-center justify-between px-6 border-b border-[#E7E0D6]">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#B4533C] text-white shadow-xs">
-              <Sparkles className="h-4 w-4" />
+        {/* Header Branding */}
+        <div className="flex h-20 items-center justify-between px-6 border-b border-[#E7E0D6] bg-white/60">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#B4533C] text-white shadow-xs">
+              <Sparkles className="h-5 w-5" />
             </div>
-            <span className="font-serif text-xl font-bold tracking-tight text-[#1C1917]">
-              E-Wardrobe
-            </span>
+            <div>
+              <span className="font-serif text-xl font-bold tracking-tight text-[#1C1917] block">
+                WARDROBE AI
+              </span>
+              <span className="text-[9px] uppercase tracking-widest text-[#78716C] block -mt-0.5 font-medium">
+                Digital Atelier
+              </span>
+            </div>
           </Link>
 
           <button
@@ -90,14 +91,16 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
           </button>
         </div>
 
-        {/* Main Navigation Links */}
-        <div className="flex-1 overflow-y-auto px-4 py-4 space-y-1">
-          <p className="px-3 pb-2 text-[11px] font-semibold tracking-wider uppercase text-[#78716C]">
-            Wardrobe & Styling
+        {/* Navigation Items */}
+        <div className="flex-1 overflow-y-auto px-4 py-5 space-y-1.5">
+          <p className="px-3 pb-2 text-[10px] font-bold tracking-widest uppercase text-[#78716C]">
+            Main Atelier
           </p>
+
           {navLinks.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
+
             return (
               <Link
                 key={item.href}
@@ -105,23 +108,23 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
                 onClick={() => {
                   if (window.innerWidth < 1024) onClose();
                 }}
-                className={`group flex items-center justify-between rounded-xl px-3 py-2.5 text-xs font-semibold transition-all ${
+                className={`group flex items-center justify-between rounded-2xl px-3.5 py-3 text-xs font-semibold transition-all ${
                   isActive
                     ? 'bg-[#B4533C] text-white shadow-xs'
-                    : 'text-[#57534E] hover:bg-[#F4EFEA] hover:text-[#1C1917]'
+                    : 'text-[#57534E] hover:bg-white hover:text-[#1C1917] hover:shadow-2xs'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <Icon
                     className={`h-4 w-4 transition-transform group-hover:scale-110 ${
-                      isActive ? 'text-white' : 'text-[#78716C] group-hover:text-[#1C1917]'
+                      isActive ? 'text-white' : 'text-[#78716C] group-hover:text-[#B4533C]'
                     }`}
                   />
                   <span>{item.label}</span>
                 </div>
                 {item.badge && (
                   <span
-                    className={`rounded-full px-1.5 py-0.2 text-[10px] font-bold ${
+                    className={`rounded-full px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase ${
                       isActive ? 'bg-white/20 text-white' : 'bg-[#B4533C]/10 text-[#B4533C]'
                     }`}
                   >
@@ -131,46 +134,41 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
               </Link>
             );
           })}
-
-          <div className="pt-5 pb-2">
-            <p className="px-3 pb-2 text-[11px] font-semibold tracking-wider uppercase text-[#78716C]">
-              Preferences
-            </p>
-            {bottomLinks.map((item) => {
-              const Icon = item.icon;
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => {
-                    if (window.innerWidth < 1024) onClose();
-                  }}
-                  className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-semibold transition-all ${
-                    isActive
-                      ? 'bg-[#B4533C] text-white shadow-xs'
-                      : 'text-[#57534E] hover:bg-[#F4EFEA] hover:text-[#1C1917]'
-                  }`}
-                >
-                  <Icon
-                    className={`h-4 w-4 ${
-                      isActive ? 'text-white' : 'text-[#78716C] group-hover:text-[#1C1917]'
-                    }`}
-                  />
-                  <span>{item.label}</span>
-                </Link>
-              );
-            })}
-          </div>
         </div>
 
-        {/* Footer Logout */}
-        <div className="p-4 border-t border-[#E7E0D6]">
+        {/* Bottom User Profile Card */}
+        <div className="p-4 border-t border-[#E7E0D6] bg-white/70 space-y-3">
+          <Link
+            href="/profile"
+            className="flex items-center gap-3 p-2 rounded-2xl hover:bg-[#FAF8F5] transition-colors group"
+          >
+            {user?.profileImage ? (
+              <img
+                src={user.profileImage}
+                alt={user.name || 'User'}
+                className="h-10 w-10 rounded-xl object-cover border border-[#E7E0D6] shadow-2xs group-hover:border-[#B4533C] transition-colors"
+              />
+            ) : (
+              <div className="h-10 w-10 rounded-xl bg-[#FAF8F5] border border-[#E7E0D6] flex items-center justify-center font-serif text-sm font-bold text-[#B4533C] group-hover:border-[#B4533C] transition-colors">
+                {userInitial}
+              </div>
+            )}
+
+            <div className="min-w-0 flex-1">
+              <p className="text-xs font-bold text-[#1C1917] truncate leading-tight group-hover:text-[#B4533C] transition-colors">
+                {user?.name || 'Aarav Sharma'}
+              </p>
+              <p className="text-[10px] text-[#78716C] truncate mt-0.5 font-medium">
+                {styleSummary}
+              </p>
+            </div>
+          </Link>
+
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-xs font-semibold text-[#B4533C] hover:bg-[#B4533C]/10 transition-colors"
+            className="flex w-full items-center justify-center gap-2 rounded-xl py-2 text-[11px] font-semibold text-[#78716C] hover:text-[#B4533C] hover:bg-[#B4533C]/10 transition-colors"
           >
-            <LogOut className="h-4 w-4" />
+            <LogOut className="h-3.5 w-3.5" />
             <span>Log Out</span>
           </button>
         </div>
