@@ -108,7 +108,6 @@ export const EditorialCollageSection: React.FC<EditorialCollageSectionProps> = (
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
               animate={
                 shouldReduceMotion
                   ? undefined
@@ -204,7 +203,6 @@ export const EditorialCollageSection: React.FC<EditorialCollageSectionProps> = (
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, rotate: -20, scale: 0.8 }}
               whileInView={{ opacity: 1, rotate: 0, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3 }}
               animate={
                 shouldReduceMotion
                   ? undefined
