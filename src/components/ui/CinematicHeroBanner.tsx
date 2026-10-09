@@ -73,7 +73,7 @@ export function CinematicHeroBanner() {
   };
 
   return (
-    <div className="relative w-full rounded-3xl overflow-hidden border border-[#E7E0D6]/80 shadow-2xl bg-[#1C1917] text-white">
+    <div className="relative w-full rounded-3xl overflow-hidden border border-[#E2E8F0]/80 shadow-2xl bg-[#1C1917] text-white">
       {/* 1. BACKGROUND VIDEO LAYER */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <video
@@ -199,7 +199,7 @@ export function CinematicHeroBanner() {
             href="/travel"
             className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-[#1C1917] font-semibold text-xs sm:text-sm hover:bg-stone-200 transition-all shadow-lg hover:scale-[1.02] active:scale-[0.98]"
           >
-            <Plane className="h-4 w-4 text-[#B4533C]" />
+            <Plane className="h-4 w-4 text-[#0284C7]" />
             <span>Plan Travel Capsule</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
@@ -236,7 +236,7 @@ export function CinematicHeroBanner() {
 
           <Link
             href="/wardrobe/upload"
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#B4533C] text-white font-semibold text-xs sm:text-sm hover:bg-[#9E4530] transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#0284C7] text-white font-semibold text-xs sm:text-sm hover:bg-[#0369A1] transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
             <span>+ Add Garment</span>
           </Link>

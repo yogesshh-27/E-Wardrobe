@@ -18,7 +18,7 @@ export function AmbientBackground() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute -top-32 -left-32 w-96 h-96 sm:w-[550px] sm:h-[550px] rounded-full bg-gradient-to-br from-[#B4533C]/12 via-[#C5A059]/10 to-transparent blur-3xl"
+        className="absolute -top-32 -left-32 w-96 h-96 sm:w-[550px] sm:h-[550px] rounded-full bg-gradient-to-br from-[#F498A9]/14 via-[#38BDF8]/10 to-transparent blur-3xl"
       />
 
       <motion.div
@@ -32,7 +32,7 @@ export function AmbientBackground() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute top-1/3 -right-40 w-96 h-96 sm:w-[600px] sm:h-[600px] rounded-full bg-gradient-to-bl from-[#C5A059]/15 via-[#B4533C]/8 to-transparent blur-3xl"
+        className="absolute top-1/3 -right-40 w-96 h-96 sm:w-[600px] sm:h-[600px] rounded-full bg-gradient-to-bl from-[#38BDF8]/15 via-[#E87A90]/10 to-transparent blur-3xl"
       />
 
       <motion.div
@@ -46,7 +46,7 @@ export function AmbientBackground() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute -bottom-40 left-1/4 w-96 h-96 sm:w-[500px] sm:h-[500px] rounded-full bg-gradient-to-tr from-[#5F6F52]/12 via-[#B4533C]/10 to-transparent blur-3xl"
+        className="absolute -bottom-40 left-1/4 w-96 h-96 sm:w-[500px] sm:h-[500px] rounded-full bg-gradient-to-tr from-[#93C5FD]/14 via-[#F8B4C0]/12 to-transparent blur-3xl"
       />
 
       {/* 2. Subtle Luxury Editorial Film Grain Overlay */}

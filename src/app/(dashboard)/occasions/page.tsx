@@ -113,8 +113,8 @@ export default function OccasionsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Editorial Header */}
-      <div className="border-b border-[#E7E0D6] pb-6">
-        <div className="inline-flex items-center gap-2 rounded-full bg-[#B4533C]/10 px-3 py-1 text-xs font-bold text-[#B4533C] uppercase tracking-wider mb-2">
+      <div className="border-b border-[#E2E8F0] pb-6">
+        <div className="inline-flex items-center gap-2 rounded-full bg-[#0284C7]/10 px-3 py-1 text-xs font-bold text-[#0284C7] uppercase tracking-wider mb-2">
           <Sparkles className="h-3.5 w-3.5" />
           <span>Occasion Stylist Atelier</span>
         </div>
@@ -129,7 +129,7 @@ export default function OccasionsPage() {
       {/* Occasion Selection & Input Controls */}
       <form
         onSubmit={handleStyleMe}
-        className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-8"
+        className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-8 card-shadow space-y-8"
       >
         {/* 1. What are you dressing for? */}
         <div className="space-y-3">
@@ -144,8 +144,8 @@ export default function OccasionsPage() {
                 onClick={() => setSelectedOccasion(occ)}
                 className={`px-4 py-2.5 rounded-2xl text-xs font-semibold border transition-all ${
                   selectedOccasion === occ
-                    ? 'border-[#B4533C] bg-[#B4533C] text-white shadow-xs scale-102'
-                    : 'border-[#E7E0D6] bg-[#FAF8F5] text-[#57534E] hover:border-[#D5CCC0] hover:bg-white'
+                    ? 'border-[#0284C7] bg-[#0284C7] text-white shadow-xs scale-102'
+                    : 'border-[#E2E8F0] bg-[#FAF8F5] text-[#57534E] hover:border-[#CBD5E1] hover:bg-white'
                 }`}
               >
                 {occ}
@@ -155,7 +155,7 @@ export default function OccasionsPage() {
         </div>
 
         {/* 2. Dress Code, Weather, Preferred Style */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-[#E7E0D6] pt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-[#E2E8F0] pt-6">
           {/* Dress Code */}
           <div className="space-y-1.5">
             <label className="text-[11px] font-bold uppercase tracking-wider text-[#78716C] block">
@@ -166,7 +166,7 @@ export default function OccasionsPage() {
               value={dressCode}
               onChange={(e) => setDressCode(e.target.value)}
               placeholder="e.g. Smart Casual, Black Tie, Traditional..."
-              className="w-full rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+              className="w-full rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
             />
           </div>
 
@@ -178,7 +178,7 @@ export default function OccasionsPage() {
             <select
               value={weatherCondition}
               onChange={(e) => setWeatherCondition(e.target.value)}
-              className="w-full rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+              className="w-full rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
             >
               {WEATHER_OPTIONS.map((w) => (
                 <option key={w} value={w}>
@@ -196,7 +196,7 @@ export default function OccasionsPage() {
             <select
               value={preferredStyle}
               onChange={(e) => setPreferredStyle(e.target.value)}
-              className="w-full rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+              className="w-full rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
             >
               {STYLES_LIST.map((s) => (
                 <option key={s} value={s}>
@@ -208,11 +208,11 @@ export default function OccasionsPage() {
         </div>
 
         {/* Generate Button */}
-        <div className="flex justify-end pt-2 border-t border-[#E7E0D6]">
+        <div className="flex justify-end pt-2 border-t border-[#E2E8F0]">
           <button
             type="submit"
             disabled={isGenerating}
-            className="flex items-center gap-2 rounded-2xl bg-[#B4533C] px-8 py-3.5 text-xs font-semibold text-white shadow-sm hover:bg-[#9E4530] transition-all"
+            className="flex items-center gap-2 rounded-2xl bg-[#0284C7] px-8 py-3.5 text-xs font-semibold text-white shadow-sm hover:bg-[#0369A1] transition-all"
           >
             <Sparkles className="h-4 w-4" />
             <span>
@@ -225,8 +225,8 @@ export default function OccasionsPage() {
       {/* Generated Looks Results */}
       {generatedOutfits.length > 0 && (
         <div className="space-y-8 animate-in fade-in">
-          <div className="border-b border-[#E7E0D6] pb-4">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+          <div className="border-b border-[#E2E8F0] pb-4">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#0284C7]">
               Wardrobe-First Recommendations
             </span>
             <h2 className="font-serif text-3xl font-bold text-[#1C1917] mt-0.5">
@@ -246,20 +246,20 @@ export default function OccasionsPage() {
               return (
                 <div
                   key={outfit.id}
-                  className="rounded-3xl bg-white border border-[#E7E0D6] p-7 shadow-lg card-shadow flex flex-col justify-between space-y-6"
+                  className="rounded-3xl bg-white border border-[#E2E8F0] p-7 shadow-lg card-shadow flex flex-col justify-between space-y-6"
                 >
                   <div className="space-y-6">
                     {/* Header */}
-                    <div className="flex items-center justify-between border-b border-[#F4EFEA] pb-4">
+                    <div className="flex items-center justify-between border-b border-[#F0F7FD] pb-4">
                       <div>
-                        <span className="rounded-full bg-[#B4533C]/10 px-3 py-1 text-[11px] font-bold text-[#B4533C]">
+                        <span className="rounded-full bg-[#0284C7]/10 px-3 py-1 text-[11px] font-bold text-[#0284C7]">
                           Option {idx + 1} • {outfit.style}
                         </span>
                         <h3 className="font-serif text-2xl font-bold text-[#1C1917] mt-1.5">
                           {outfit.name}
                         </h3>
                       </div>
-                      <span className="text-xs font-bold text-[#5F6F52] bg-[#5F6F52]/10 px-2.5 py-1 rounded-full">
+                      <span className="text-xs font-bold text-[#E87A90] bg-[#E87A90]/10 px-2.5 py-1 rounded-full">
                         Wardrobe Prioritized
                       </span>
                     </div>
@@ -267,7 +267,7 @@ export default function OccasionsPage() {
                     {/* COMPLETE LOOK BREAKDOWN */}
                     <div className="space-y-3">
                       <h4 className="text-xs font-bold uppercase tracking-widest text-[#1C1917] flex items-center gap-1.5">
-                        <Layers className="h-4 w-4 text-[#B4533C]" />
+                        <Layers className="h-4 w-4 text-[#0284C7]" />
                         <span>COMPLETE LOOK</span>
                       </h4>
 
@@ -277,12 +277,12 @@ export default function OccasionsPage() {
                           <div
                             key={garment.id}
                             onClick={() => setSelectedItem(garment)}
-                            className="flex items-center gap-3 p-2.5 rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] cursor-pointer hover:border-[#B4533C] transition-all"
+                            className="flex items-center gap-3 p-2.5 rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] cursor-pointer hover:border-[#0284C7] transition-all"
                           >
                             <img
                               src={garment.image}
                               alt={garment.name}
-                              className="h-11 w-11 rounded-xl object-cover border border-[#E7E0D6] shrink-0"
+                              className="h-11 w-11 rounded-xl object-cover border border-[#E2E8F0] shrink-0"
                             />
                             <div className="min-w-0 flex-1">
                               <p className="text-xs font-bold text-[#1C1917] truncate">
@@ -292,7 +292,7 @@ export default function OccasionsPage() {
                                 {garment.color} • {garment.category}
                               </p>
                             </div>
-                            <span className="text-[9px] font-bold text-[#5F6F52] bg-[#5F6F52]/10 px-2 py-0.5 rounded-full shrink-0">
+                            <span className="text-[9px] font-bold text-[#E87A90] bg-[#E87A90]/10 px-2 py-0.5 rounded-full shrink-0">
                               Owned
                             </span>
                           </div>
@@ -301,9 +301,9 @@ export default function OccasionsPage() {
                     </div>
 
                     {/* Hairstyle Suggestion */}
-                    <div className="rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] p-4 space-y-1">
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] p-4 space-y-1">
                       <div className="flex items-center gap-2 text-xs font-bold text-[#1C1917]">
-                        <Scissors className="h-4 w-4 text-[#B4533C]" />
+                        <Scissors className="h-4 w-4 text-[#0284C7]" />
                         <span>Hairstyle Suggestion</span>
                       </div>
                       <p className="text-xs text-[#57534E] leading-relaxed">
@@ -312,9 +312,9 @@ export default function OccasionsPage() {
                     </div>
 
                     {/* Makeup Suggestion */}
-                    <div className="rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] p-4 space-y-1">
+                    <div className="rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] p-4 space-y-1">
                       <div className="flex items-center gap-2 text-xs font-bold text-[#1C1917]">
-                        <Palette className="h-4 w-4 text-[#C5A059]" />
+                        <Palette className="h-4 w-4 text-[#38BDF8]" />
                         <span>Optional Makeup & Grooming</span>
                       </div>
                       <p className="text-xs text-[#57534E] leading-relaxed">
@@ -323,7 +323,7 @@ export default function OccasionsPage() {
                     </div>
 
                     {/* Styling Reason */}
-                    <div className="rounded-2xl border border-[#E7E0D6] p-4 bg-white space-y-1">
+                    <div className="rounded-2xl border border-[#E2E8F0] p-4 bg-white space-y-1">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] block">
                         Why This Works
                       </span>
@@ -334,10 +334,10 @@ export default function OccasionsPage() {
                   </div>
 
                   {/* Actions */}
-                  <div className="pt-4 border-t border-[#E7E0D6] flex gap-3">
+                  <div className="pt-4 border-t border-[#E2E8F0] flex gap-3">
                     <button
                       onClick={() => openTryOn(outfit)}
-                      className="flex-1 flex items-center justify-center gap-2 rounded-2xl border border-[#E7E0D6] py-3 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 rounded-2xl border border-[#E2E8F0] py-3 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
                     >
                       <Eye className="h-4 w-4 text-[#78716C]" />
                       <span>See the Look (Try On)</span>
@@ -347,8 +347,8 @@ export default function OccasionsPage() {
                       onClick={() => saveOutfit(outfit)}
                       className={`flex-1 flex items-center justify-center gap-2 rounded-2xl py-3 text-xs font-semibold transition-all ${
                         isSaved
-                          ? 'bg-[#5F6F52] text-white shadow-xs'
-                          : 'bg-[#B4533C] text-white shadow-xs hover:bg-[#9E4530]'
+                          ? 'bg-[#E87A90] text-white shadow-xs'
+                          : 'bg-[#0284C7] text-white shadow-xs hover:bg-[#0369A1]'
                       }`}
                     >
                       <Heart className={`h-4 w-4 ${isSaved ? 'fill-white' : ''}`} />

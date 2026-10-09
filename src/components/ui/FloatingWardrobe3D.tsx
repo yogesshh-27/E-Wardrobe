@@ -101,15 +101,15 @@ export const FloatingWardrobe3D: React.FC<{ interactive?: boolean; className?: s
     <div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`relative w-full h-[380px] sm:h-[460px] md:h-[520px] rounded-3xl overflow-hidden bg-gradient-to-br from-[#FAF8F5] via-[#F4EFEA] to-[#EAE3D9] border border-[#E7E0D6] shadow-xl ${className}`}
+      className={`relative w-full h-[380px] sm:h-[460px] md:h-[520px] rounded-3xl overflow-hidden bg-gradient-to-br from-[#FAF8F5] via-[#F0F7FD] to-[#EAE3D9] border border-[#E2E8F0] shadow-xl ${className}`}
       style={{
         perspective: '1200px',
         transformStyle: 'preserve-3d',
       }}
     >
       {/* Ambient Lighting & Atmosphere */}
-      <div className="absolute top-1/4 left-1/3 w-72 h-72 rounded-full bg-[#B4533C]/10 blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-[#C5A059]/12 blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/3 w-72 h-72 rounded-full bg-[#0284C7]/10 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-[#38BDF8]/12 blur-3xl pointer-events-none" />
 
       {/* Center 3D Coordinate Anchor */}
       <div
@@ -133,9 +133,9 @@ export const FloatingWardrobe3D: React.FC<{ interactive?: boolean; className?: s
             }}
           >
             {/* Card Frame */}
-            <div className="relative w-36 sm:w-44 md:w-52 rounded-2xl bg-white/90 backdrop-blur-md p-2.5 sm:p-3 border border-white/60 shadow-2xl transition-all duration-300 group-hover:scale-108 group-hover:border-[#B4533C]/60 group-hover:shadow-[0_25px_50px_-12px_rgba(28,25,23,0.25)]">
+            <div className="relative w-36 sm:w-44 md:w-52 rounded-2xl bg-white/90 backdrop-blur-md p-2.5 sm:p-3 border border-white/60 shadow-2xl transition-all duration-300 group-hover:scale-108 group-hover:border-[#0284C7]/60 group-hover:shadow-[0_25px_50px_-12px_rgba(28,25,23,0.25)]">
               {/* Product Image */}
-              <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-[#F4EFEA] mb-2 shadow-inner">
+              <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-[#F0F7FD] mb-2 shadow-inner">
                 <img
                   src={item.image}
                   alt={item.name}
@@ -153,7 +153,7 @@ export const FloatingWardrobe3D: React.FC<{ interactive?: boolean; className?: s
                 </h4>
                 <div className="flex items-center justify-between text-[9px] sm:text-[10px] text-[#78716C]">
                   <span>AI Cataloged</span>
-                  <span className="text-[#B4533C] font-semibold flex items-center gap-0.5">
+                  <span className="text-[#0284C7] font-semibold flex items-center gap-0.5">
                     <Sparkles className="h-2.5 w-2.5" /> 3D
                   </span>
                 </div>
@@ -165,8 +165,8 @@ export const FloatingWardrobe3D: React.FC<{ interactive?: boolean; className?: s
 
       {/* Floating Center Badge */}
       <div className="absolute bottom-5 left-6 right-6 flex items-center justify-between pointer-events-none">
-        <div className="rounded-full bg-white/80 backdrop-blur-md px-3.5 py-1.5 border border-[#E7E0D6] shadow-sm flex items-center gap-2">
-          <div className="h-2 w-2 rounded-full bg-[#5F6F52] animate-pulse" />
+        <div className="rounded-full bg-white/80 backdrop-blur-md px-3.5 py-1.5 border border-[#E2E8F0] shadow-sm flex items-center gap-2">
+          <div className="h-2 w-2 rounded-full bg-[#E87A90] animate-pulse" />
           <span className="text-[11px] font-semibold text-[#1C1917] tracking-wide">
             WARDROBE AI • 3D Real-time Composition
           </span>

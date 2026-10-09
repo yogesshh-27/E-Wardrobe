@@ -55,7 +55,7 @@ export default function HelpPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Header */}
-      <div className="border-b border-[#E7E0D6] pb-6">
+      <div className="border-b border-[#E2E8F0] pb-6">
         <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1917]">
           Help & Support
         </h1>
@@ -65,15 +65,15 @@ export default function HelpPage() {
       </div>
 
       {/* FAQs Section */}
-      <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-5">
+      <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-8 card-shadow space-y-5">
         <div className="flex items-center gap-2.5">
-          <HelpCircle className="h-5 w-5 text-[#B4533C]" />
+          <HelpCircle className="h-5 w-5 text-[#0284C7]" />
           <h2 className="font-serif text-xl font-bold text-[#1C1917]">
             Frequently Asked Questions
           </h2>
         </div>
 
-        <div className="space-y-3 divide-y divide-[#F4EFEA]">
+        <div className="space-y-3 divide-y divide-[#F0F7FD]">
           {FAQS.map((faq, idx) => {
             const isOpen = openFaqIdx === idx;
             return (
@@ -81,7 +81,7 @@ export default function HelpPage() {
                 <button
                   type="button"
                   onClick={() => setOpenFaqIdx(isOpen ? null : idx)}
-                  className="flex w-full items-center justify-between text-left text-xs sm:text-sm font-bold text-[#1C1917] hover:text-[#B4533C] py-2 transition-colors"
+                  className="flex w-full items-center justify-between text-left text-xs sm:text-sm font-bold text-[#1C1917] hover:text-[#0284C7] py-2 transition-colors"
                 >
                   <span>{faq.q}</span>
                   {isOpen ? (
@@ -102,9 +102,9 @@ export default function HelpPage() {
       </div>
 
       {/* Mock Contact Form */}
-      <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-5">
+      <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-8 card-shadow space-y-5">
         <div className="flex items-center gap-2.5">
-          <MessageSquare className="h-5 w-5 text-[#5F6F52]" />
+          <MessageSquare className="h-5 w-5 text-[#E87A90]" />
           <div>
             <h2 className="font-serif text-xl font-bold text-[#1C1917]">
               Contact Concierge Styling Support
@@ -116,8 +116,8 @@ export default function HelpPage() {
         </div>
 
         {isSent ? (
-          <div className="rounded-2xl bg-[#5F6F52]/10 border border-[#5F6F52]/30 p-6 text-center space-y-2">
-            <CheckCircle2 className="h-8 w-8 text-[#5F6F52] mx-auto" />
+          <div className="rounded-2xl bg-[#E87A90]/10 border border-[#E87A90]/30 p-6 text-center space-y-2">
+            <CheckCircle2 className="h-8 w-8 text-[#E87A90] mx-auto" />
             <h4 className="font-serif font-bold text-base text-[#1C1917]">
               Message Received!
             </h4>
@@ -138,7 +138,7 @@ export default function HelpPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Aarav Sharma"
-                  className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+                  className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
                 />
               </div>
 
@@ -152,7 +152,7 @@ export default function HelpPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="name@domain.com"
-                  className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+                  className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
                 />
               </div>
             </div>
@@ -167,14 +167,14 @@ export default function HelpPage() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="How can our styling team help you today?..."
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] p-3 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] p-3 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
               />
             </div>
 
             <div className="flex justify-end pt-2">
               <button
                 type="submit"
-                className="flex items-center gap-2 rounded-2xl bg-[#B4533C] px-6 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-[#9E4530] transition-colors"
+                className="flex items-center gap-2 rounded-2xl bg-[#0284C7] px-6 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-[#0369A1] transition-colors"
               >
                 <Send className="h-3.5 w-3.5" />
                 <span>Send Message</span>

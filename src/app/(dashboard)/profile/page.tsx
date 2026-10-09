@@ -103,7 +103,7 @@ export default function ProfilePage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Header */}
-      <div className="border-b border-[#E7E0D6] pb-6">
+      <div className="border-b border-[#E2E8F0] pb-6">
         <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1917]">
           Style Profile & Privacy Controls
         </h1>
@@ -113,7 +113,7 @@ export default function ProfilePage() {
       </div>
 
       {isSavedNotice && (
-        <div className="rounded-2xl bg-[#5F6F52]/10 border border-[#5F6F52]/30 p-4 text-xs font-semibold text-[#5F6F52] flex items-center gap-2">
+        <div className="rounded-2xl bg-[#E87A90]/10 border border-[#E87A90]/30 p-4 text-xs font-semibold text-[#E87A90] flex items-center gap-2">
           <Check className="h-4 w-4" />
           <span>Profile updates saved successfully.</span>
         </div>
@@ -122,7 +122,7 @@ export default function ProfilePage() {
       {/* Main Profile Form */}
       <form onSubmit={handleSaveProfile} className="space-y-8">
         {/* Section 1: Full-Body Photo & Avatar */}
-        <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-6">
+        <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-8 card-shadow space-y-6">
           <div>
             <h3 className="font-serif text-xl font-bold text-[#1C1917]">
               Visual Silhouette & Try-On Photo
@@ -133,7 +133,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="relative aspect-3/4 w-32 rounded-2xl overflow-hidden border border-[#E7E0D6] bg-[#FAF8F5] shadow-sm">
+            <div className="relative aspect-3/4 w-32 rounded-2xl overflow-hidden border border-[#E2E8F0] bg-[#FAF8F5] shadow-sm">
               {photoUrl ? (
                 <img
                   src={photoUrl}
@@ -142,7 +142,7 @@ export default function ProfilePage() {
                 />
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-[#78716C] p-2 text-center">
-                  <Camera className="h-6 w-6 mb-1 text-[#B4533C]" />
+                  <Camera className="h-6 w-6 mb-1 text-[#0284C7]" />
                   <span className="text-[10px]">No photo added</span>
                 </div>
               )}
@@ -150,7 +150,7 @@ export default function ProfilePage() {
 
             <div className="space-y-3 text-center sm:text-left">
               <div className="flex flex-wrap gap-2 justify-center sm:justify-start">
-                <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#1C1917] px-4 py-2 text-xs font-semibold text-white hover:bg-[#B4533C] transition-colors">
+                <label className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[#1C1917] px-4 py-2 text-xs font-semibold text-white hover:bg-[#0284C7] transition-colors">
                   <UploadCloud className="h-4 w-4" />
                   <span>{photoUrl ? 'Replace Photo' : 'Upload Full-Body Photo'}</span>
                   <input
@@ -185,7 +185,7 @@ export default function ProfilePage() {
                       <button
                         type="button"
                         onClick={() => setConfirmDeletePhoto(true)}
-                        className="rounded-xl border border-[#E7E0D6] px-4 py-2 text-xs font-semibold text-[#78716C] hover:text-red-600 transition-colors"
+                        className="rounded-xl border border-[#E2E8F0] px-4 py-2 text-xs font-semibold text-[#78716C] hover:text-red-600 transition-colors"
                       >
                         Delete Photo
                       </button>
@@ -201,7 +201,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Section 2: Account Details */}
-        <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-6">
+        <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-8 card-shadow space-y-6">
           <h3 className="font-serif text-xl font-bold text-[#1C1917]">
             Account Credentials
           </h3>
@@ -215,7 +215,7 @@ export default function ProfilePage() {
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
               />
             </div>
 
@@ -227,7 +227,7 @@ export default function ProfilePage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
               />
             </div>
 
@@ -239,14 +239,14 @@ export default function ProfilePage() {
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
               />
             </div>
           </div>
         </div>
 
         {/* Section 3: Physical Proportions (Optional) */}
-        <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-6">
+        <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-8 card-shadow space-y-6">
           <div>
             <h3 className="font-serif text-xl font-bold text-[#1C1917]">
               Optional Silhouette Measurements
@@ -265,7 +265,7 @@ export default function ProfilePage() {
                 type="text"
                 value={height}
                 onChange={(e) => setHeight(e.target.value)}
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
               />
             </div>
             <div>
@@ -275,7 +275,7 @@ export default function ProfilePage() {
               <select
                 value={hairLength}
                 onChange={(e) => setHairLength(e.target.value as any)}
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
               >
                 <option value="Short">Short</option>
                 <option value="Medium">Medium</option>
@@ -290,7 +290,7 @@ export default function ProfilePage() {
               <select
                 value={hairType}
                 onChange={(e) => setHairType(e.target.value as any)}
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
               >
                 <option value="Straight">Straight</option>
                 <option value="Wavy">Wavy</option>
@@ -307,7 +307,7 @@ export default function ProfilePage() {
                 type="text"
                 value={waist}
                 onChange={(e) => setWaist(e.target.value)}
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
               />
             </div>
           </div>
@@ -315,7 +315,7 @@ export default function ProfilePage() {
           <div className="flex justify-end pt-2">
             <button
               type="submit"
-              className="rounded-2xl bg-[#B4533C] px-6 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-[#9E4530] transition-colors"
+              className="rounded-2xl bg-[#0284C7] px-6 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-[#0369A1] transition-colors"
             >
               Save Profile Changes
             </button>
@@ -324,15 +324,15 @@ export default function ProfilePage() {
       </form>
 
       {/* Section 4: Privacy & Data Ownership Section (Section 15 & 20) */}
-      <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-6">
+      <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-8 card-shadow space-y-6">
         <div className="flex items-center gap-2.5">
-          <Shield className="h-5 w-5 text-[#5F6F52]" />
+          <Shield className="h-5 w-5 text-[#E87A90]" />
           <h3 className="font-serif text-xl font-bold text-[#1C1917]">
             Privacy, Security & Data Control
           </h3>
         </div>
 
-        <div className="rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6] p-4 text-xs text-[#57534E] space-y-2 leading-relaxed">
+        <div className="rounded-2xl bg-[#FAF8F5] border border-[#E2E8F0] p-4 text-xs text-[#57534E] space-y-2 leading-relaxed">
           <p>
             <strong>Your Wardrobe, Your Property:</strong> You maintain absolute ownership of your photos, garments, and styling profile.
           </p>
@@ -343,12 +343,12 @@ export default function ProfilePage() {
           </ul>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-[#E7E0D6]">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-[#E2E8F0]">
           {/* Export Data */}
           <button
             type="button"
             onClick={handleExportData}
-            className="flex items-center gap-2 rounded-xl border border-[#E7E0D6] bg-white px-4 py-2.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
+            className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-4 py-2.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
           >
             <FileDown className="h-4 w-4 text-[#78716C]" />
             <span>Export My Data (JSON)</span>
@@ -370,7 +370,7 @@ export default function ProfilePage() {
               <button
                 type="button"
                 onClick={() => setConfirmDeleteAccount(false)}
-                className="rounded-xl border border-[#E7E0D6] px-3 py-1.5 text-xs font-medium text-[#78716C]"
+                className="rounded-xl border border-[#E2E8F0] px-3 py-1.5 text-xs font-medium text-[#78716C]"
               >
                 Cancel
               </button>

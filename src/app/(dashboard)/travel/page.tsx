@@ -249,9 +249,9 @@ export default function TravelPlannerPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
       {/* 1. EDITORIAL HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#E7E0D6] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#E2E8F0] pb-6">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#B4533C]/10 px-3 py-1 text-xs font-bold text-[#B4533C] uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#0284C7]/10 px-3 py-1 text-xs font-bold text-[#0284C7] uppercase tracking-wider">
             <Plane className="h-3.5 w-3.5" />
             <span>Core USP • Intelligent Travel Stylist</span>
           </div>
@@ -264,7 +264,7 @@ export default function TravelPlannerPage() {
         </div>
 
         {weatherForecast && (
-          <div className="flex items-center gap-3 bg-white border border-[#E7E0D6] rounded-2xl p-3 shadow-xs">
+          <div className="flex items-center gap-3 bg-white border border-[#E2E8F0] rounded-2xl p-3 shadow-xs">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
               <Sun className="h-5 w-5" />
             </div>
@@ -283,7 +283,7 @@ export default function TravelPlannerPage() {
       {/* 2. TRIP CONFIGURATION & ITINERARY BUILDER */}
       <form
         onSubmit={handleGenerate}
-        className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-8"
+        className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-8 card-shadow space-y-8"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Destination */}
@@ -291,8 +291,8 @@ export default function TravelPlannerPage() {
             <label className="text-xs font-bold uppercase tracking-wider text-[#78716C] block">
               Destination
             </label>
-            <div className="flex items-center rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-4 py-3 focus-within:border-[#B4533C] focus-within:bg-white">
-              <Plane className="h-4 w-4 text-[#B4533C] mr-2.5 shrink-0" />
+            <div className="flex items-center rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] px-4 py-3 focus-within:border-[#0284C7] focus-within:bg-white">
+              <Plane className="h-4 w-4 text-[#0284C7] mr-2.5 shrink-0" />
               <input
                 type="text"
                 value={destination}
@@ -311,8 +311,8 @@ export default function TravelPlannerPage() {
                   onClick={() => setDestination(city)}
                   className={`text-[10px] px-2.5 py-1 rounded-full border transition-all ${
                     destination.toLowerCase() === city.toLowerCase()
-                      ? 'border-[#B4533C] bg-[#B4533C] text-white font-bold'
-                      : 'border-[#E7E0D6] bg-white text-[#57534E] hover:border-[#D5CCC0]'
+                      ? 'border-[#0284C7] bg-[#0284C7] text-white font-bold'
+                      : 'border-[#E2E8F0] bg-white text-[#57534E] hover:border-[#CBD5E1]'
                   }`}
                 >
                   {city}
@@ -333,7 +333,7 @@ export default function TravelPlannerPage() {
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white"
+                  className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white"
                 />
               </div>
               <div>
@@ -342,7 +342,7 @@ export default function TravelPlannerPage() {
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white"
+                  className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white"
                 />
               </div>
             </div>
@@ -353,9 +353,9 @@ export default function TravelPlannerPage() {
             <label className="text-xs font-bold uppercase tracking-wider text-[#78716C] block">
               Capsule Strategy
             </label>
-            <div className="rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] p-3 text-xs text-[#57534E] space-y-1">
+            <div className="rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] p-3 text-xs text-[#57534E] space-y-1">
               <p className="font-bold text-[#1C1917] flex items-center gap-1.5">
-                <Repeat className="h-4 w-4 text-[#B4533C]" />
+                <Repeat className="h-4 w-4 text-[#0284C7]" />
                 <span>Maximized Capsule Reuse</span>
               </p>
               <p className="text-[11px] text-[#78716C]">
@@ -366,7 +366,7 @@ export default function TravelPlannerPage() {
         </div>
 
         {/* Dynamic Itinerary Section */}
-        <div className="space-y-4 border-t border-[#E7E0D6] pt-6">
+        <div className="space-y-4 border-t border-[#E2E8F0] pt-6">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-serif text-xl font-bold text-[#1C1917]">
@@ -380,9 +380,9 @@ export default function TravelPlannerPage() {
             <button
               type="button"
               onClick={handleAddDay}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-[#E7E0D6] bg-white px-3 py-1.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5]"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-[#E2E8F0] bg-white px-3 py-1.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5]"
             >
-              <Plus className="h-3.5 w-3.5 text-[#B4533C]" />
+              <Plus className="h-3.5 w-3.5 text-[#0284C7]" />
               <span>+ Add Day</span>
             </button>
           </div>
@@ -391,10 +391,10 @@ export default function TravelPlannerPage() {
             {itineraryDays.map((d, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] p-4 space-y-2.5 relative group"
+                className="rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] p-4 space-y-2.5 relative group"
               >
                 <div className="flex items-center justify-between">
-                  <span className="rounded-full bg-[#B4533C]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#B4533C]">
+                  <span className="rounded-full bg-[#0284C7]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#0284C7]">
                     Day {d.dayNumber}
                   </span>
                   {itineraryDays.length > 1 && (
@@ -417,7 +417,7 @@ export default function TravelPlannerPage() {
                     updated[idx].title = e.target.value;
                     setItineraryDays(updated);
                   }}
-                  className="w-full bg-white rounded-xl border border-[#E7E0D6] px-3 py-1.5 text-xs font-bold text-[#1C1917] focus:border-[#B4533C] focus:outline-hidden"
+                  className="w-full bg-white rounded-xl border border-[#E2E8F0] px-3 py-1.5 text-xs font-bold text-[#1C1917] focus:border-[#0284C7] focus:outline-hidden"
                 />
 
                 <p className="text-[11px] text-[#78716C]">
@@ -429,7 +429,7 @@ export default function TravelPlannerPage() {
         </div>
 
         {/* Activities Multi-selection */}
-        <div className="space-y-2 border-t border-[#E7E0D6] pt-6">
+        <div className="space-y-2 border-t border-[#E2E8F0] pt-6">
           <label className="text-xs font-bold uppercase tracking-wider text-[#78716C] block">
             Trip Activities & Excursions
           </label>
@@ -443,8 +443,8 @@ export default function TravelPlannerPage() {
                   onClick={() => toggleActivityChip(act)}
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                     isSelected
-                      ? 'border-[#B4533C] bg-[#B4533C] text-white shadow-xs'
-                      : 'border-[#E7E0D6] bg-[#FAF8F5] text-[#57534E] hover:border-[#D5CCC0] hover:bg-white'
+                      ? 'border-[#0284C7] bg-[#0284C7] text-white shadow-xs'
+                      : 'border-[#E2E8F0] bg-[#FAF8F5] text-[#57534E] hover:border-[#CBD5E1] hover:bg-white'
                   }`}
                 >
                   {act}
@@ -455,11 +455,11 @@ export default function TravelPlannerPage() {
         </div>
 
         {/* Submit */}
-        <div className="flex justify-end pt-2 border-t border-[#E7E0D6]">
+        <div className="flex justify-end pt-2 border-t border-[#E2E8F0]">
           <button
             type="submit"
             disabled={isGenerating}
-            className="flex items-center gap-2 rounded-2xl bg-[#B4533C] px-8 py-3.5 text-xs font-semibold text-white shadow-sm hover:bg-[#9E4530] transition-all"
+            className="flex items-center gap-2 rounded-2xl bg-[#0284C7] px-8 py-3.5 text-xs font-semibold text-white shadow-sm hover:bg-[#0369A1] transition-all"
           >
             <Sparkles className="h-4 w-4" />
             <span>
@@ -472,8 +472,8 @@ export default function TravelPlannerPage() {
       {/* 3. TRAVEL AI RESULT — DAY-WISE OUTFIT CARDS */}
       {hasGeneratedPlan && (
         <section className="space-y-8 animate-in fade-in">
-          <div className="border-b border-[#E7E0D6] pb-4">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+          <div className="border-b border-[#E2E8F0] pb-4">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-[#0284C7]">
               AI Stylist Result
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#1C1917] mt-1">
@@ -504,17 +504,17 @@ export default function TravelPlannerPage() {
                 key={outfit.dayNumber}
                 className={`rounded-3xl bg-white border p-6 shadow-md card-shadow flex flex-col justify-between space-y-5 transition-all duration-300 ${
                   activeStepperDay === outfit.dayNumber
-                    ? 'border-[#B4533C] ring-2 ring-[#B4533C]/20 shadow-xl'
-                    : 'border-[#E7E0D6] opacity-90 hover:opacity-100'
+                    ? 'border-[#0284C7] ring-2 ring-[#0284C7]/20 shadow-xl'
+                    : 'border-[#E2E8F0] opacity-90 hover:opacity-100'
                 }`}
               >
                 <div className="space-y-4">
                   {/* Day Header Badge */}
-                  <div className="flex items-center justify-between border-b border-[#F4EFEA] pb-3">
+                  <div className="flex items-center justify-between border-b border-[#F0F7FD] pb-3">
                     <h3 className="font-serif text-lg font-bold text-[#1C1917]">
                       {outfit.themeTitle}
                     </h3>
-                    <span className="text-xs font-bold text-[#5F6F52] bg-[#5F6F52]/10 px-2 py-0.5 rounded-full">
+                    <span className="text-xs font-bold text-[#E87A90] bg-[#E87A90]/10 px-2 py-0.5 rounded-full">
                       Ready
                     </span>
                   </div>
@@ -522,11 +522,11 @@ export default function TravelPlannerPage() {
                   {/* Garment Breakdown */}
                   <div className="space-y-3">
                     {/* Top */}
-                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6]">
+                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E2E8F0]">
                       <img
                         src={outfit.top.image}
                         alt={outfit.top.name}
-                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E7E0D6]"
+                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E2E8F0]"
                       />
                       <div className="min-w-0 flex-1">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] block">
@@ -542,11 +542,11 @@ export default function TravelPlannerPage() {
                     </div>
 
                     {/* Bottom */}
-                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6]">
+                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E2E8F0]">
                       <img
                         src={outfit.bottom.image}
                         alt={outfit.bottom.name}
-                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E7E0D6]"
+                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E2E8F0]"
                       />
                       <div className="min-w-0 flex-1">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] block">
@@ -562,11 +562,11 @@ export default function TravelPlannerPage() {
                     </div>
 
                     {/* Shoes */}
-                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6]">
+                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E2E8F0]">
                       <img
                         src={outfit.shoes.image}
                         alt={outfit.shoes.name}
-                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E7E0D6]"
+                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E2E8F0]"
                       />
                       <div className="min-w-0 flex-1">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] block">
@@ -582,11 +582,11 @@ export default function TravelPlannerPage() {
                     </div>
 
                     {/* Accessories */}
-                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6]">
+                    <div className="flex items-center gap-3 p-2.5 rounded-2xl bg-[#FAF8F5] border border-[#E2E8F0]">
                       <img
                         src={outfit.accessories.image}
                         alt={outfit.accessories.name}
-                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E7E0D6]"
+                        className="h-12 w-12 rounded-xl object-cover shrink-0 border border-[#E2E8F0]"
                       />
                       <div className="min-w-0 flex-1">
                         <span className="text-[10px] font-bold uppercase tracking-wider text-[#78716C] block">
@@ -603,8 +603,8 @@ export default function TravelPlannerPage() {
                   </div>
 
                   {/* Reason Callout */}
-                  <div className="rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] p-3.5">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#B4533C] block">
+                  <div className="rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] p-3.5">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#0284C7] block">
                       Reason
                     </span>
                     <p className="text-xs text-[#57534E] mt-1 leading-relaxed">
@@ -614,7 +614,7 @@ export default function TravelPlannerPage() {
                 </div>
 
                 {/* Card footer action */}
-                <div className="pt-2 border-t border-[#F4EFEA]">
+                <div className="pt-2 border-t border-[#F0F7FD]">
                   <button
                     onClick={() => {
                       // Trigger virtual try-on simulation
@@ -632,7 +632,7 @@ export default function TravelPlannerPage() {
                         createdAt: new Date().toISOString(),
                       });
                     }}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-[#E7E0D6] py-2.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl border border-[#E2E8F0] py-2.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
                   >
                     <Eye className="h-4 w-4 text-[#78716C]" />
                     <span>See Look on Avatar</span>
@@ -644,8 +644,8 @@ export default function TravelPlannerPage() {
 
           {/* 4. SMART PACKING DASHBOARD (PACK, REUSE, SKIP, MISSING) */}
           <div className="space-y-6 pt-6">
-            <div className="border-b border-[#E7E0D6] pb-3">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-[#5F6F52]">
+            <div className="border-b border-[#E2E8F0] pb-3">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#E87A90]">
                 Luggage Optimization
               </span>
               <h2 className="font-serif text-3xl font-bold text-[#1C1917]">
@@ -659,8 +659,8 @@ export default function TravelPlannerPage() {
             {/* 4 Core Prominent Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Card 1: 🧳 PACK */}
-              <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow space-y-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#5F6F52]/10 text-[#5F6F52]">
+              <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 shadow-md card-shadow space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E87A90]/10 text-[#E87A90]">
                   <Luggage className="h-6 w-6" />
                 </div>
                 <div>
@@ -672,18 +672,18 @@ export default function TravelPlannerPage() {
                   </h3>
                 </div>
 
-                <div className="space-y-1.5 border-t border-[#F4EFEA] pt-3 text-xs font-bold text-[#1C1917]">
+                <div className="space-y-1.5 border-t border-[#F0F7FD] pt-3 text-xs font-bold text-[#1C1917]">
                   <div className="flex justify-between">
                     <span>Clothing Items</span>
-                    <span className="text-[#B4533C]">6</span>
+                    <span className="text-[#0284C7]">6</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Shoes</span>
-                    <span className="text-[#B4533C]">2</span>
+                    <span className="text-[#0284C7]">2</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Accessories</span>
-                    <span className="text-[#B4533C]">3</span>
+                    <span className="text-[#0284C7]">3</span>
                   </div>
                 </div>
                 <p className="text-[10px] text-[#78716C]">
@@ -692,8 +692,8 @@ export default function TravelPlannerPage() {
               </div>
 
               {/* Card 2: 🔄 REUSE */}
-              <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow space-y-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#B4533C]/10 text-[#B4533C]">
+              <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 shadow-md card-shadow space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#0284C7]/10 text-[#0284C7]">
                   <Repeat className="h-6 w-6" />
                 </div>
                 <div>
@@ -705,7 +705,7 @@ export default function TravelPlannerPage() {
                   </h3>
                 </div>
 
-                <div className="rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6] p-3 text-xs text-[#1C1917] font-semibold leading-relaxed">
+                <div className="rounded-2xl bg-[#FAF8F5] border border-[#E2E8F0] p-3 text-xs text-[#1C1917] font-semibold leading-relaxed">
                   &ldquo;Your beige trousers work with 3 outfits.&rdquo;
                 </div>
                 <p className="text-[10px] text-[#78716C]">
@@ -714,7 +714,7 @@ export default function TravelPlannerPage() {
               </div>
 
               {/* Card 3: 🚫 SKIP */}
-              <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow space-y-4">
+              <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 shadow-md card-shadow space-y-4">
                 <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10 text-amber-700">
                   <Ban className="h-6 w-6" />
                 </div>
@@ -736,8 +736,8 @@ export default function TravelPlannerPage() {
               </div>
 
               {/* Card 4: ✨ MISSING */}
-              <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 shadow-md card-shadow space-y-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#C5A059]/10 text-[#C5A059]">
+              <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 shadow-md card-shadow space-y-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#38BDF8]/10 text-[#38BDF8]">
                   <ShoppingBag className="h-6 w-6" />
                 </div>
                 <div>
@@ -749,12 +749,12 @@ export default function TravelPlannerPage() {
                   </h3>
                 </div>
 
-                <div className="rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6] p-3 text-xs text-[#1C1917] font-semibold leading-relaxed">
+                <div className="rounded-2xl bg-[#FAF8F5] border border-[#E2E8F0] p-3 text-xs text-[#1C1917] font-semibold leading-relaxed">
                   &ldquo;You may want one lightweight overshirt.&rdquo;
                 </div>
                 <Link
                   href="/recommendations"
-                  className="inline-flex items-center gap-1 text-[11px] font-bold text-[#B4533C] hover:underline"
+                  className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0284C7] hover:underline"
                 >
                   <span>View Curation</span>
                   <ArrowRight className="h-3 w-3" />
@@ -763,8 +763,8 @@ export default function TravelPlannerPage() {
             </div>
 
             {/* Interactive Packing Checklist */}
-            <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-8 card-shadow space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E7E0D6] pb-4">
+            <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-8 card-shadow space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E2E8F0] pb-4">
                 <div>
                   <h3 className="font-serif text-xl font-bold text-[#1C1917]">
                     Luggage Packing Checklist
@@ -774,8 +774,8 @@ export default function TravelPlannerPage() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 bg-[#FAF8F5] border border-[#E7E0D6] px-3.5 py-1.5 rounded-full text-xs font-bold text-[#1C1917]">
-                  <CheckCircle2 className="h-4 w-4 text-[#5F6F52]" />
+                <div className="flex items-center gap-2 bg-[#FAF8F5] border border-[#E2E8F0] px-3.5 py-1.5 rounded-full text-xs font-bold text-[#1C1917]">
+                  <CheckCircle2 className="h-4 w-4 text-[#E87A90]" />
                   <span>
                     {packingChecklist.filter((i) => i.isPacked).length} of {packingChecklist.length} Packed
                   </span>
@@ -789,13 +789,13 @@ export default function TravelPlannerPage() {
                     onClick={() => togglePackingCheck(item.id)}
                     className={`flex items-center justify-between p-3 rounded-2xl border cursor-pointer transition-all ${
                       item.isPacked
-                        ? 'border-[#5F6F52]/40 bg-[#5F6F52]/5 text-[#57534E]'
-                        : 'border-[#E7E0D6] bg-[#FAF8F5] hover:bg-white text-[#1C1917]'
+                        ? 'border-[#E87A90]/40 bg-[#E87A90]/5 text-[#57534E]'
+                        : 'border-[#E2E8F0] bg-[#FAF8F5] hover:bg-white text-[#1C1917]'
                     }`}
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       {item.isPacked ? (
-                        <CheckCircle2 className="h-4 w-4 text-[#5F6F52] shrink-0" />
+                        <CheckCircle2 className="h-4 w-4 text-[#E87A90] shrink-0" />
                       ) : (
                         <Circle className="h-4 w-4 text-[#78716C] shrink-0" />
                       )}
@@ -808,7 +808,7 @@ export default function TravelPlannerPage() {
                       </span>
                     </div>
 
-                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#78716C] bg-white px-2 py-0.5 rounded-md border border-[#E7E0D6] shrink-0">
+                    <span className="text-[9px] font-bold uppercase tracking-wider text-[#78716C] bg-white px-2 py-0.5 rounded-md border border-[#E2E8F0] shrink-0">
                       {item.category}
                     </span>
                   </div>

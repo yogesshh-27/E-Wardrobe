@@ -40,38 +40,38 @@ export const VirtualTryOnModal: React.FC = () => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div className="w-full max-w-4xl rounded-3xl bg-white shadow-2xl border border-[#E7E0D6] overflow-hidden flex flex-col max-h-[92vh]">
         {/* Modal Header */}
-        <div className="flex items-center justify-between border-b border-[#E7E0D6] px-6 py-4 bg-[#FAF8F5]">
+        <div className="flex items-center justify-between border-b border-[#E2E8F0] px-6 py-4 bg-[#FAF8F5]">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#B4533C] text-white shadow-xs">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-r from-[#E87A90] to-[#0284C7] text-white shadow-xs">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="font-serif font-bold text-xl text-[#1C1917]">
+                <h3 className="font-sans font-bold text-xl text-[#1C1917]">
                   See the Look
                 </h3>
-                <span className="rounded-full bg-[#B4533C]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#B4533C] uppercase tracking-wide">
-                  Virtual Try-On • 21st.dev Slider
+                <span className="rounded-full bg-[#E0F2FE] px-2.5 py-0.5 text-[10px] font-bold text-[#0284C7] uppercase tracking-wide">
+                  Virtual Try-On • Comparison
                 </span>
               </div>
-              <p className="text-xs text-[#78716C] mt-0.5">{activeOutfitForTryOn.name}</p>
+              <p className="text-xs text-[#64748B] mt-0.5">{activeOutfitForTryOn.name}</p>
             </div>
           </div>
 
           <button
             onClick={closeTryOn}
-            className="rounded-full p-2 text-[#57534E] hover:bg-[#E7E0D6] transition-colors"
+            className="rounded-full p-2 text-[#475569] hover:bg-slate-100 transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Clear Truthful Architecture Notice */}
-        <div className="bg-[#FAF8F5] border-b border-[#E7E0D6] px-6 py-2.5 flex items-center justify-between text-xs text-[#B4533C]">
+        <div className="bg-[#FAF8F5] border-b border-[#E2E8F0] px-6 py-2.5 flex items-center justify-between text-xs text-[#0284C7]">
           <div className="flex items-center gap-2">
             <AlertCircle className="h-4 w-4 shrink-0" />
             <span className="font-medium">
-              Interactive 21st.dev Comparison Slider • Silhouette vs Styled Composite
+              Interactive Comparison Slider • Silhouette vs Styled Composite
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -79,7 +79,7 @@ export const VirtualTryOnModal: React.FC = () => {
               onClick={() => setInteractiveSliderMode(!interactiveSliderMode)}
               className="hidden sm:flex items-center gap-1 text-[11px] font-bold text-[#1C1917] hover:underline"
             >
-              <span>{interactiveSliderMode ? 'Switch to Static View' : 'Switch to 21st.dev Slider'}</span>
+              <span>{interactiveSliderMode ? 'Switch to Static View' : 'Switch to Slider'}</span>
             </button>
             <button
               onClick={handleSimulateRegenerate}
@@ -106,12 +106,12 @@ export const VirtualTryOnModal: React.FC = () => {
                     afterLabel="Atelier Look"
                     className="aspect-3/4"
                   />
-                  <div className="mt-3 flex items-center justify-center gap-1 text-[11px] text-[#78716C]">
-                    <span>Drag the gold dial or use left/right arrow keys to compare</span>
+                  <div className="mt-3 flex items-center justify-center gap-1 text-[11px] text-[#64748B]">
+                    <span>Drag the dial or use left/right arrow keys to compare</span>
                   </div>
                 </div>
               ) : (
-                <div className="relative rounded-3xl overflow-hidden border border-[#E7E0D6] bg-[#FAF8F5] aspect-3/4 w-full max-w-sm shadow-xl group">
+                <div className="relative rounded-3xl overflow-hidden border border-[#E2E8F0] bg-[#FAF8F5] aspect-3/4 w-full max-w-sm shadow-xl group">
                   <img
                     src={userImage}
                     alt="Avatar preview"
@@ -142,7 +142,7 @@ export const VirtualTryOnModal: React.FC = () => {
                                 <p className="text-[10px] font-bold text-[#1C1917] leading-tight max-w-[80px] truncate">
                                   {garment.name}
                                 </p>
-                                <span className="text-[9px] text-[#B4533C] font-semibold">
+                                <span className="text-[9px] text-[#0284C7] font-semibold">
                                   Layer {gIdx + 1}
                                 </span>
                               </div>
@@ -160,7 +160,7 @@ export const VirtualTryOnModal: React.FC = () => {
                   {/* Loading scanning simulation */}
                   {isSimulating && (
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex flex-col items-center justify-center text-white space-y-2">
-                      <Sparkles className="h-8 w-8 animate-spin text-[#C5A059]" />
+                      <Sparkles className="h-8 w-8 animate-spin text-[#38BDF8]" />
                       <p className="text-xs font-bold tracking-wide">Compositing Garment Layers...</p>
                     </div>
                   )}
@@ -182,7 +182,7 @@ export const VirtualTryOnModal: React.FC = () => {
                         onClick={() => setViewMode('after')}
                         className={`px-3.5 py-1 rounded-full transition-all ${
                           viewMode === 'after'
-                            ? 'bg-[#B4533C] text-white font-bold shadow-xs'
+                            ? 'bg-[#0284C7] text-white font-bold shadow-xs'
                             : 'text-white/80 hover:text-white'
                         }`}
                       >
@@ -197,13 +197,13 @@ export const VirtualTryOnModal: React.FC = () => {
             {/* Right Side: Outfit Layers & Garments Details */}
             <div className="md:col-span-5 space-y-6">
               <div>
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#0284C7]">
                   Styling Synthesis
                 </span>
-                <h4 className="font-serif text-2xl font-bold text-[#1C1917] mt-0.5">
+                <h4 className="font-sans text-2xl font-bold text-[#1C1917] mt-0.5">
                   {activeOutfitForTryOn.name}
                 </h4>
-                <p className="text-xs text-[#57534E] mt-1.5 leading-relaxed">
+                <p className="text-xs text-[#475569] mt-1.5 leading-relaxed">
                   {activeOutfitForTryOn.reason}
                 </p>
               </div>
@@ -212,7 +212,7 @@ export const VirtualTryOnModal: React.FC = () => {
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider text-[#1C1917] flex items-center gap-1.5">
-                    <Layers className="h-4 w-4 text-[#B4533C]" />
+                    <Layers className="h-4 w-4 text-[#0284C7]" />
                     <span>Selected Outfit Layers ({activeOutfitForTryOn.items.length})</span>
                   </span>
                 </div>
@@ -221,20 +221,20 @@ export const VirtualTryOnModal: React.FC = () => {
                   {activeOutfitForTryOn.items.map((item, idx) => (
                     <div
                       key={item.id}
-                      className="flex items-center gap-3 p-3 rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] shadow-2xs"
+                      className="flex items-center gap-3 p-3 rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] shadow-2xs"
                     >
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="h-12 w-12 rounded-xl object-cover border border-[#E7E0D6] shrink-0"
+                        className="h-12 w-12 rounded-xl object-cover border border-[#E2E8F0] shrink-0"
                       />
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-bold text-[#1C1917] truncate">{item.name}</p>
-                        <p className="text-[10px] text-[#78716C] mt-0.5">
+                        <p className="text-[10px] text-[#64748B] mt-0.5">
                           {item.color} • {item.category} • {item.style}
                         </p>
                       </div>
-                      <span className="text-[10px] font-bold text-[#5F6F52] bg-[#5F6F52]/10 px-2.5 py-1 rounded-full shrink-0">
+                      <span className="text-[10px] font-bold text-[#0284C7] bg-[#E0F2FE] px-2.5 py-1 rounded-full shrink-0">
                         Layer {idx + 1}
                       </span>
                     </div>
@@ -243,12 +243,12 @@ export const VirtualTryOnModal: React.FC = () => {
               </div>
 
               {/* Close & Action Buttons */}
-              <div className="pt-4 border-t border-[#E7E0D6] space-y-2">
+              <div className="pt-4 border-t border-[#E2E8F0] space-y-2">
                 <button
                   onClick={closeTryOn}
-                  className="w-full rounded-2xl bg-[#1C1917] py-3 text-xs font-semibold text-white shadow-xs hover:bg-[#B4533C] transition-colors"
+                  className="w-full rounded-2xl bg-[#1C1917] py-3 text-xs font-semibold text-white shadow-xs hover:bg-[#0284C7] transition-colors"
                 >
-                  Save & Apply to Wardrobe Rotation
+                  Save &amp; Apply to Wardrobe Rotation
                 </button>
 
                 <p className="text-[10px] text-[#78716C] text-center">

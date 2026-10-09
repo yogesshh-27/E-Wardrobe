@@ -38,18 +38,18 @@ export const StylistChatDrawer: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col border-l border-[#E7E0D6] bg-[#FAF8F5] shadow-2xl animate-in slide-in-from-right duration-250">
+    <div className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col border-l border-[#E2E8F0] bg-[#FAF8F5] shadow-2xl animate-in slide-in-from-right duration-250">
       {/* Header */}
-      <div className="flex h-16 items-center justify-between border-b border-[#E7E0D6] px-5 bg-white">
+      <div className="flex h-16 items-center justify-between border-b border-[#E2E8F0] px-5 bg-white">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#B4533C] text-white">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-[#E87A90] to-[#0284C7] text-white">
             <Sparkles className="h-4 w-4" />
           </div>
           <div>
-            <h3 className="font-serif font-bold text-base text-[#1C1917]">
+            <h3 className="font-sans font-bold text-base text-[#1C1917]">
               AI Personal Stylist
             </h3>
-            <p className="text-[11px] text-[#78716C]">
+            <p className="text-[11px] text-[#64748B]">
               Syncs with your {items.length} wardrobe pieces
             </p>
           </div>
@@ -57,13 +57,13 @@ export const StylistChatDrawer: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={clearChat}
-            className="text-[11px] text-[#78716C] hover:text-[#B4533C] transition-colors"
+            className="text-[11px] text-[#64748B] hover:text-[#0284C7] transition-colors"
           >
             Clear
           </button>
           <button
             onClick={() => setIsOpen(false)}
-            className="rounded-lg p-1.5 text-[#57534E] hover:bg-[#F4EFEA] transition-colors"
+            className="rounded-lg p-1.5 text-[#475569] hover:bg-slate-100 transition-colors"
             aria-label="Close chat"
           >
             <X className="h-5 w-5" />
@@ -79,7 +79,7 @@ export const StylistChatDrawer: React.FC = () => {
             className={`flex gap-2.5 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {msg.sender === 'assistant' && (
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#B4533C]/10 text-[#B4533C]">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#E0F2FE] text-[#0284C7]">
                 <Bot className="h-4 w-4" />
               </div>
             )}
@@ -87,8 +87,8 @@ export const StylistChatDrawer: React.FC = () => {
             <div
               className={`max-w-[85%] rounded-2xl px-4 py-3 text-xs leading-relaxed ${
                 msg.sender === 'user'
-                  ? 'bg-[#B4533C] text-white shadow-xs'
-                  : 'bg-white border border-[#E7E0D6] text-[#1C1917] shadow-xs'
+                  ? 'bg-gradient-to-r from-[#0284C7] to-[#38BDF8] text-white shadow-xs'
+                  : 'bg-white border border-[#E2E8F0] text-[#1C1917] shadow-xs'
               }`}
             >
               <p className="whitespace-pre-wrap">{msg.text}</p>
@@ -117,13 +117,13 @@ export const StylistChatDrawer: React.FC = () => {
                       <div className="flex gap-2 mt-2">
                         <button
                           onClick={() => saveOutfit(outfit)}
-                          className="flex-1 rounded-lg bg-[#B4533C] py-1 text-[10px] font-semibold text-white shadow-2xs hover:bg-[#9E4530]"
+                          className="flex-1 rounded-lg bg-[#0284C7] py-1 text-[10px] font-semibold text-white shadow-2xs hover:bg-[#0369A1]"
                         >
                           Save Look
                         </button>
                         <button
                           onClick={() => openTryOn(outfit)}
-                          className="flex-1 rounded-lg border border-[#E7E0D6] bg-white py-1 text-[10px] font-semibold text-[#1C1917] hover:bg-[#F4EFEA]"
+                          className="flex-1 rounded-lg border border-[#E2E8F0] bg-white py-1 text-[10px] font-semibold text-[#1C1917] hover:bg-slate-50"
                         >
                           Virtual Try-On
                         </button>
@@ -135,8 +135,8 @@ export const StylistChatDrawer: React.FC = () => {
 
               {/* Inline Product Recommendations if present */}
               {msg.suggestedProducts && msg.suggestedProducts.length > 0 && (
-                <div className="mt-3 space-y-2 border-t border-[#E7E0D6] pt-2.5">
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#78716C]">
+                <div className="mt-3 space-y-2 border-t border-[#E2E8F0] pt-2.5">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#64748B]">
                     Recommended Pieces
                   </p>
                   {msg.suggestedProducts.map((p) => (
@@ -145,20 +145,20 @@ export const StylistChatDrawer: React.FC = () => {
                       href={p.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2.5 rounded-lg border border-[#E7E0D6] bg-[#FAF8F5] p-2 hover:bg-white transition-colors"
+                      className="flex items-center gap-2.5 rounded-lg border border-[#E2E8F0] bg-[#FAF8F5] p-2 hover:bg-white transition-colors"
                     >
                       <img
                         src={p.imageUrl}
                         alt={p.name}
-                        className="h-9 w-9 rounded-md object-cover border border-[#E7E0D6]"
+                        className="h-9 w-9 rounded-md object-cover border border-[#E2E8F0]"
                       />
                       <div className="min-w-0 flex-1">
                         <p className="text-[11px] font-bold text-[#1C1917] truncate">{p.name}</p>
-                        <p className="text-[10px] text-[#B4533C] font-semibold">
+                        <p className="text-[10px] text-[#0284C7] font-semibold">
                           ₹{p.price.toLocaleString('en-IN')} on {p.platform}
                         </p>
                       </div>
-                      <ExternalLink className="h-3.5 w-3.5 text-[#78716C]" />
+                      <ExternalLink className="h-3.5 w-3.5 text-[#64748B]" />
                     </a>
                   ))}
                 </div>
@@ -166,7 +166,7 @@ export const StylistChatDrawer: React.FC = () => {
 
               <span
                 className={`text-[9px] mt-1 block text-right ${
-                  msg.sender === 'user' ? 'text-white/80' : 'text-[#78716C]'
+                  msg.sender === 'user' ? 'text-white/80' : 'text-[#64748B]'
                 }`}
               >
                 {msg.timestamp}
@@ -174,7 +174,7 @@ export const StylistChatDrawer: React.FC = () => {
             </div>
 
             {msg.sender === 'user' && (
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#E7E0D6] text-[#57534E]">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#E0F2FE] text-[#0284C7]">
                 <UserIcon className="h-4 w-4" />
               </div>
             )}
@@ -182,8 +182,8 @@ export const StylistChatDrawer: React.FC = () => {
         ))}
 
         {isTyping && (
-          <div className="flex items-center gap-2 text-xs text-[#78716C] bg-white border border-[#E7E0D6] w-fit rounded-full px-3 py-1.5 shadow-2xs">
-            <Sparkles className="h-3.5 w-3.5 text-[#B4533C] animate-spin" />
+          <div className="flex items-center gap-2 text-xs text-[#64748B] bg-white border border-[#E2E8F0] w-fit rounded-full px-3 py-1.5 shadow-2xs">
+            <Sparkles className="h-3.5 w-3.5 text-[#0284C7] animate-spin" />
             <span>AI Stylist is thinking...</span>
           </div>
         )}
@@ -192,14 +192,14 @@ export const StylistChatDrawer: React.FC = () => {
       </div>
 
       {/* Suggested Prompt Chips */}
-      <div className="border-t border-[#E7E0D6] bg-white px-3 py-2">
-        <p className="text-[10px] font-semibold text-[#78716C] mb-1.5">Quick Inspiration</p>
+      <div className="border-t border-[#E2E8F0] bg-white px-3 py-2">
+        <p className="text-[10px] font-semibold text-[#64748B] mb-1.5">Quick Inspiration</p>
         <div className="flex gap-1.5 overflow-x-auto pb-1 no-scrollbar">
           {SUGGESTED_PROMPTS.map((prompt, idx) => (
             <button
               key={idx}
               onClick={() => handleSend(prompt)}
-              className="shrink-0 rounded-full border border-[#E7E0D6] bg-[#FAF8F5] px-2.5 py-1 text-[11px] text-[#57534E] hover:border-[#B4533C] hover:text-[#B4533C] hover:bg-white transition-all"
+              className="shrink-0 rounded-full border border-[#E2E8F0] bg-[#FAF8F5] px-2.5 py-1 text-[11px] text-[#475569] hover:border-[#0284C7] hover:text-[#0284C7] hover:bg-white transition-all"
             >
               {prompt}
             </button>
@@ -208,7 +208,7 @@ export const StylistChatDrawer: React.FC = () => {
       </div>
 
       {/* Input Form */}
-      <div className="border-t border-[#E7E0D6] p-3 bg-white">
+      <div className="border-t border-[#E2E8F0] p-3 bg-white">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -221,12 +221,12 @@ export const StylistChatDrawer: React.FC = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask your stylist anything..."
-            className="flex-1 rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1C1917] placeholder-[#78716C] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+            className="flex-1 rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2 text-xs text-[#1C1917] placeholder-[#64748B] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
           />
           <button
             type="submit"
             disabled={!input.trim() || isTyping}
-            className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#B4533C] text-white disabled:opacity-50 hover:bg-[#9E4530] transition-colors"
+            className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#0284C7] text-white disabled:opacity-50 hover:bg-[#0369A1] transition-colors"
             aria-label="Send message"
           >
             <Send className="h-4 w-4" />

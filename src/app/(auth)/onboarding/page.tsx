@@ -249,7 +249,7 @@ export default function OnboardingPage() {
       <div className="max-w-4xl mx-auto w-full pt-2">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#B4533C] text-white shadow-xs">
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#0284C7] text-white shadow-xs">
               <Sparkles className="h-4 w-4" />
             </div>
             <span className="font-serif font-bold text-xl tracking-tight text-[#1C1917]">
@@ -263,7 +263,7 @@ export default function OnboardingPage() {
         </div>
 
         {/* Step Progression Breadcrumb Bar */}
-        <div className="bg-white border border-[#E7E0D6] rounded-2xl p-2.5 shadow-xs flex items-center justify-between overflow-x-auto no-scrollbar gap-2">
+        <div className="bg-white border border-[#E2E8F0] rounded-2xl p-2.5 shadow-xs flex items-center justify-between overflow-x-auto no-scrollbar gap-2">
           {ONBOARDING_STEPS.map((label, idx) => {
             const stepNumber = idx + 1;
             const isCompleted = step > stepNumber;
@@ -274,19 +274,19 @@ export default function OnboardingPage() {
                 <div
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 ${
                     isCurrent
-                      ? 'bg-[#B4533C] text-white shadow-xs'
+                      ? 'bg-[#0284C7] text-white shadow-xs'
                       : isCompleted
-                      ? 'text-[#5F6F52] bg-[#5F6F52]/10'
+                      ? 'text-[#E87A90] bg-[#E87A90]/10'
                       : 'text-[#A8A29E]'
                   }`}
                 >
                   <span
                     className={`h-5 w-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
                       isCurrent
-                        ? 'bg-white text-[#B4533C]'
+                        ? 'bg-white text-[#0284C7]'
                         : isCompleted
-                        ? 'bg-[#5F6F52] text-white'
-                        : 'bg-[#E7E0D6] text-[#78716C]'
+                        ? 'bg-[#E87A90] text-white'
+                        : 'bg-[#E2E8F0] text-[#78716C]'
                     }`}
                   >
                     {isCompleted ? <Check className="h-3 w-3 stroke-[3]" /> : stepNumber}
@@ -294,7 +294,7 @@ export default function OnboardingPage() {
                   <span>{label}</span>
                 </div>
                 {idx < ONBOARDING_STEPS.length - 1 && (
-                  <span className="text-[#D5CCC0] text-xs font-bold shrink-0">→</span>
+                  <span className="text-[#CBD5E1] text-xs font-bold shrink-0">→</span>
                 )}
               </React.Fragment>
             );
@@ -304,12 +304,12 @@ export default function OnboardingPage() {
 
       {/* Main Questionnaire Card Container */}
       <main className="max-w-4xl mx-auto w-full my-6 flex-1 flex flex-col justify-center">
-        <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-10 shadow-xl card-shadow">
+        <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-10 shadow-xl card-shadow">
           {/* STEP 1: GENDER & IDENTITY */}
           {step === 1 && (
             <div className="space-y-8 animate-in fade-in">
               <div className="space-y-2">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#0284C7]">
                   Step 1 • Profile
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#1C1917]">
@@ -328,13 +328,13 @@ export default function OnboardingPage() {
                     onClick={() => setGender(opt)}
                     className={`p-6 rounded-2xl border text-center transition-all ${
                       gender === opt
-                        ? 'border-[#B4533C] bg-[#FAF8F5] text-[#1C1917] shadow-sm ring-2 ring-[#B4533C]/20'
-                        : 'border-[#E7E0D6] bg-white text-[#57534E] hover:border-[#D5CCC0] hover:bg-[#FAF8F5]'
+                        ? 'border-[#0284C7] bg-[#FAF8F5] text-[#1C1917] shadow-sm ring-2 ring-[#0284C7]/20'
+                        : 'border-[#E2E8F0] bg-white text-[#57534E] hover:border-[#CBD5E1] hover:bg-[#FAF8F5]'
                     }`}
                   >
                     <div
                       className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full ${
-                        gender === opt ? 'bg-[#B4533C] text-white' : 'bg-[#FAF8F5] text-[#78716C]'
+                        gender === opt ? 'bg-[#0284C7] text-white' : 'bg-[#FAF8F5] text-[#78716C]'
                       }`}
                     >
                       <User className="h-6 w-6" />
@@ -349,8 +349,8 @@ export default function OnboardingPage() {
                 ))}
               </div>
 
-              <div className="rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6] p-4 flex items-start gap-3 text-xs text-[#57534E]">
-                <Info className="h-4 w-4 text-[#B4533C] shrink-0 mt-0.5" />
+              <div className="rounded-2xl bg-[#FAF8F5] border border-[#E2E8F0] p-4 flex items-start gap-3 text-xs text-[#57534E]">
+                <Info className="h-4 w-4 text-[#0284C7] shrink-0 mt-0.5" />
                 <span>
                   <strong>Gender-Neutral Guarantee:</strong> All wardrobe categories, skirts, kurtas, suits, sarees, and accessories remain permanently available to everyone regardless of selection.
                 </span>
@@ -362,7 +362,7 @@ export default function OnboardingPage() {
           {step === 2 && (
             <div className="space-y-6 animate-in fade-in">
               <div className="space-y-2">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#0284C7]">
                   Step 2 • Style
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#1C1917]">
@@ -382,8 +382,8 @@ export default function OnboardingPage() {
                       onClick={() => toggleStyle(style.id)}
                       className={`group relative rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 flex flex-col ${
                         isSelected
-                          ? 'border-[#B4533C] ring-2 ring-[#B4533C]/30 shadow-md'
-                          : 'border-[#E7E0D6] hover:border-[#D5CCC0] opacity-85 hover:opacity-100'
+                          ? 'border-[#0284C7] ring-2 ring-[#0284C7]/30 shadow-md'
+                          : 'border-[#E2E8F0] hover:border-[#CBD5E1] opacity-85 hover:opacity-100'
                       }`}
                     >
                       <div className="relative aspect-4/3 w-full overflow-hidden bg-[#FAF8F5]">
@@ -394,7 +394,7 @@ export default function OnboardingPage() {
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                         {isSelected && (
-                          <div className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#B4533C] text-white shadow-md">
+                          <div className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#0284C7] text-white shadow-md">
                             <Check className="h-3.5 w-3.5 stroke-[3]" />
                           </div>
                         )}
@@ -423,7 +423,7 @@ export default function OnboardingPage() {
           {step === 3 && (
             <div className="space-y-6 animate-in fade-in">
               <div className="space-y-2">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#0284C7]">
                   Step 3 • Fit
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#1C1917]">
@@ -443,18 +443,18 @@ export default function OnboardingPage() {
                       onClick={() => toggleFit(fit.id)}
                       className={`group relative rounded-2xl overflow-hidden border cursor-pointer transition-all duration-300 p-3.5 flex flex-col justify-between ${
                         isSelected
-                          ? 'border-[#B4533C] bg-[#FAF8F5] ring-2 ring-[#B4533C]/20 shadow-md'
-                          : 'border-[#E7E0D6] bg-white hover:border-[#D5CCC0] hover:bg-[#FAF8F5]'
+                          ? 'border-[#0284C7] bg-[#FAF8F5] ring-2 ring-[#0284C7]/20 shadow-md'
+                          : 'border-[#E2E8F0] bg-white hover:border-[#CBD5E1] hover:bg-[#FAF8F5]'
                       }`}
                     >
-                      <div className="relative aspect-16/10 w-full rounded-xl overflow-hidden mb-3 bg-[#E7E0D6]">
+                      <div className="relative aspect-16/10 w-full rounded-xl overflow-hidden mb-3 bg-[#E2E8F0]">
                         <img
                           src={fit.image}
                           alt={fit.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                         {isSelected && (
-                          <div className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#B4533C] text-white shadow-md">
+                          <div className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#0284C7] text-white shadow-md">
                             <Check className="h-3.5 w-3.5 stroke-[3]" />
                           </div>
                         )}
@@ -479,7 +479,7 @@ export default function OnboardingPage() {
           {step === 4 && (
             <div className="space-y-6 animate-in fade-in">
               <div className="space-y-2">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#0284C7]">
                   Step 4 • Image
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#1C1917]">
@@ -496,8 +496,8 @@ export default function OnboardingPage() {
                 onDrop={handleDrop}
                 className={`relative rounded-3xl border-2 border-dashed p-8 text-center transition-all ${
                   photoUrl
-                    ? 'border-[#5F6F52] bg-[#5F6F52]/5'
-                    : 'border-[#D5CCC0] bg-[#FAF8F5] hover:border-[#B4533C] hover:bg-white'
+                    ? 'border-[#E87A90] bg-[#E87A90]/5'
+                    : 'border-[#CBD5E1] bg-[#FAF8F5] hover:border-[#0284C7] hover:bg-white'
                 }`}
               >
                 {photoUrl ? (
@@ -510,7 +510,7 @@ export default function OnboardingPage() {
                       />
                     </div>
                     <div className="space-y-3 text-left">
-                      <div className="flex items-center gap-2 text-xs font-bold text-[#5F6F52]">
+                      <div className="flex items-center gap-2 text-xs font-bold text-[#E87A90]">
                         <CheckCircle2 className="h-4 w-4" />
                         <span>Silhouette Photo Loaded</span>
                       </div>
@@ -518,7 +518,7 @@ export default function OnboardingPage() {
                         Your photo is ready for the &ldquo;See the Look&rdquo; virtual try-on preview room.
                       </p>
                       <div className="flex gap-2 pt-2">
-                        <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-[#E7E0D6] text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5]">
+                        <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white border border-[#E2E8F0] text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5]">
                           <RefreshCw className="h-3.5 w-3.5" />
                           <span>Replace</span>
                           <input
@@ -541,7 +541,7 @@ export default function OnboardingPage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white border border-[#E7E0D6] text-[#B4533C] shadow-sm">
+                    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-white border border-[#E2E8F0] text-[#0284C7] shadow-sm">
                       <UploadCloud className="h-8 w-8" />
                     </div>
                     <div>
@@ -553,7 +553,7 @@ export default function OnboardingPage() {
                       </p>
                     </div>
 
-                    <label className="cursor-pointer inline-flex items-center gap-2 rounded-2xl bg-[#1C1917] px-6 py-3 text-xs font-semibold text-white shadow-sm hover:bg-[#B4533C] transition-all">
+                    <label className="cursor-pointer inline-flex items-center gap-2 rounded-2xl bg-[#1C1917] px-6 py-3 text-xs font-semibold text-white shadow-sm hover:bg-[#0284C7] transition-all">
                       <Camera className="h-4 w-4" />
                       <span>Upload from Device</span>
                       <input
@@ -568,8 +568,8 @@ export default function OnboardingPage() {
               </div>
 
               {/* Privacy Notice */}
-              <div className="rounded-2xl bg-[#FAF8F5] border border-[#E7E0D6] p-4 flex items-center gap-3 text-xs text-[#57534E]">
-                <ShieldCheck className="h-5 w-5 text-[#5F6F52] shrink-0" />
+              <div className="rounded-2xl bg-[#FAF8F5] border border-[#E2E8F0] p-4 flex items-center gap-3 text-xs text-[#57534E]">
+                <ShieldCheck className="h-5 w-5 text-[#E87A90] shrink-0" />
                 <span>
                   <strong>Privacy First:</strong> Your photo is never shared with third parties or used for public training. It is strictly used for client-side styling overlays.
                 </span>
@@ -581,7 +581,7 @@ export default function OnboardingPage() {
           {step === 5 && (
             <div className="space-y-6 animate-in fade-in">
               <div className="space-y-2">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C]">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-[#0284C7]">
                   Step 5 • Details
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#1C1917]">
@@ -606,8 +606,8 @@ export default function OnboardingPage() {
                         onClick={() => setHairLength(len)}
                         className={`p-3 rounded-xl border text-xs font-semibold text-center transition-all ${
                           hairLength === len
-                            ? 'border-[#B4533C] bg-[#B4533C]/10 text-[#B4533C] font-bold'
-                            : 'border-[#E7E0D6] bg-[#FAF8F5] text-[#57534E]'
+                            ? 'border-[#0284C7] bg-[#0284C7]/10 text-[#0284C7] font-bold'
+                            : 'border-[#E2E8F0] bg-[#FAF8F5] text-[#57534E]'
                         }`}
                       >
                         {len}
@@ -629,8 +629,8 @@ export default function OnboardingPage() {
                         onClick={() => setHairType(t)}
                         className={`p-3 rounded-xl border text-xs font-semibold text-center transition-all ${
                           hairType === t
-                            ? 'border-[#B4533C] bg-[#B4533C]/10 text-[#B4533C] font-bold'
-                            : 'border-[#E7E0D6] bg-[#FAF8F5] text-[#57534E]'
+                            ? 'border-[#0284C7] bg-[#0284C7]/10 text-[#0284C7] font-bold'
+                            : 'border-[#E2E8F0] bg-[#FAF8F5] text-[#57534E]'
                         }`}
                       >
                         {t}
@@ -641,7 +641,7 @@ export default function OnboardingPage() {
               </div>
 
               {/* Body Measurements (Optional) */}
-              <div className="space-y-3 pt-3 border-t border-[#E7E0D6]">
+              <div className="space-y-3 pt-3 border-t border-[#E2E8F0]">
                 <div>
                   <h4 className="text-xs font-bold uppercase tracking-wider text-[#78716C]">
                     Body Measurements (Optional)
@@ -659,7 +659,7 @@ export default function OnboardingPage() {
                       placeholder="e.g. 175"
                       value={height}
                       onChange={(e) => setHeight(e.target.value)}
-                      className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                      className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
                     />
                   </div>
                   <div>
@@ -669,7 +669,7 @@ export default function OnboardingPage() {
                       placeholder="e.g. 38"
                       value={chest}
                       onChange={(e) => setChest(e.target.value)}
-                      className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                      className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
                     />
                   </div>
                   <div>
@@ -679,7 +679,7 @@ export default function OnboardingPage() {
                       placeholder="e.g. 32"
                       value={waist}
                       onChange={(e) => setWaist(e.target.value)}
-                      className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                      className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
                     />
                   </div>
                   <div>
@@ -689,7 +689,7 @@ export default function OnboardingPage() {
                       placeholder="e.g. 38"
                       value={hips}
                       onChange={(e) => setHips(e.target.value)}
-                      className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
+                      className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917]"
                     />
                   </div>
                 </div>
@@ -698,12 +698,12 @@ export default function OnboardingPage() {
           )}
 
           {/* Navigation Controls (Back, Skip, Continue) */}
-          <div className="flex items-center justify-between border-t border-[#E7E0D6] pt-6 mt-8">
+          <div className="flex items-center justify-between border-t border-[#E2E8F0] pt-6 mt-8">
             {step > 1 ? (
               <button
                 type="button"
                 onClick={prevStep}
-                className="flex items-center gap-2 rounded-2xl border border-[#E7E0D6] px-5 py-3 text-xs font-semibold text-[#57534E] hover:bg-[#FAF8F5] transition-all"
+                className="flex items-center gap-2 rounded-2xl border border-[#E2E8F0] px-5 py-3 text-xs font-semibold text-[#57534E] hover:bg-[#FAF8F5] transition-all"
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back</span>
@@ -726,7 +726,7 @@ export default function OnboardingPage() {
               <button
                 type="button"
                 onClick={nextStep}
-                className="flex items-center gap-2 rounded-2xl bg-[#B4533C] px-8 py-3 text-xs font-semibold text-white shadow-sm hover:bg-[#9E4530] active:scale-[0.99] transition-all"
+                className="flex items-center gap-2 rounded-2xl bg-[#0284C7] px-8 py-3 text-xs font-semibold text-white shadow-sm hover:bg-[#0369A1] active:scale-[0.99] transition-all"
               >
                 <span>{step === 5 ? 'Open Wardrobe Dashboard' : 'Continue'}</span>
                 <ArrowRight className="h-4 w-4" />

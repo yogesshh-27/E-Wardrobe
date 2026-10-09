@@ -110,19 +110,19 @@ export const InteractiveUploadZone: React.FC<InteractiveUploadZoneProps> = ({
           }}
           className={`relative group cursor-pointer rounded-3xl border-2 border-dashed p-10 sm:p-14 text-center transition-all duration-300 flex flex-col items-center justify-center overflow-hidden ${
             isDragOver
-              ? 'border-[#B4533C] bg-[#B4533C]/5 scale-[1.01] shadow-xl'
-              : 'border-[#E7E0D6] bg-white hover:border-[#B4533C]/60 hover:bg-[#FAF8F5]'
+              ? 'border-[#0284C7] bg-[#0284C7]/5 scale-[1.01] shadow-xl'
+              : 'border-[#E2E8F0] bg-white hover:border-[#0284C7]/60 hover:bg-[#FAF8F5]'
           }`}
         >
           {/* Subtle Ambient Hover Radial */}
-          <div className="pointer-events-none absolute inset-0 bg-radial from-[#C5A059]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="pointer-events-none absolute inset-0 bg-radial from-[#38BDF8]/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           {/* Icon Badge */}
           <div
             className={`mb-5 flex h-20 w-20 items-center justify-center rounded-2xl shadow-sm transition-all duration-300 ${
               isDragOver
-                ? 'bg-[#B4533C] text-white scale-110 shadow-md'
-                : 'bg-[#FAF8F5] text-[#B4533C] group-hover:bg-[#B4533C] group-hover:text-white group-hover:shadow-md'
+                ? 'bg-[#0284C7] text-white scale-110 shadow-md'
+                : 'bg-[#FAF8F5] text-[#0284C7] group-hover:bg-[#0284C7] group-hover:text-white group-hover:shadow-md'
             }`}
           >
             <UploadCloud className="h-10 w-10 transition-transform group-hover:-translate-y-1" />
@@ -145,7 +145,7 @@ export const InteractiveUploadZone: React.FC<InteractiveUploadZoneProps> = ({
               }}
               className="inline-flex items-center gap-2 rounded-xl bg-[#1C1917] px-5 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-[#332E29] transition-all"
             >
-              <FileUp className="h-4 w-4 text-[#C5A059]" />
+              <FileUp className="h-4 w-4 text-[#38BDF8]" />
               <span>Browse Files</span>
             </button>
 
@@ -155,24 +155,24 @@ export const InteractiveUploadZone: React.FC<InteractiveUploadZoneProps> = ({
                 e.stopPropagation();
                 triggerBrowse();
               }}
-              className="inline-flex items-center gap-2 rounded-xl border border-[#E7E0D6] bg-white px-5 py-2.5 text-xs font-semibold text-[#1C1917] shadow-xs hover:bg-[#FAF8F5] transition-all"
+              className="inline-flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-5 py-2.5 text-xs font-semibold text-[#1C1917] shadow-xs hover:bg-[#FAF8F5] transition-all"
             >
-              <Camera className="h-4 w-4 text-[#B4533C]" />
+              <Camera className="h-4 w-4 text-[#0284C7]" />
               <span>Use Camera</span>
             </button>
           </div>
 
           <div className="mt-8 flex items-center gap-2 text-[11px] text-[#A8A29E]">
-            <Sparkles className="h-3 w-3 text-[#C5A059]" />
+            <Sparkles className="h-3 w-3 text-[#38BDF8]" />
             <span>AI Automated Background Extraction & Taxonomy Inference</span>
           </div>
         </div>
       ) : (
         /* Preview with 21st.dev Inspired Status & Progress */
-        <div className="relative rounded-3xl border border-[#E7E0D6] bg-white p-6 shadow-xl overflow-hidden">
+        <div className="relative rounded-3xl border border-[#E2E8F0] bg-white p-6 shadow-xl overflow-hidden">
           <div className="flex flex-col sm:flex-row items-center gap-6">
             {/* Image Preview Box */}
-            <div className="relative h-44 w-44 sm:h-52 sm:w-52 shrink-0 rounded-2xl overflow-hidden border border-[#E7E0D6] bg-[#FAF8F5] shadow-inner group">
+            <div className="relative h-44 w-44 sm:h-52 sm:w-52 shrink-0 rounded-2xl overflow-hidden border border-[#E2E8F0] bg-[#FAF8F5] shadow-inner group">
               <img
                 src={previewUrl}
                 alt="Uploaded garment preview"
@@ -180,8 +180,8 @@ export const InteractiveUploadZone: React.FC<InteractiveUploadZoneProps> = ({
               />
               {/* Scanline Animation if Analyzing */}
               {isAnalyzing && (
-                <div className="absolute inset-0 bg-gradient-to-b from-[#B4533C]/20 via-transparent to-[#B4533C]/20 animate-pulse pointer-events-none">
-                  <div className="h-1 w-full bg-[#B4533C] shadow-[0_0_12px_#B4533C] animate-scanline" />
+                <div className="absolute inset-0 bg-gradient-to-b from-[#0284C7]/20 via-transparent to-[#0284C7]/20 animate-pulse pointer-events-none">
+                  <div className="h-1 w-full bg-[#0284C7] shadow-[0_0_12px_#0284C7] animate-scanline" />
                 </div>
               )}
             </div>
@@ -190,7 +190,7 @@ export const InteractiveUploadZone: React.FC<InteractiveUploadZoneProps> = ({
             <div className="flex-1 w-full space-y-4">
               <div className="flex items-start justify-between">
                 <div>
-                  <span className="rounded-full bg-[#B4533C]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#B4533C] uppercase tracking-wider">
+                  <span className="rounded-full bg-[#0284C7]/10 px-2.5 py-0.5 text-[10px] font-bold text-[#0284C7] uppercase tracking-wider">
                     {isAnalyzing ? 'Analyzing Neural Attributes' : 'Image Ready'}
                   </span>
                   <h4 className="font-serif text-lg font-bold text-[#1C1917] mt-1 truncate max-w-xs sm:max-w-md">
@@ -219,9 +219,9 @@ export const InteractiveUploadZone: React.FC<InteractiveUploadZoneProps> = ({
                   <span>{isAnalyzing ? 'Extracting Silhouette & Colorway...' : 'Vision Analysis Complete'}</span>
                   <span>{isAnalyzing ? `${Math.round(analyzingProgress)}%` : '100%'}</span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-[#FAF8F5] overflow-hidden border border-[#E7E0D6]">
+                <div className="h-2 w-full rounded-full bg-[#FAF8F5] overflow-hidden border border-[#E2E8F0]">
                   <div
-                    className="h-full bg-gradient-to-r from-[#B4533C] to-[#C5A059] transition-all duration-300"
+                    className="h-full bg-gradient-to-r from-[#0284C7] to-[#38BDF8] transition-all duration-300"
                     style={{ width: `${isAnalyzing ? analyzingProgress : 100}%` }}
                   />
                 </div>
@@ -229,9 +229,9 @@ export const InteractiveUploadZone: React.FC<InteractiveUploadZoneProps> = ({
 
               <div className="flex items-center gap-2 pt-1 text-xs text-[#78716C]">
                 {isAnalyzing ? (
-                  <Sparkles className="h-4 w-4 animate-spin text-[#C5A059]" />
+                  <Sparkles className="h-4 w-4 animate-spin text-[#38BDF8]" />
                 ) : (
-                  <CheckCircle2 className="h-4 w-4 text-[#5F6F52]" />
+                  <CheckCircle2 className="h-4 w-4 text-[#E87A90]" />
                 )}
                 <span>
                   {isAnalyzing

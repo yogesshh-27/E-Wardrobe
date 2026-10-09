@@ -103,7 +103,7 @@ export default function WardrobePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E7E0D6] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E2E8F0] pb-6">
         <div>
           <h1 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1917]">
             My Wardrobe
@@ -116,15 +116,15 @@ export default function WardrobePage() {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsNewFolderOpen(true)}
-            className="flex items-center gap-2 rounded-xl border border-[#E7E0D6] bg-white px-3.5 py-2.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors shadow-2xs"
+            className="flex items-center gap-2 rounded-xl border border-[#E2E8F0] bg-white px-3.5 py-2.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors shadow-2xs"
           >
-            <FolderPlus className="h-4 w-4 text-[#C5A059]" />
+            <FolderPlus className="h-4 w-4 text-[#38BDF8]" />
             <span>New Folder</span>
           </button>
 
           <Link
             href="/wardrobe/upload"
-            className="flex items-center gap-2 rounded-xl bg-[#B4533C] px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-[#9E4530] transition-colors"
+            className="flex items-center gap-2 rounded-xl bg-[#0284C7] px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-[#0369A1] transition-colors"
           >
             <Plus className="h-4 w-4" />
             <span>Upload Item</span>
@@ -135,7 +135,7 @@ export default function WardrobePage() {
       {/* New Folder Modal */}
       {isNewFolderOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-2xs animate-in fade-in">
-          <div className="w-full max-w-sm rounded-2xl bg-white border border-[#E7E0D6] p-6 shadow-xl space-y-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white border border-[#E2E8F0] p-6 shadow-xl space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="font-serif font-bold text-lg text-[#1C1917]">Create Custom Folder</h3>
               <button
@@ -152,7 +152,7 @@ export default function WardrobePage() {
                 value={newFolderName}
                 onChange={(e) => setNewFolderName(e.target.value)}
                 autoFocus
-                className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
               />
               <div className="flex justify-end gap-2">
                 <button
@@ -164,7 +164,7 @@ export default function WardrobePage() {
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-1.5 rounded-lg bg-[#B4533C] text-xs font-semibold text-white"
+                  className="px-4 py-1.5 rounded-lg bg-[#0284C7] text-xs font-semibold text-white"
                 >
                   Create Folder
                 </button>
@@ -190,7 +190,7 @@ export default function WardrobePage() {
             className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold transition-all shrink-0 ${
               filters.activeFolderId === 'all'
                 ? 'bg-[#1C1917] text-white shadow-xs'
-                : 'bg-white border border-[#E7E0D6] text-[#57534E] hover:border-[#D5CCC0]'
+                : 'bg-white border border-[#E2E8F0] text-[#57534E] hover:border-[#CBD5E1]'
             }`}
           >
             <FolderIcon className="h-3.5 w-3.5" />
@@ -207,8 +207,8 @@ export default function WardrobePage() {
                 key={folder.id}
                 className={`group flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold transition-all shrink-0 ${
                   isSelected
-                    ? 'bg-[#B4533C] text-white shadow-xs'
-                    : 'bg-white border border-[#E7E0D6] text-[#57534E] hover:border-[#D5CCC0]'
+                    ? 'bg-[#0284C7] text-white shadow-xs'
+                    : 'bg-white border border-[#E2E8F0] text-[#57534E] hover:border-[#CBD5E1]'
                 }`}
               >
                 {editingFolderId === folder.id ? (
@@ -230,7 +230,7 @@ export default function WardrobePage() {
                   >
                     <FolderIcon
                       className={`h-3.5 w-3.5 ${
-                        isSelected ? 'text-white' : 'text-[#C5A059]'
+                        isSelected ? 'text-white' : 'text-[#38BDF8]'
                       }`}
                     />
                     <span>{folder.name}</span>
@@ -277,7 +277,7 @@ export default function WardrobePage() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="rounded-2xl bg-white border border-[#E7E0D6] p-4 shadow-xs space-y-3">
+      <div className="rounded-2xl bg-white border border-[#E2E8F0] p-4 shadow-xs space-y-3">
         <div className="flex flex-col sm:flex-row items-center gap-3">
           {/* Search Input */}
           <div className="relative flex-1 w-full">
@@ -287,7 +287,7 @@ export default function WardrobePage() {
               placeholder="Search by color, fabric, style, occasion..."
               value={filters.searchQuery}
               onChange={(e) => setFilters({ searchQuery: e.target.value })}
-              className="w-full rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] pl-10 pr-4 py-2.5 text-xs text-[#1C1917] placeholder-[#78716C] focus:border-[#B4533C] focus:bg-white focus:outline-hidden"
+              className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] pl-10 pr-4 py-2.5 text-xs text-[#1C1917] placeholder-[#78716C] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
             />
             {filters.searchQuery && (
               <button
@@ -305,7 +305,7 @@ export default function WardrobePage() {
             <select
               value={filters.color || ''}
               onChange={(e) => setFilters({ color: e.target.value || undefined })}
-              className="rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917] focus:outline-hidden cursor-pointer"
+              className="rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917] focus:outline-hidden cursor-pointer"
             >
               <option value="">All Colors</option>
               {allColors.map((c) => (
@@ -319,7 +319,7 @@ export default function WardrobePage() {
             <select
               value={filters.formality || ''}
               onChange={(e) => setFilters({ formality: e.target.value || undefined })}
-              className="rounded-xl border border-[#E7E0D6] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917] focus:outline-hidden cursor-pointer"
+              className="rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3 py-2 text-xs text-[#1C1917] focus:outline-hidden cursor-pointer"
             >
               <option value="">All Formality</option>
               {allFormalities.map((f) => (
@@ -334,20 +334,20 @@ export default function WardrobePage() {
               onClick={() => setFilters({ onlyFavorites: !filters.onlyFavorites })}
               className={`flex items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold border transition-all ${
                 filters.onlyFavorites
-                  ? 'border-[#B4533C] bg-[#B4533C]/10 text-[#B4533C]'
-                  : 'border-[#E7E0D6] bg-[#FAF8F5] text-[#57534E] hover:bg-white'
+                  ? 'border-[#0284C7] bg-[#0284C7]/10 text-[#0284C7]'
+                  : 'border-[#E2E8F0] bg-[#FAF8F5] text-[#57534E] hover:bg-white'
               }`}
             >
               <Heart
                 className={`h-3.5 w-3.5 ${
-                  filters.onlyFavorites ? 'fill-[#B4533C]' : ''
+                  filters.onlyFavorites ? 'fill-[#0284C7]' : ''
                 }`}
               />
               <span>Favorites</span>
             </button>
 
             {/* View Mode Toggle */}
-            <div className="flex border border-[#E7E0D6] rounded-xl bg-[#FAF8F5] p-1">
+            <div className="flex border border-[#E2E8F0] rounded-xl bg-[#FAF8F5] p-1">
               <button
                 onClick={() => setFilters({ viewMode: 'grid' })}
                 className={`p-1 rounded-lg transition-colors ${
@@ -380,13 +380,13 @@ export default function WardrobePage() {
           filters.formality ||
           filters.onlyFavorites ||
           filters.activeFolderId !== 'all') && (
-          <div className="flex items-center justify-between pt-2 border-t border-[#E7E0D6] text-xs">
+          <div className="flex items-center justify-between pt-2 border-t border-[#E2E8F0] text-xs">
             <span className="text-[#78716C]">
               Showing {filteredItems.length} of {items.length} items
             </span>
             <button
               onClick={resetFilters}
-              className="text-[#B4533C] hover:underline font-semibold"
+              className="text-[#0284C7] hover:underline font-semibold"
             >
               Reset all filters
             </button>
@@ -396,8 +396,8 @@ export default function WardrobePage() {
 
       {/* Wardrobe Items Display */}
       {filteredItems.length === 0 ? (
-        <div className="rounded-3xl bg-white border border-[#E7E0D6] p-12 text-center space-y-4 card-shadow">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FAF8F5] text-[#B4533C]">
+        <div className="rounded-3xl bg-white border border-[#E2E8F0] p-12 text-center space-y-4 card-shadow">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#FAF8F5] text-[#0284C7]">
             <Shirt className="h-8 w-8" />
           </div>
           <h3 className="font-serif text-2xl font-bold text-[#1C1917]">
@@ -409,7 +409,7 @@ export default function WardrobePage() {
           <div className="pt-2">
             <Link
               href="/wardrobe/upload"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#B4533C] px-6 py-3 text-xs font-semibold text-white shadow-sm hover:bg-[#9E4530] transition-colors"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#0284C7] px-6 py-3 text-xs font-semibold text-white shadow-sm hover:bg-[#0369A1] transition-colors"
             >
               <Plus className="h-4 w-4" />
               <span>Upload My First Item</span>
@@ -423,7 +423,7 @@ export default function WardrobePage() {
             <div
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className="group rounded-3xl border border-[#E7E0D6] bg-white p-3 card-shadow card-shadow-hover cursor-pointer flex flex-col justify-between"
+              className="group rounded-3xl border border-[#E2E8F0] bg-white p-3 card-shadow card-shadow-hover cursor-pointer flex flex-col justify-between"
             >
               <div>
                 <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#FAF8F5] mb-3 group/img">
@@ -436,7 +436,7 @@ export default function WardrobePage() {
                   {/* 21st.dev Hover Reveal Spotlight Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center p-3 pointer-events-none">
                     <span className="flex items-center gap-1.5 rounded-full bg-white/95 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#1C1917] shadow-md transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
-                      <Eye className="h-3 w-3 text-[#B4533C]" />
+                      <Eye className="h-3 w-3 text-[#0284C7]" />
                       <span>Inspect Details</span>
                     </span>
                   </div>
@@ -446,11 +446,11 @@ export default function WardrobePage() {
                       e.stopPropagation();
                       toggleFavorite(item.id);
                     }}
-                    className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-xs text-[#78716C] hover:text-[#B4533C] transition-colors z-10"
+                    className="absolute top-2.5 right-2.5 p-1.5 rounded-full bg-white/80 backdrop-blur-xs text-[#78716C] hover:text-[#0284C7] transition-colors z-10"
                   >
                     <Heart
                       className={`h-3.5 w-3.5 ${
-                        item.favorite ? 'fill-[#B4533C] text-[#B4533C]' : ''
+                        item.favorite ? 'fill-[#0284C7] text-[#0284C7]' : ''
                       }`}
                     />
                   </button>
@@ -460,14 +460,14 @@ export default function WardrobePage() {
                   </span>
                 </div>
 
-                <h4 className="text-xs font-bold text-[#1C1917] truncate leading-tight group-hover:text-[#B4533C] transition-colors">{item.name}</h4>
+                <h4 className="text-xs font-bold text-[#1C1917] truncate leading-tight group-hover:text-[#0284C7] transition-colors">{item.name}</h4>
                 <p className="text-[9px] font-bold tracking-wider text-[#78716C] mt-1 uppercase truncate">
                   {item.color.toUpperCase()} · {item.formality.toUpperCase()} · {(item.fit || item.style).split(' ')[0].toUpperCase()}
                 </p>
               </div>
 
-              <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#F4EFEA]">
-                <span className="text-[10px] text-[#5F6F52] font-semibold">
+              <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#F0F7FD]">
+                <span className="text-[10px] text-[#E87A90] font-semibold">
                   {item.style}
                 </span>
                 <span className="text-[10px] text-[#78716C]">
@@ -484,13 +484,13 @@ export default function WardrobePage() {
             <div
               key={item.id}
               onClick={() => setSelectedItem(item)}
-              className="group flex items-center justify-between gap-4 p-3.5 rounded-2xl border border-[#E7E0D6] bg-white hover:border-[#B4533C]/40 hover:shadow-xs cursor-pointer transition-all"
+              className="group flex items-center justify-between gap-4 p-3.5 rounded-2xl border border-[#E2E8F0] bg-white hover:border-[#0284C7]/40 hover:shadow-xs cursor-pointer transition-all"
             >
               <div className="flex items-center gap-3.5 min-w-0">
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="h-14 w-14 rounded-xl object-cover border border-[#E7E0D6] shrink-0"
+                  className="h-14 w-14 rounded-xl object-cover border border-[#E2E8F0] shrink-0"
                 />
                 <div className="min-w-0">
                   <h4 className="text-xs font-bold text-[#1C1917] truncate">{item.name}</h4>
@@ -501,7 +501,7 @@ export default function WardrobePage() {
                     {item.occasion.slice(0, 3).map((occ) => (
                       <span
                         key={occ}
-                        className="rounded-sm bg-[#FAF8F5] border border-[#E7E0D6] px-1.5 py-0.2 text-[9px] text-[#57534E]"
+                        className="rounded-sm bg-[#FAF8F5] border border-[#E2E8F0] px-1.5 py-0.2 text-[9px] text-[#57534E]"
                       >
                         {occ}
                       </span>
@@ -516,11 +516,11 @@ export default function WardrobePage() {
                     e.stopPropagation();
                     toggleFavorite(item.id);
                   }}
-                  className="p-2 text-[#78716C] hover:text-[#B4533C]"
+                  className="p-2 text-[#78716C] hover:text-[#0284C7]"
                 >
                   <Heart
                     className={`h-4 w-4 ${
-                      item.favorite ? 'fill-[#B4533C] text-[#B4533C]' : ''
+                      item.favorite ? 'fill-[#0284C7] text-[#0284C7]' : ''
                     }`}
                   />
                 </button>

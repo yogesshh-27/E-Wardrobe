@@ -36,7 +36,7 @@ export const StyleDnaRadialChart: React.FC<StyleDnaRadialChartProps> = ({
   const center = size / 2;
 
   return (
-    <div className={`rounded-3xl border border-[#E7E0D6] bg-white p-6 sm:p-8 shadow-xl ${className}`}>
+    <div className={`rounded-3xl border border-[#E2E8F0] bg-white p-6 sm:p-8 shadow-xl ${className}`}>
       <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
         {/* Circular Concentric Rings SVG */}
         <div className="relative shrink-0 flex items-center justify-center">
@@ -62,7 +62,7 @@ export const StyleDnaRadialChart: React.FC<StyleDnaRadialChartProps> = ({
                     cy={center}
                     r={radius}
                     fill="transparent"
-                    stroke="#F4EFEA"
+                    stroke="#F0F7FD"
                     strokeWidth={strokeWidth}
                     strokeLinecap="round"
                   />
@@ -97,7 +97,7 @@ export const StyleDnaRadialChart: React.FC<StyleDnaRadialChartProps> = ({
             <span className="font-serif text-lg sm:text-xl font-bold text-[#1C1917] mt-0.5">
               {hoveredIdx !== null ? metrics[hoveredIdx].name : dominantArchetype}
             </span>
-            <span className="rounded-full bg-[#B4533C]/10 px-2.5 py-0.5 text-[11px] font-bold text-[#B4533C] mt-1">
+            <span className="rounded-full bg-[#0284C7]/10 px-2.5 py-0.5 text-[11px] font-bold text-[#0284C7] mt-1">
               {hoveredIdx !== null ? `${metrics[hoveredIdx].percentage}% Weight` : `${metrics[0]?.percentage || 32}% Core`}
             </span>
           </div>
@@ -105,12 +105,12 @@ export const StyleDnaRadialChart: React.FC<StyleDnaRadialChartProps> = ({
 
         {/* Detailed Breakdown Legend Cards (21st.dev Style Segmented Bars) */}
         <div className="flex-1 w-full space-y-3.5">
-          <div className="flex items-center justify-between pb-1 border-b border-[#F4EFEA]">
+          <div className="flex items-center justify-between pb-1 border-b border-[#F0F7FD]">
             <span className="text-xs font-bold uppercase tracking-wider text-[#78716C]">
               Archetype Breakdown
             </span>
             <span className="text-xs text-[#A8A29E] font-medium flex items-center gap-1">
-              <Sparkles className="h-3 w-3 text-[#C5A059]" />
+              <Sparkles className="h-3 w-3 text-[#38BDF8]" />
               Multi-factor synthesis
             </span>
           </div>
@@ -124,7 +124,7 @@ export const StyleDnaRadialChart: React.FC<StyleDnaRadialChartProps> = ({
                 onMouseLeave={() => setHoveredIdx(null)}
                 className={`p-3 rounded-2xl border transition-all duration-200 cursor-pointer ${
                   isHovered
-                    ? 'border-[#B4533C] bg-[#FAF8F5] shadow-xs translate-x-1'
+                    ? 'border-[#0284C7] bg-[#FAF8F5] shadow-xs translate-x-1'
                     : 'border-transparent bg-[#FAF8F5]/60 hover:bg-[#FAF8F5]'
                 }`}
               >
@@ -147,7 +147,7 @@ export const StyleDnaRadialChart: React.FC<StyleDnaRadialChartProps> = ({
                 </div>
 
                 {/* Segmented Bar */}
-                <div className="h-2 w-full rounded-full bg-[#E7E0D6]/60 overflow-hidden">
+                <div className="h-2 w-full rounded-full bg-[#E2E8F0]/60 overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500 ease-out"
                     style={{

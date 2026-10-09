@@ -147,9 +147,9 @@ export default function RecommendationsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
       {/* Editorial Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#E7E0D6] pb-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#E2E8F0] pb-6">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#B4533C]/10 px-3 py-1 text-xs font-bold text-[#B4533C] uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-2 rounded-full bg-[#0284C7]/10 px-3 py-1 text-xs font-bold text-[#0284C7] uppercase tracking-wider mb-2">
             <Sparkles className="h-3.5 w-3.5" />
             <span>AI Style Intelligence</span>
           </div>
@@ -164,9 +164,9 @@ export default function RecommendationsPage() {
         {/* Style DNA Chip */}
         <Link
           href="/style-profile"
-          className="flex items-center gap-2 rounded-2xl bg-white border border-[#E7E0D6] px-4 py-2 text-xs font-bold text-[#1C1917] hover:border-[#B4533C] shadow-2xs transition-colors"
+          className="flex items-center gap-2 rounded-2xl bg-white border border-[#E2E8F0] px-4 py-2 text-xs font-bold text-[#1C1917] hover:border-[#0284C7] shadow-2xs transition-colors"
         >
-          <span className="text-[#B4533C]">Style DNA:</span>
+          <span className="text-[#0284C7]">Style DNA:</span>
           <span>{user?.stylePreferences?.slice(0, 2).join(' + ') || 'Classic + Streetwear'}</span>
           <ArrowRight className="h-3.5 w-3.5 text-[#78716C]" />
         </Link>
@@ -176,7 +176,7 @@ export default function RecommendationsPage() {
       {feedbackNotice && (
         <div className="rounded-2xl bg-[#1C1917] text-white px-5 py-3 text-xs flex items-center justify-between shadow-xl animate-in fade-in slide-in-from-top-2">
           <div className="flex items-center gap-2">
-            <Check className="h-4 w-4 text-[#5F6F52]" />
+            <Check className="h-4 w-4 text-[#E87A90]" />
             <span>{feedbackNotice}</span>
           </div>
           <span className="text-[10px] text-white/60">AI Feedback Loop Active</span>
@@ -191,8 +191,8 @@ export default function RecommendationsPage() {
             onClick={() => setSelectedCategory(cat)}
             className={`rounded-xl px-4 py-2 text-xs font-semibold transition-all shrink-0 ${
               selectedCategory === cat
-                ? 'bg-[#B4533C] text-white shadow-xs'
-                : 'bg-white border border-[#E7E0D6] text-[#57534E] hover:border-[#D5CCC0]'
+                ? 'bg-[#0284C7] text-white shadow-xs'
+                : 'bg-white border border-[#E2E8F0] text-[#57534E] hover:border-[#CBD5E1]'
             }`}
           >
             {cat}
@@ -202,8 +202,8 @@ export default function RecommendationsPage() {
 
       {/* Product Cards Grid */}
       {filteredRecs.length === 0 ? (
-        <div className="rounded-3xl bg-white border border-[#E7E0D6] p-12 text-center space-y-3 card-shadow">
-          <ShoppingBag className="h-10 w-10 text-[#B4533C] mx-auto" />
+        <div className="rounded-3xl bg-white border border-[#E2E8F0] p-12 text-center space-y-3 card-shadow">
+          <ShoppingBag className="h-10 w-10 text-[#0284C7] mx-auto" />
           <h3 className="font-serif text-xl font-bold text-[#1C1917]">
             All recommendations reviewed in this category.
           </h3>
@@ -212,7 +212,7 @@ export default function RecommendationsPage() {
           </p>
           <button
             onClick={() => setRecommendations(INITIAL_RECOMMENDATIONS)}
-            className="text-xs font-bold text-[#B4533C] hover:underline pt-2 block mx-auto"
+            className="text-xs font-bold text-[#0284C7] hover:underline pt-2 block mx-auto"
           >
             Reset Catalog
           </button>

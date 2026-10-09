@@ -91,7 +91,7 @@ export const ImageComparisonSlider: React.FC<ImageComparisonSliderProps> = ({
       onTouchStart={() => setIsDragging(true)}
       onTouchEnd={() => setIsDragging(false)}
       onMouseDown={() => setIsDragging(true)}
-      className={`relative select-none overflow-hidden rounded-3xl border border-[#E7E0D6] bg-[#FAF8F5] shadow-2xl focus:outline-hidden focus:ring-2 focus:ring-[#B4533C]/40 ${aspectRatio} ${className} cursor-ew-resize`}
+      className={`relative select-none overflow-hidden rounded-3xl border border-[#E2E8F0] bg-[#FAF8F5] shadow-2xl focus:outline-hidden focus:ring-2 focus:ring-[#0284C7]/40 ${aspectRatio} ${className} cursor-ew-resize`}
     >
       {/* Background (After / AI Styled Composite) */}
       <img
@@ -125,8 +125,8 @@ export const ImageComparisonSlider: React.FC<ImageComparisonSliderProps> = ({
         </span>
       </div>
       <div className="pointer-events-none absolute top-4 right-4 z-10">
-        <span className="flex items-center gap-1.5 rounded-full bg-[#B4533C]/90 backdrop-blur-md px-3 py-1 text-[11px] font-semibold text-white border border-[#B4533C]/40 shadow-xs">
-          <Sparkles className="h-3 w-3 text-[#C5A059]" />
+        <span className="flex items-center gap-1.5 rounded-full bg-[#0284C7]/90 backdrop-blur-md px-3 py-1 text-[11px] font-semibold text-white border border-[#0284C7]/40 shadow-xs">
+          <Sparkles className="h-3 w-3 text-[#38BDF8]" />
           {afterLabel}
         </span>
       </div>
@@ -137,7 +137,7 @@ export const ImageComparisonSlider: React.FC<ImageComparisonSliderProps> = ({
         style={{ left: `${sliderPosition}%` }}
       >
         {/* Luxury Gold/Obsidian Center Knob */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#1C1917] shadow-xl border-2 border-[#C5A059] transition-transform group-hover:scale-110 active:scale-95">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#1C1917] shadow-xl border-2 border-[#38BDF8] transition-transform group-hover:scale-110 active:scale-95">
           <MoveHorizontal className="h-4 w-4 text-[#1C1917]" />
         </div>
       </div>

@@ -17,7 +17,7 @@ export const MobileBottomNav: React.FC = () => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-30 flex h-16 items-center justify-around border-t border-[#E7E0D6] bg-white/95 px-2 backdrop-blur-lg lg:hidden">
+    <nav className="fixed bottom-0 left-0 right-0 z-30 flex h-16 items-center justify-around border-t border-[#E2E8F0] bg-white/95 px-2 backdrop-blur-lg lg:hidden">
       {navItems.map((item) => {
         const isActive = pathname === item.href;
 
@@ -29,10 +29,10 @@ export const MobileBottomNav: React.FC = () => {
               className="relative -top-4 flex flex-col items-center group"
               aria-label="Upload clothes"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#B4533C] text-white shadow-lg shadow-[#B4533C]/30 transition-transform active:scale-95 group-hover:scale-105">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-[#E87A90] to-[#0284C7] text-white shadow-lg shadow-sky-200 transition-transform active:scale-95 group-hover:scale-105">
                 <Plus className="h-6 w-6 stroke-[2.5]" />
               </div>
-              <span className="text-[10px] font-semibold text-[#B4533C] mt-1">
+              <span className="text-[10px] font-semibold text-[#0284C7] mt-1">
                 Upload
               </span>
             </Link>
@@ -45,7 +45,7 @@ export const MobileBottomNav: React.FC = () => {
             key={item.href}
             href={item.href}
             className={`flex min-h-[44px] min-w-[44px] flex-col items-center justify-center rounded-xl p-1 transition-colors ${
-              isActive ? 'text-[#B4533C]' : 'text-[#78716C] hover:text-[#1C1917]'
+              isActive ? 'text-[#0284C7] font-bold' : 'text-[#64748B] hover:text-[#1C1917]'
             }`}
           >
             <Icon className="h-5 w-5" />

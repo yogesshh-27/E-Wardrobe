@@ -4,17 +4,22 @@
   :root {
     --bg-primary: #FAF8F5;
     --bg-surface: #FFFFFF;
-    --bg-subtle: #F4EFEA;
-    --bg-accent-subtle: #F8F1ED;
-    --border-color: #E7E0D6;
-    --border-strong: #D5CCC0;
+    --bg-subtle: #F0F7FD;
+    --bg-accent-subtle: #FDF2F4;
+    --border-color: #E2E8F0;
+    --border-strong: #CBD5E1;
     --text-primary: #1C1917;
-    --text-secondary: #57534E;
-    --text-muted: #78716C;
-    --accent-terracotta: #B4533C;
-    --accent-terracotta-hover: #9E4530;
-    --accent-gold: #C5A059;
-    --accent-sage: #5F6F52;
+    --text-secondary: #475569;
+    --text-muted: #64748B;
+    --accent-sky: #38BDF8;
+    --accent-sky-deep: #0284C7;
+    --accent-blush: #E87A90;
+    --accent-blush-soft: #FCE7EB;
+    /* Legacy variable compatibility redirected to theme */
+    --accent-terracotta: #0284C7;
+    --accent-terracotta-hover: #0369A1;
+    --accent-gold: #38BDF8;
+    --accent-sage: #E87A90;
   }
 }
 
@@ -167,4 +172,34 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Reference Showcase Aesthetics: Contemporary Smart Casual Blush & Sky Blue */
+.font-bubble {
+  font-family: 'Sniglet', 'Comfortaa', 'Nunito', 'Arial Rounded MT Bold', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.arch-card-top {
+  border-radius: 52px 52px 32px 32px;
+}
+
+.arch-pill {
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bg-blush-sky-dual {
+  background: linear-gradient(135deg, #F8CBD5 0%, #E9D5F5 35%, #D6EAFA 70%, #C4E4FA 100%);
+}
+
+.bg-sky-dominant {
+  background: linear-gradient(135deg, #CFE8FC 0%, #D8EEFD 50%, #F5D9E5 100%);
+}
+
+.bg-blush-dominant {
+  background: linear-gradient(135deg, #FAD1DA 0%, #F8CAD6 50%, #DCEAFC 100%);
+}
+
 

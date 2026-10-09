@@ -37,7 +37,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${plusJakarta.variable}`}>
-      <body className="min-h-screen bg-[#FAF8F5] text-[#1C1917] antialiased selection:bg-[#B4533C]/15 selection:text-[#B4533C]">
+      <body className="min-h-screen bg-[#FAF8F5] text-[#1C1917] antialiased selection:bg-[#38BDF8]/20 selection:text-[#0284C7]">
         {children}
       </body>
     </html>

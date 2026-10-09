@@ -167,8 +167,8 @@ export default function UploadPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 space-y-8">
       {/* Editorial Header */}
-      <div className="border-b border-[#E7E0D6] pb-4">
-        <div className="inline-flex items-center gap-2 rounded-full bg-[#B4533C]/10 px-3 py-1 text-xs font-bold text-[#B4533C] uppercase tracking-wider mb-2">
+      <div className="border-b border-[#E2E8F0] pb-4">
+        <div className="inline-flex items-center gap-2 rounded-full bg-[#0284C7]/10 px-3 py-1 text-xs font-bold text-[#0284C7] uppercase tracking-wider mb-2">
           <Sparkles className="h-3.5 w-3.5" />
           <span>AI Vision Digitizer • 21st.dev Upload</span>
         </div>
@@ -210,7 +210,7 @@ export default function UploadPage() {
                   setImagePreview('https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=600&auto=format&fit=crop&q=80');
                   setStage('confirm');
                 }}
-                className="text-xs font-bold text-[#B4533C] hover:underline"
+                className="text-xs font-bold text-[#0284C7] hover:underline"
               >
                 Load Sample White Linen Shirt →
               </button>
@@ -221,12 +221,12 @@ export default function UploadPage() {
 
       {/* 3. STAGE: CONFIRM & CUSTOMIZE */}
       {stage === 'confirm' && imagePreview && (
-        <div className="rounded-3xl bg-white border border-[#E7E0D6] p-6 sm:p-10 shadow-xl card-shadow space-y-8 animate-in fade-in">
+        <div className="rounded-3xl bg-white border border-[#E2E8F0] p-6 sm:p-10 shadow-xl card-shadow space-y-8 animate-in fade-in">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             {/* Left: Image Preview with Crop & Remove Background */}
             <div className="md:col-span-5 space-y-4">
               <div
-                className={`relative aspect-square w-full rounded-3xl overflow-hidden border border-[#E7E0D6] transition-all duration-300 ${
+                className={`relative aspect-square w-full rounded-3xl overflow-hidden border border-[#E2E8F0] transition-all duration-300 ${
                   isBackgroundRemoved ? 'bg-gradient-to-br from-neutral-100 to-neutral-200' : 'bg-[#FAF8F5]'
                 } ${isCropped ? 'p-6' : 'p-2'}`}
               >
@@ -243,7 +243,7 @@ export default function UploadPage() {
                   <span className="rounded-full bg-black/75 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-white uppercase tracking-wider">
                     {category}
                   </span>
-                  <span className="rounded-full bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#5F6F52] shadow-xs">
+                  <span className="rounded-full bg-white/90 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#E87A90] shadow-xs">
                     {aiConfidence}% Confidence
                   </span>
                 </div>
@@ -256,8 +256,8 @@ export default function UploadPage() {
                   onClick={() => setIsCropped(!isCropped)}
                   className={`flex-1 flex items-center justify-center gap-1.5 rounded-xl border py-2.5 text-xs font-semibold transition-all ${
                     isCropped
-                      ? 'border-[#B4533C] bg-[#B4533C]/10 text-[#B4533C]'
-                      : 'border-[#E7E0D6] bg-white text-[#57534E] hover:bg-[#FAF8F5]'
+                      ? 'border-[#0284C7] bg-[#0284C7]/10 text-[#0284C7]'
+                      : 'border-[#E2E8F0] bg-white text-[#57534E] hover:bg-[#FAF8F5]'
                   }`}
                 >
                   <Crop className="h-3.5 w-3.5" />
@@ -269,8 +269,8 @@ export default function UploadPage() {
                   onClick={() => setIsBackgroundRemoved(!isBackgroundRemoved)}
                   className={`flex-1 flex items-center justify-center gap-1.5 rounded-xl border py-2.5 text-xs font-semibold transition-all ${
                     isBackgroundRemoved
-                      ? 'border-[#5F6F52] bg-[#5F6F52] text-white shadow-xs'
-                      : 'border-[#E7E0D6] bg-white text-[#57534E] hover:bg-[#FAF8F5]'
+                      ? 'border-[#E87A90] bg-[#E87A90] text-white shadow-xs'
+                      : 'border-[#E2E8F0] bg-white text-[#57534E] hover:bg-[#FAF8F5]'
                   }`}
                 >
                   <Wand2 className="h-3.5 w-3.5" />
@@ -282,29 +282,29 @@ export default function UploadPage() {
             {/* Right: AI Detection Breakdown & Customization */}
             <div className="md:col-span-7 space-y-6">
               {/* Exact AI Detection Breakdown Box */}
-              <div className="rounded-2xl border-2 border-[#B4533C]/20 bg-[#FAF8F5] p-5 space-y-3">
+              <div className="rounded-2xl border-2 border-[#0284C7]/20 bg-[#FAF8F5] p-5 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-bold uppercase tracking-widest text-[#B4533C] flex items-center gap-1.5">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-[#0284C7] flex items-center gap-1.5">
                     <Sparkles className="h-3.5 w-3.5" />
                     <span>AI Detection Summary</span>
                   </span>
-                  <span className="text-[10px] font-bold text-[#5F6F52]">Verified</span>
+                  <span className="text-[10px] font-bold text-[#E87A90]">Verified</span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-xs">
-                  <div className="p-2.5 rounded-xl bg-white border border-[#E7E0D6]">
+                  <div className="p-2.5 rounded-xl bg-white border border-[#E2E8F0]">
                     <span className="text-[10px] font-bold text-[#78716C] uppercase block">CATEGORY</span>
                     <span className="font-bold text-[#1C1917] text-sm">{category}</span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-[#E7E0D6]">
+                  <div className="p-2.5 rounded-xl bg-white border border-[#E2E8F0]">
                     <span className="text-[10px] font-bold text-[#78716C] uppercase block">COLOUR</span>
                     <span className="font-bold text-[#1C1917] text-sm">{color}</span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-[#E7E0D6]">
+                  <div className="p-2.5 rounded-xl bg-white border border-[#E2E8F0]">
                     <span className="text-[10px] font-bold text-[#78716C] uppercase block">STYLE</span>
                     <span className="font-bold text-[#1C1917] text-sm">{style}</span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-white border border-[#E7E0D6]">
+                  <div className="p-2.5 rounded-xl bg-white border border-[#E2E8F0]">
                     <span className="text-[10px] font-bold text-[#78716C] uppercase block">FIT</span>
                     <span className="font-bold text-[#1C1917] text-sm">{fit}</span>
                   </div>
@@ -320,7 +320,7 @@ export default function UploadPage() {
                   type="text"
                   value={itemName}
                   onChange={(e) => setItemName(e.target.value)}
-                  className="w-full rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-4 py-3 text-xs font-bold text-[#1C1917] focus:border-[#B4533C] focus:bg-white"
+                  className="w-full rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] px-4 py-3 text-xs font-bold text-[#1C1917] focus:border-[#0284C7] focus:bg-white"
                 />
               </div>
 
@@ -333,7 +333,7 @@ export default function UploadPage() {
                   <select
                     value={selectedFolderId}
                     onChange={(e) => setSelectedFolderId(e.target.value)}
-                    className="w-full rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917]"
+                    className="w-full rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917]"
                   >
                     {folders.map((f) => (
                       <option key={f.id} value={f.id}>
@@ -350,7 +350,7 @@ export default function UploadPage() {
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as any)}
-                    className="w-full rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917]"
+                    className="w-full rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917]"
                   >
                     {CATEGORIES.map((cat) => (
                       <option key={cat} value={cat}>
@@ -370,12 +370,12 @@ export default function UploadPage() {
                   type="text"
                   value={customTags}
                   onChange={(e) => setCustomTags(e.target.value)}
-                  className="w-full rounded-2xl border border-[#E7E0D6] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917] focus:border-[#B4533C] focus:bg-white"
+                  className="w-full rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] px-4 py-3 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white"
                 />
               </div>
 
               {/* Actions */}
-              <div className="pt-4 border-t border-[#E7E0D6] flex items-center justify-between gap-3">
+              <div className="pt-4 border-t border-[#E2E8F0] flex items-center justify-between gap-3">
                 <button
                   type="button"
                   onClick={() => {
@@ -390,7 +390,7 @@ export default function UploadPage() {
                 <button
                   type="button"
                   onClick={handleSaveToWardrobe}
-                  className="flex items-center gap-2 rounded-2xl bg-[#B4533C] px-8 py-3.5 text-xs font-semibold text-white shadow-sm hover:bg-[#9E4530] transition-all"
+                  className="flex items-center gap-2 rounded-2xl bg-[#0284C7] px-8 py-3.5 text-xs font-semibold text-white shadow-sm hover:bg-[#0369A1] transition-all"
                 >
                   <Check className="h-4 w-4" />
                   <span>Confirm & Save to Wardrobe</span>
@@ -403,8 +403,8 @@ export default function UploadPage() {
 
       {/* 4. STAGE: SUCCESS */}
       {stage === 'success' && (
-        <div className="rounded-3xl bg-white border border-[#E7E0D6] p-12 text-center space-y-6 card-shadow">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-[#5F6F52]/10 text-[#5F6F52]">
+        <div className="rounded-3xl bg-white border border-[#E2E8F0] p-12 text-center space-y-6 card-shadow">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-[#E87A90]/10 text-[#E87A90]">
             <CheckCircle2 className="h-10 w-10" />
           </div>
 
@@ -423,14 +423,14 @@ export default function UploadPage() {
                 setImagePreview(null);
                 setStage('upload');
               }}
-              className="rounded-2xl border border-[#E7E0D6] bg-white px-6 py-3.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
+              className="rounded-2xl border border-[#E2E8F0] bg-white px-6 py-3.5 text-xs font-semibold text-[#1C1917] hover:bg-[#FAF8F5] transition-colors"
             >
               + Upload Another Item
             </button>
 
             <Link
               href="/wardrobe"
-              className="rounded-2xl bg-[#1C1917] px-8 py-3.5 text-xs font-semibold text-white shadow-xs hover:bg-[#B4533C] transition-colors"
+              className="rounded-2xl bg-[#1C1917] px-8 py-3.5 text-xs font-semibold text-white shadow-xs hover:bg-[#0284C7] transition-colors"
             >
               View in Wardrobe →
             </Link>
