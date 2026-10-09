@@ -278,7 +278,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onToggleSidebar }) => {
                       {user?.name || 'Alex Rivera'}
                     </p>
                     <p className="text-xs text-[#64748B] truncate">
-                      {user?.email || user?.phone || 'Style Enthusiast'}
+                      {user?.email || 'alex@wardrobe.ai'}
                     </p>
                   </div>
                   <div className="py-1">

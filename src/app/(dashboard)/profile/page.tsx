@@ -25,7 +25,6 @@ export default function ProfilePage() {
 
   const [name, setName] = useState(user?.name || 'Aarav Sharma');
   const [email, setEmail] = useState(user?.email || 'aarav.sharma@example.com');
-  const [phone, setPhone] = useState(user?.phone || '+91 98765 43210');
   const [gender, setGender] = useState<GenderPreference>(user?.genderPreference || 'Prefer not to say');
   const [height, setHeight] = useState(user?.height || '178 cm');
   const [hairLength, setHairLength] = useState(user?.hairLength || 'Medium');
@@ -62,7 +61,6 @@ export default function ProfilePage() {
     await updateProfile({
       name,
       email,
-      phone,
       genderPreference: gender,
       height,
       hairLength,
@@ -227,18 +225,6 @@ export default function ProfilePage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
-              />
-            </div>
-
-            <div>
-              <label className="text-[11px] font-semibold uppercase tracking-wider text-[#78716C] block mb-1">
-                Phone Number
-              </label>
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
                 className="w-full rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-2.5 text-xs text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden"
               />
             </div>

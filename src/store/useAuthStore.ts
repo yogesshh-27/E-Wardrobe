@@ -10,7 +10,6 @@ interface AuthState {
   isLoading: boolean;
   setUser: (user: UserProfile | null) => void;
   loginWithGoogle: () => Promise<UserProfile>;
-  verifyPhoneOtp: (phone: string, otp: string) => Promise<UserProfile>;
   loginWithEmail: (email: string) => Promise<UserProfile>;
   updateProfile: (profile: Partial<UserProfile>) => Promise<UserProfile>;
   completeOnboarding: (data: Partial<UserProfile>) => Promise<void>;
@@ -41,22 +40,6 @@ export const useAuthStore = create<AuthState>()(
             user,
             isAuthenticated: true,
             isOnboarded: user.stylePreferences?.length > 0,
-            isLoading: false,
-          });
-          return user;
-        } finally {
-          set({ isLoading: false });
-        }
-      },
-
-      verifyPhoneOtp: async (phone, otp) => {
-        set({ isLoading: true });
-        try {
-          const user = await authService.verifyPhoneOtp(phone, otp);
-          set({
-            user,
-            isAuthenticated: true,
-            isOnboarded: false, // New phone user proceeds to onboarding
             isLoading: false,
           });
           return user;

@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   Sparkles,
-  Phone,
   Mail,
   ArrowRight,
   ShieldCheck,
@@ -23,20 +22,15 @@ export default function LoginPage() {
   const {
     user,
     isAuthenticated,
-    isOnboarded,
     loginWithGoogle,
-    verifyPhoneOtp,
     loginWithEmail,
     setUser,
     isLoading,
   } = useAuthStore();
 
-  const [authMethod, setAuthMethod] = useState<'options' | 'phone' | 'otp' | 'email'>('options');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otpCode, setOtpCode] = useState(['', '', '', '', '', '']);
+  const [authMethod, setAuthMethod] = useState<'options' | 'email'>('options');
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [resendTimer, setResendTimer] = useState(30);
 
   // Auto redirect if already logged in
   useEffect(() => {
@@ -45,21 +39,11 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, user, router]);
 
-  // Resend OTP Countdown
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (authMethod === 'otp' && resendTimer > 0) {
-      interval = setInterval(() => setResendTimer((prev) => prev - 1), 1000);
-    }
-    return () => clearInterval(interval);
-  }, [authMethod, resendTimer]);
-
   const handleQuickDemoEnter = () => {
     setUser({
       id: 'demo-user-1',
       name: 'Alex Rivera',
       email: 'alex@wardrobe.ai',
-      phone: '+1 555-0199',
       stylePreferences: ['Smart Casual', 'Minimalist', 'Aesthetic'],
       genderPreference: 'Prefer not to say',
       fitPreferences: ['Relaxed', 'Tailored'],
@@ -75,49 +59,10 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     try {
       setErrorMessage('');
-      const loggedUser = await loginWithGoogle();
+      await loginWithGoogle();
       router.push('/');
     } catch {
       setErrorMessage('Google authentication failed. Please try again.');
-    }
-  };
-
-  const handleSendOtp = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!phoneNumber || phoneNumber.length < 10) {
-      setErrorMessage('Please enter a valid 10-digit mobile number.');
-      return;
-    }
-    setErrorMessage('');
-    setResendTimer(30);
-    setAuthMethod('otp');
-  };
-
-  const handleOtpChange = (index: number, val: string) => {
-    if (val.length > 1) val = val.slice(-1);
-    const updated = [...otpCode];
-    updated[index] = val;
-    setOtpCode(updated);
-
-    if (val && index < 5) {
-      const nextInput = document.getElementById(`otp-input-${index + 1}`);
-      nextInput?.focus();
-    }
-  };
-
-  const handleVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const fullOtp = otpCode.join('');
-    if (fullOtp.length !== 6) {
-      setErrorMessage('Please enter all 6 digits of the code.');
-      return;
-    }
-    try {
-      setErrorMessage('');
-      await verifyPhoneOtp(phoneNumber, fullOtp);
-      router.push('/');
-    } catch {
-      setErrorMessage('Invalid verification code. (Hint: enter 123456 for demo)');
     }
   };
 
@@ -285,118 +230,15 @@ export default function LoginPage() {
                   <span>{isLoading ? 'Connecting...' : 'Continue with Google'}</span>
                 </button>
 
-                {/* Mobile Phone Option */}
-                <button
-                  onClick={() => setAuthMethod('phone')}
-                  className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#1C1917] py-3.5 px-4 text-xs font-semibold text-white hover:bg-[#334155] active:scale-[0.99] transition-all shadow-sm"
-                >
-                  <Phone className="h-4 w-4 text-[#38BDF8]" />
-                  <span>Continue with Phone</span>
-                </button>
-
                 {/* Email Option */}
                 <button
                   onClick={() => setAuthMethod('email')}
-                  className="flex w-full items-center justify-center gap-2.5 rounded-2xl border border-transparent py-2.5 text-xs font-semibold text-[#64748B] hover:text-[#1C1917] hover:bg-[#F8FAFC] transition-colors"
+                  className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#1C1917] py-3.5 px-4 text-xs font-semibold text-white hover:bg-[#334155] active:scale-[0.99] transition-all shadow-sm"
                 >
-                  <Mail className="h-4 w-4" />
-                  <span>Email login</span>
+                  <Mail className="h-4 w-4 text-[#38BDF8]" />
+                  <span>Continue with Email</span>
                 </button>
               </div>
-            )}
-
-            {/* Phone Input View */}
-            {authMethod === 'phone' && (
-              <form onSubmit={handleSendOtp} className="space-y-4">
-                <div>
-                  <label className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B] block mb-2">
-                    Mobile Phone Number
-                  </label>
-                  <div className="flex items-center rounded-2xl border border-[#E2E8F0] bg-[#FAF8F5] px-3.5 py-3 focus-within:border-[#0284C7] focus-within:bg-white transition-all">
-                    <span className="text-xs font-bold text-[#64748B] mr-2">+91</span>
-                    <input
-                      type="tel"
-                      placeholder="98765 43210"
-                      value={phoneNumber}
-                      onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
-                      maxLength={10}
-                      autoFocus
-                      className="flex-1 bg-transparent text-sm text-[#1C1917] focus:outline-hidden"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#0284C7] hover:bg-[#0369A1] py-3.5 text-xs font-semibold text-white shadow-sm transition-all"
-                >
-                  <span>Send 6-Digit Code</span>
-                  <ArrowRight className="h-4 w-4" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setAuthMethod('options')}
-                  className="w-full text-center text-xs text-[#64748B] hover:text-[#1C1917] pt-1"
-                >
-                  ← Back to login options
-                </button>
-              </form>
-            )}
-
-            {/* 6-Digit OTP View */}
-            {authMethod === 'otp' && (
-              <form onSubmit={handleVerifyOtp} className="space-y-5">
-                <div className="text-center">
-                  <p className="text-xs text-[#475569]">
-                    Enter verification code sent to <span className="font-bold text-[#1C1917]">+91 {phoneNumber}</span>
-                  </p>
-                  <p className="text-[11px] text-[#0284C7] mt-1 font-medium">
-                    Demo bypass: enter any 6 digits (e.g. 123456)
-                  </p>
-                </div>
-
-                <div className="flex justify-between gap-2">
-                  {otpCode.map((digit, idx) => (
-                    <input
-                      key={idx}
-                      id={`otp-input-${idx}`}
-                      type="text"
-                      inputMode="numeric"
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleOtpChange(idx, e.target.value)}
-                      className="h-12 w-11 rounded-xl border border-[#E2E8F0] bg-[#FAF8F5] text-center text-lg font-bold text-[#1C1917] focus:border-[#0284C7] focus:bg-white focus:outline-hidden transition-all"
-                    />
-                  ))}
-                </div>
-
-                <button
-                  type="submit"
-                  className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#0284C7] hover:bg-[#0369A1] py-3.5 text-xs font-semibold text-white shadow-sm transition-all"
-                >
-                  <span>Verify and Continue</span>
-                  <CheckCircle2 className="h-4 w-4" />
-                </button>
-
-                <div className="flex items-center justify-between text-xs text-[#64748B] pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setAuthMethod('phone')}
-                    className="hover:text-[#1C1917]"
-                  >
-                    Change number
-                  </button>
-                  <button
-                    type="button"
-                    disabled={resendTimer > 0}
-                    onClick={() => setResendTimer(30)}
-                    className={resendTimer > 0 ? 'text-[#94A3B8]' : 'text-[#0284C7] hover:underline font-semibold'}
-                  >
-                    {resendTimer > 0 ? `Resend code in ${resendTimer}s` : 'Resend code'}
-                  </button>
-                </div>
-              </form>
             )}
 
             {/* Email Form View */}

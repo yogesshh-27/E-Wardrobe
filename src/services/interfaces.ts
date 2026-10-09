@@ -12,8 +12,6 @@ import {
 
 export interface IAuthService {
   loginWithGoogle(): Promise<UserProfile>;
-  requestPhoneOtp(phone: string): Promise<{ success: boolean; message: string }>;
-  verifyPhoneOtp(phone: string, otp: string): Promise<UserProfile>;
   loginWithEmail(email: string, password?: string): Promise<UserProfile>;
   logout(): Promise<void>;
   getCurrentUser(): Promise<UserProfile | null>;

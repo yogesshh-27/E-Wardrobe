@@ -1,5 +1,6 @@
 import { UserProfile } from '@/types';
 import { IAuthService } from './interfaces';
+import { createClient } from '@/lib/supabase/client';
 
 const DEFAULT_MOCK_USER: UserProfile = {
   id: 'usr-101',
@@ -30,6 +31,28 @@ const STORAGE_KEY = 'e_wardrobe_user_session';
 export class AuthService implements IAuthService {
   async getCurrentUser(): Promise<UserProfile | null> {
     if (typeof window === 'undefined') return null;
+
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      try {
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          const userMeta = session.user.user_metadata || {};
+          const user: UserProfile = {
+            ...DEFAULT_MOCK_USER,
+            id: session.user.id,
+            name: userMeta.full_name || userMeta.name || session.user.email?.split('@')[0] || 'User',
+            email: session.user.email || '',
+            profileImage: userMeta.avatar_url || userMeta.picture || DEFAULT_MOCK_USER.profileImage,
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+          return user;
+        }
+      } catch (err) {
+        console.warn('[Supabase Session] Checking session fallback:', err);
+      }
+    }
+
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return null;
     try {
@@ -40,6 +63,30 @@ export class AuthService implements IAuthService {
   }
 
   async loginWithGoogle(): Promise<UserProfile> {
+    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: `${window.location.origin}/auth/callback?next=/wardrobe`,
+          },
+        });
+        if (error) {
+          console.warn('[Supabase Google Auth] Error initiating OAuth:', error.message);
+        } else if (data?.url) {
+          window.location.href = data.url;
+          return {
+            ...DEFAULT_MOCK_USER,
+            name: 'Google User',
+            email: 'redirecting...',
+          };
+        }
+      } catch (err) {
+        console.warn('[Supabase Google Auth] Fallback on unexpected error:', err);
+      }
+    }
+
     await new Promise((resolve) => setTimeout(resolve, 800));
     const user: UserProfile = {
       ...DEFAULT_MOCK_USER,
@@ -52,31 +99,6 @@ export class AuthService implements IAuthService {
     return user;
   }
 
-  async requestPhoneOtp(phone: string): Promise<{ success: boolean; message: string }> {
-    await new Promise((resolve) => setTimeout(resolve, 600));
-    return {
-      success: true,
-      message: `A 6-digit OTP has been sent to ${phone}. (Mock demo code: 123456)`,
-    };
-  }
-
-  async verifyPhoneOtp(phone: string, otp: string): Promise<UserProfile> {
-    await new Promise((resolve) => setTimeout(resolve, 700));
-    // Accept 123456 or any 6-digit code for mock
-    if (otp.length !== 6) {
-      throw new Error('Please enter a valid 6-digit verification code.');
-    }
-    const user: UserProfile = {
-      ...DEFAULT_MOCK_USER,
-      phone,
-      name: 'Style Enthusiast',
-      email: undefined,
-    };
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
-    }
-    return user;
-  }
 
   async loginWithEmail(email: string, _password?: string): Promise<UserProfile> {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -95,6 +117,14 @@ export class AuthService implements IAuthService {
 
   async logout(): Promise<void> {
     if (typeof window !== 'undefined') {
+      if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+        try {
+          const supabase = createClient();
+          await supabase.auth.signOut();
+        } catch (err) {
+          console.warn('[Supabase SignOut] Error:', err);
+        }
+      }
       localStorage.removeItem(STORAGE_KEY);
     }
   }
