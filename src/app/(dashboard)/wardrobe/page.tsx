@@ -424,15 +424,17 @@ export default function WardrobePage() {
           {filteredItems.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 20, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: '-30px' }}
               transition={{
-                duration: 0.4,
-                delay: Math.min(index * 0.04, 0.35),
+                duration: 0.45,
+                delay: (index % 5) * 0.06,
                 ease: EASINGS.luxury,
               }}
               whileHover={{
-                y: -5,
+                y: -6,
+                scale: 1.01,
                 transition: { duration: 0.2, ease: EASINGS.luxury },
               }}
               onClick={() => setSelectedItem(item)}
@@ -496,15 +498,16 @@ export default function WardrobePage() {
           {filteredItems.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 14 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-20px' }}
               transition={{
                 duration: 0.35,
-                delay: Math.min(index * 0.03, 0.3),
+                delay: (index % 6) * 0.04,
                 ease: EASINGS.luxury,
               }}
               whileHover={{
-                x: 3,
+                x: 4,
                 transition: { duration: 0.18 },
               }}
               onClick={() => setSelectedItem(item)}

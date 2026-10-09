@@ -30,6 +30,8 @@ export const metadata: Metadata = {
   ],
 };
 
+import { SmoothScrollProvider } from '@/components/ui/SmoothScrollProvider';
+
 export default function RootLayout({
   children,
 }: {
@@ -38,7 +40,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${cormorant.variable} ${plusJakarta.variable}`}>
       <body className="min-h-screen bg-[#FAF8F5] text-[#1C1917] antialiased selection:bg-[#38BDF8]/20 selection:text-[#0284C7]">
-        {children}
+        <SmoothScrollProvider>
+          {children}
+        </SmoothScrollProvider>
       </body>
     </html>
   );

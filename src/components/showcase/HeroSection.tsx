@@ -8,6 +8,7 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
+  useScroll,
   useReducedMotion,
 } from 'framer-motion';
 import { EASINGS, DURATIONS } from '@/lib/animations';
@@ -60,8 +61,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     }
   };
 
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start'],
+  });
+
+  const textLeftX = useTransform(scrollYProgress, [0, 1], [0, -100]);
+  const textRightX = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const textY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  const bagScrollY = useTransform(scrollYProgress, [0, 1], [0, -45]);
+  const bagScrollScale = useTransform(scrollYProgress, [0, 1], [1, 0.93]);
+
   return (
-    <section className="relative w-full pt-10 pb-20 overflow-hidden bg-[#FAF8F5]">
+    <section ref={sectionRef} className="relative w-full pt-10 pb-20 overflow-hidden bg-[#FAF8F5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* CENTERPIECE + MASSIVE TYPOGRAPHY CONTAINER */}
         <div
@@ -70,7 +83,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           style={{ perspective: 1200 }}
           className="relative min-h-[460px] sm:min-h-[520px] md:min-h-[620px] flex items-center justify-center"
         >
-          {/* 1. GIANT OVERLAPPING BACKGROUND TEXT: "your style" WITH EDITORIAL HEADING REVEAL */}
+          {/* 1. GIANT OVERLAPPING BACKGROUND TEXT: "your style" WITH EDITORIAL HEADING REVEAL & SCROLL PARALLAX */}
           <div
             className="absolute inset-x-0 top-1/2 -translate-y-1/2 flex items-center justify-between w-full pointer-events-none select-none z-0"
             aria-hidden="true"
@@ -79,8 +92,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: -36 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.85, ease: EASINGS.luxury }}
+              style={{
+                x: shouldReduceMotion ? 0 : textLeftX,
+                y: shouldReduceMotion ? 0 : textY,
+                letterSpacing: '-0.04em',
+              }}
               className="text-[17vw] md:text-[18vw] font-bold tracking-tight text-[#1C1917] font-sans leading-none pl-2 sm:pl-6 inline-block"
-              style={{ letterSpacing: '-0.04em' }}
             >
               your
             </motion.span>
@@ -88,8 +105,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 36 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.85, ease: EASINGS.luxury }}
+              style={{
+                x: shouldReduceMotion ? 0 : textRightX,
+                y: shouldReduceMotion ? 0 : textY,
+                letterSpacing: '-0.04em',
+              }}
               className="text-[17vw] md:text-[18vw] font-bold tracking-tight text-[#1C1917] font-sans leading-none pr-2 sm:pr-6 inline-block"
-              style={{ letterSpacing: '-0.04em' }}
             >
               style
             </motion.span>
@@ -103,11 +124,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 : {
                     rotateX,
                     rotateY,
+                    y: bagScrollY,
+                    scale: bagScrollScale,
                     transformStyle: 'preserve-3d',
                   }
             }
             initial={shouldReduceMotion ? { opacity: 1 } : { y: 40, opacity: 0, scale: 0.94 }}
-            animate={{ y: 0, opacity: 1, scale: 1 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.9, ease: EASINGS.luxury, delay: 0.15 }}
             className="relative z-20 w-72 sm:w-96 md:w-[480px] lg:w-[540px] flex flex-col items-center group cursor-pointer"
           >

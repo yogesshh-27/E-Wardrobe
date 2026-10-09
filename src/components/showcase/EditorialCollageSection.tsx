@@ -4,7 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { BubbleLogo } from './BubbleLogo';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { EASINGS, DURATIONS } from '@/lib/animations';
 
 interface EditorialCollageSectionProps {
@@ -15,6 +15,17 @@ export const EditorialCollageSection: React.FC<EditorialCollageSectionProps> = (
   colorMode,
 }) => {
   const shouldReduceMotion = useReducedMotion();
+
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start'],
+  });
+
+  const splashY = useTransform(scrollYProgress, [0, 1], [-30, 45]);
+  const pouchesY = useTransform(scrollYProgress, [0, 1], [40, -35]);
+  const centerPhotoY = useTransform(scrollYProgress, [0, 1], [-20, 25]);
+  const spiralY = useTransform(scrollYProgress, [0, 1], [35, -40]);
 
   const getPillTheme = () => {
     switch (colorMode) {
@@ -29,7 +40,7 @@ export const EditorialCollageSection: React.FC<EditorialCollageSectionProps> = (
   };
 
   return (
-    <section id="about" className="relative w-full py-24 bg-[#FAF8F5] overflow-hidden">
+    <section id="about" ref={sectionRef} className="relative w-full py-24 bg-[#FAF8F5] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
@@ -100,44 +111,50 @@ export const EditorialCollageSection: React.FC<EditorialCollageSectionProps> = (
             </motion.div>
           </div>
 
-          {/* RIGHT COLUMN: The High-Fashion Aesthetic Visual Collage */}
+          {/* RIGHT COLUMN: The High-Fashion Aesthetic Visual Collage with Multi-Layer Parallax */}
           <div className="lg:col-span-7 relative min-h-[500px] sm:min-h-[580px] flex items-center justify-center">
             
-            {/* 1. Abstract Liquid Chrome Splash (Top Left in collage) */}
+            {/* 1. Abstract Liquid Chrome Splash (Top Left with parallax depth) */}
             <motion.div
-              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              animate={
-                shouldReduceMotion
-                  ? undefined
-                  : {
-                      y: [0, -8, 0],
-                    }
-              }
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              transition={
-                shouldReduceMotion
-                  ? { duration: 0.8 }
-                  : {
-                      y: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
-                      duration: 0.8,
-                    }
-              }
-              className="absolute -top-6 left-4 sm:left-12 w-32 sm:w-44 h-32 sm:h-44 z-20 pointer-events-none"
+              style={shouldReduceMotion ? undefined : { y: splashY }}
+              className="absolute -top-6 left-4 sm:left-12 z-20 pointer-events-none"
             >
-              <img
-                src="/images/showcase/liquid_chrome_splash_1791561214924.jpg"
-                alt="Liquid metal abstract sculpture"
-                className="w-full h-full object-contain filter drop-shadow-xl mix-blend-multiply opacity-85"
-              />
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                animate={
+                  shouldReduceMotion
+                    ? undefined
+                    : {
+                        y: [0, -8, 0],
+                      }
+                }
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0.8 }
+                    : {
+                        y: { duration: 6, repeat: Infinity, ease: 'easeInOut' },
+                        duration: 0.8,
+                      }
+                }
+                className="w-32 sm:w-44 h-32 sm:h-44"
+              >
+                <img
+                  src="/images/showcase/liquid_chrome_splash_1791561214924.jpg"
+                  alt="Liquid metal abstract sculpture"
+                  className="w-full h-full object-contain filter drop-shadow-xl mix-blend-multiply opacity-85"
+                />
+              </motion.div>
             </motion.div>
 
             {/* 2. Mini Pastel Pouches with Whipped Cream Tops */}
             <motion.div
+              style={shouldReduceMotion ? undefined : { y: pouchesY }}
               initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -20, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.2, ease: EASINGS.luxury }}
               whileHover={{ scale: 1.05 }}
@@ -150,8 +167,9 @@ export const EditorialCollageSection: React.FC<EditorialCollageSectionProps> = (
               />
             </motion.div>
 
-            {/* 3. Main Center Editorial Photo with Mask Clip-Path Reveal */}
+            {/* 3. Main Center Editorial Photo with Mask Clip-Path Reveal & Scroll Parallax */}
             <motion.div
+              style={shouldReduceMotion ? undefined : { y: centerPhotoY }}
               initial={
                 shouldReduceMotion
                   ? { opacity: 1 }
@@ -198,40 +216,44 @@ export const EditorialCollageSection: React.FC<EditorialCollageSectionProps> = (
               </div>
             </motion.div>
 
-            {/* 4. Floating Holographic Iridescent Spiral (Bottom Left of photo) */}
+            {/* 4. Floating Holographic Iridescent Spiral (Bottom Left with parallax depth) */}
             <motion.div
-              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, rotate: -20, scale: 0.8 }}
-              whileInView={{ opacity: 1, rotate: 0, scale: 1 }}
-              viewport={{ once: true }}
-              animate={
-                shouldReduceMotion
-                  ? undefined
-                  : {
-                      y: [0, 8, 0],
-                      rotate: [0, 5, 0],
-                    }
-              }
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              transition={
-                shouldReduceMotion
-                  ? { duration: 0.8 }
-                  : {
-                      y: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
-                      rotate: { duration: 9, repeat: Infinity, ease: 'easeInOut' },
-                      duration: 0.8,
-                    }
-              }
-              className="absolute -bottom-6 left-6 sm:left-16 w-28 sm:w-36 h-28 sm:h-36 z-30 pointer-events-none"
+              style={shouldReduceMotion ? undefined : { y: spiralY }}
+              className="absolute -bottom-6 left-6 sm:left-16 z-30 pointer-events-none"
             >
-              <img
-                src="/images/showcase/iridescent_spiral_1791561327078.jpg"
-                alt="Iridescent ribbon element"
-                className="w-full h-full object-contain filter drop-shadow-xl"
-              />
+              <motion.div
+                initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, rotate: -20, scale: 0.8 }}
+                whileInView={{ opacity: 1, rotate: 0, scale: 1 }}
+                viewport={{ once: true }}
+                animate={
+                  shouldReduceMotion
+                    ? undefined
+                    : {
+                        y: [0, 8, 0],
+                        rotate: [0, 5, 0],
+                      }
+                }
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                transition={
+                  shouldReduceMotion
+                    ? { duration: 0.8 }
+                    : {
+                        y: { duration: 7, repeat: Infinity, ease: 'easeInOut' },
+                        rotate: { duration: 9, repeat: Infinity, ease: 'easeInOut' },
+                        duration: 0.8,
+                      }
+                }
+                className="w-28 sm:w-36 h-28 sm:h-36"
+              >
+                <img
+                  src="/images/showcase/iridescent_spiral_1791561327078.jpg"
+                  alt="Iridescent ribbon element"
+                  className="w-full h-full object-contain filter drop-shadow-xl"
+                />
+              </motion.div>
             </motion.div>
           </div>
-
         </div>
       </div>
     </section>
