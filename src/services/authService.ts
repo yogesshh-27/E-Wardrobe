@@ -73,17 +73,15 @@ export class AuthService implements IAuthService {
           },
         });
         if (error) {
-          console.warn('[Supabase Google Auth] Error initiating OAuth:', error.message);
+          console.error('[Supabase Google Auth] Error initiating OAuth:', error.message);
+          throw error;
         } else if (data?.url) {
-          window.location.href = data.url;
-          return {
-            ...DEFAULT_MOCK_USER,
-            name: 'Google User',
-            email: 'redirecting...',
-          };
+          window.location.assign(data.url);
+          return new Promise<UserProfile>(() => {});
         }
       } catch (err) {
-        console.warn('[Supabase Google Auth] Fallback on unexpected error:', err);
+        console.error('[Supabase Google Auth] Error:', err);
+        throw err;
       }
     }
 

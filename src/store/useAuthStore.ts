@@ -9,6 +9,7 @@ interface AuthState {
   isOnboarded: boolean;
   isLoading: boolean;
   setUser: (user: UserProfile | null) => void;
+  checkSession: () => Promise<UserProfile | null>;
   loginWithGoogle: () => Promise<UserProfile>;
   loginWithEmail: (email: string) => Promise<UserProfile>;
   updateProfile: (profile: Partial<UserProfile>) => Promise<UserProfile>;
@@ -32,19 +33,30 @@ export const useAuthStore = create<AuthState>()(
           isOnboarded: !!user && (user.stylePreferences?.length > 0 || false),
         }),
 
+      checkSession: async () => {
+        try {
+          const user = await authService.getCurrentUser();
+          if (user) {
+            set({
+              user,
+              isAuthenticated: true,
+              isOnboarded: user.stylePreferences?.length > 0 || false,
+            });
+            return user;
+          }
+        } catch (err) {
+          console.warn('[AuthStore] Session check warning:', err);
+        }
+        return null;
+      },
+
       loginWithGoogle: async () => {
         set({ isLoading: true });
         try {
           const user = await authService.loginWithGoogle();
-          set({
-            user,
-            isAuthenticated: true,
-            isOnboarded: user.stylePreferences?.length > 0,
-            isLoading: false,
-          });
           return user;
         } finally {
-          set({ isLoading: false });
+          // Keep loading state until external redirect completes
         }
       },
 

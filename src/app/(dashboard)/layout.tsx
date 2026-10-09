@@ -28,28 +28,18 @@ export default function DashboardLayout({
   const { selectedItem, setSelectedItem } = useWardrobeStore();
 
   useEffect(() => {
-    if (useAuthStore.persist?.hasHydrated?.()) {
+    async function initSession() {
+      // Check active Supabase or stored session
+      const user = await useAuthStore.getState().checkSession();
       setIsReady(true);
-    } else {
-      const unsub = useAuthStore.persist?.onFinishHydration?.(() => {
-        setIsReady(true);
-      });
-      const timer = setTimeout(() => setIsReady(true), 80);
-      return () => {
-        unsub?.();
-        clearTimeout(timer);
-      };
+      if (!user && !useAuthStore.getState().isAuthenticated) {
+        router.replace('/login');
+      }
     }
-  }, []);
+    initSession();
+  }, [router]);
 
-  useEffect(() => {
-    // Require authentication for the entire application - unauthenticated users land on login
-    if (isReady && !isAuthenticated) {
-      router.replace('/login');
-    }
-  }, [isReady, isAuthenticated, router]);
-
-  if (isReady && !isAuthenticated) {
+  if (!isReady || !isAuthenticated) {
     return null;
   }
 

@@ -60,9 +60,8 @@ export default function LoginPage() {
     try {
       setErrorMessage('');
       await loginWithGoogle();
-      router.push('/');
-    } catch {
-      setErrorMessage('Google authentication failed. Please try again.');
+    } catch (err: unknown) {
+      setErrorMessage((err as Error)?.message || 'Google authentication failed. Please try again.');
     }
   };
 
