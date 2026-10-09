@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { BubbleLogo } from '@/components/showcase/BubbleLogo';
+import { createClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,18 +33,34 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isGoogleConnecting, setIsGoogleConnecting] = useState(false);
-  const [googleAuthUrl, setGoogleAuthUrl] = useState(
-    'https://ohqkjihpnxhorzdowzza.supabase.co/auth/v1/authorize?provider=google&redirect_to=https%3A%2F%2Fe-wardrobe-livid.vercel.app%2Fauth%2Fcallback%3Fnext%3D%2Fwardrobe'
-  );
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const callbackUrl = encodeURIComponent(`${window.location.origin}/auth/callback?next=/wardrobe`);
-      setGoogleAuthUrl(
-        `https://ohqkjihpnxhorzdowzza.supabase.co/auth/v1/authorize?provider=google&redirect_to=${callbackUrl}`
-      );
+    try {
+      const supabase = createClient();
+
+      // Check if session was already completed or returned from OAuth
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session?.user) {
+          useAuthStore.getState().checkSession().then(() => {
+            router.replace('/wardrobe');
+          });
+        }
+      });
+
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+        if (event === 'SIGNED_IN' && session?.user) {
+          await useAuthStore.getState().checkSession();
+          router.replace('/wardrobe');
+        }
+      });
+
+      return () => {
+        subscription.unsubscribe();
+      };
+    } catch (err) {
+      console.warn('[Login Auth Listener] Warning:', err);
     }
-  }, []);
+  }, [router]);
 
   const handleQuickDemoEnter = () => {
     setUser({
@@ -63,14 +80,25 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = async () => {
+    setIsGoogleConnecting(true);
+    setErrorMessage('');
     try {
-      setErrorMessage('');
-      const loggedUser = await loginWithGoogle();
-      if (loggedUser) {
-        router.push('/wardrobe');
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback?next=/wardrobe`,
+        },
+      });
+      if (error) {
+        setErrorMessage(error.message);
+        setIsGoogleConnecting(false);
+      } else if (data?.url) {
+        window.location.href = data.url;
       }
     } catch (err: unknown) {
       setErrorMessage((err as Error)?.message || 'Google authentication failed. Please try again.');
+      setIsGoogleConnecting(false);
     }
   };
 
@@ -251,14 +279,12 @@ export default function LoginPage() {
                   <div className="flex-grow border-t border-[#E2E8F0]" />
                 </div>
 
-                {/* Google Button - Direct OAuth Navigation */}
-                <a
-                  href={googleAuthUrl}
-                  onClick={() => {
-                    setIsGoogleConnecting(true);
-                    setTimeout(() => setIsGoogleConnecting(false), 5000);
-                  }}
-                  className="flex w-full items-center justify-center gap-3 rounded-2xl border border-[#E2E8F0] bg-white py-3.5 px-4 text-xs font-semibold text-[#1C1917] hover:bg-[#F8FAFC] hover:border-[#CBD5E1] active:scale-[0.99] transition-all shadow-xs cursor-pointer"
+                {/* Google Button - PKCE OAuth Flow */}
+                <button
+                  type="button"
+                  onClick={handleGoogleLogin}
+                  disabled={isGoogleConnecting}
+                  className="flex w-full items-center justify-center gap-3 rounded-2xl border border-[#E2E8F0] bg-white py-3.5 px-4 text-xs font-semibold text-[#1C1917] hover:bg-[#F8FAFC] hover:border-[#CBD5E1] active:scale-[0.99] transition-all shadow-xs cursor-pointer disabled:opacity-70"
                 >
                   <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">
                     <path
@@ -279,7 +305,7 @@ export default function LoginPage() {
                     />
                   </svg>
                   <span>{isGoogleConnecting ? 'Connecting to Google...' : 'Continue with Google'}</span>
-                </a>
+                </button>
 
                 {/* Email Option */}
                 <button

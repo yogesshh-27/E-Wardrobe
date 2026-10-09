@@ -62,10 +62,25 @@ export class AuthService implements IAuthService {
 
   async loginWithGoogle(): Promise<UserProfile> {
     if (typeof window !== 'undefined') {
-      const callbackUrl = encodeURIComponent(`${window.location.origin}/auth/callback?next=/wardrobe`);
-      const targetUrl = `https://ohqkjihpnxhorzdowzza.supabase.co/auth/v1/authorize?provider=google&redirect_to=${callbackUrl}`;
-      window.location.href = targetUrl;
-      return new Promise<UserProfile>(() => {});
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: `${window.location.origin}/auth/callback?next=/wardrobe`,
+          },
+        });
+        if (error) {
+          throw error;
+        }
+        if (data?.url) {
+          window.location.href = data.url;
+          return new Promise<UserProfile>(() => {});
+        }
+      } catch (err) {
+        console.error('[Supabase Google Auth] Error:', err);
+        throw err;
+      }
     }
 
     await new Promise((resolve) => setTimeout(resolve, 800));
