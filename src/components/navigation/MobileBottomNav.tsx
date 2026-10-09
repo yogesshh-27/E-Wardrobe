@@ -9,8 +9,8 @@ export const MobileBottomNav: React.FC = () => {
   const pathname = usePathname();
 
   const navItems = [
-    { label: 'Home', href: '/', icon: Home },
     { label: 'Wardrobe', href: '/wardrobe', icon: Shirt },
+    { label: 'Travel', href: '/travel', icon: Plane },
     { label: 'Upload', href: '/wardrobe/upload', isCenter: true },
     { label: 'Stylist', href: '/occasions', icon: Sparkles },
     { label: 'Profile', href: '/profile', icon: User },

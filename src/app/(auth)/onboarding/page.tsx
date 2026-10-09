@@ -231,7 +231,7 @@ export default function OnboardingPage() {
         unit: 'inches',
       } : undefined,
     });
-    router.push('/');
+    router.push('/wardrobe');
   };
 
   const nextStep = () => {

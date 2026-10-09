@@ -77,7 +77,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onToggleSidebar }) => {
 
   const handleLogout = async () => {
     await logout();
-    router.push('/login');
+    router.push('/');
   };
 
   return (
@@ -101,7 +101,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onToggleSidebar }) => {
             </motion.button>
           )}
 
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/wardrobe" className="flex items-center gap-2 group">
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

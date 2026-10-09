@@ -11,7 +11,6 @@ import { StylistChatDrawer } from '@/components/chat/StylistChatDrawer';
 import { VirtualTryOnModal } from '@/components/stylist/VirtualTryOnModal';
 import { ItemDetailModal } from '@/components/wardrobe/ItemDetailModal';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
-
 import { AmbientBackground } from '@/components/ui/AmbientBackground';
 
 export default function DashboardLayout({
@@ -22,6 +21,7 @@ export default function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const isHome = pathname === '/';
+  const isShowcase = pathname === '/showcase';
   const { isAuthenticated } = useAuthStore();
   const [isReady, setIsReady] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -32,15 +32,28 @@ export default function DashboardLayout({
       // Check active Supabase or stored session
       const user = await useAuthStore.getState().checkSession();
       setIsReady(true);
-      if (!user && !useAuthStore.getState().isAuthenticated) {
-        router.replace('/login');
+      if (!isHome && !isShowcase && !user && !useAuthStore.getState().isAuthenticated) {
+        router.replace('/');
       }
     }
     initSession();
-  }, [router]);
+  }, [router, isHome, isShowcase]);
 
+  // If on the root landing page (login window) or showcase page, render directly without dashboard shell
+  if (isHome || isShowcase) {
+    return <>{children}</>;
+  }
+
+  // For protected studio routes, wait until auth check completes
   if (!isReady || !isAuthenticated) {
-    return null;
+    return (
+      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 rounded-full border-2 border-[#0284C7] border-t-transparent animate-spin" />
+          <span className="text-xs font-semibold text-[#64748B] tracking-wider uppercase">Loading Atelier...</span>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -48,24 +61,22 @@ export default function DashboardLayout({
       {/* Ambient Animated Luxury Background Glow */}
       <AmbientBackground />
       {/* Sidebar - only for dashboard subpages */}
-      {!isHome && (
-        <DesktopSidebar
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-        />
-      )}
+      <DesktopSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
 
       {/* Main Content Area */}
-      <div className={`flex-1 flex flex-col ${isHome ? 'w-full' : 'lg:pl-64'} transition-all duration-300`}>
-        {!isHome && <TopNavbar onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />}
+      <div className="flex-1 flex flex-col lg:pl-64 transition-all duration-300">
+        <TopNavbar onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main className={`flex-1 ${isHome ? 'pb-0' : 'pb-24 lg:pb-12'}`}>
+        <main className="flex-1 pb-24 lg:pb-12">
           {children}
         </main>
       </div>
 
       {/* Bottom Navigation for Mobile */}
-      {!isHome && <MobileBottomNav />}
+      <MobileBottomNav />
 
       {/* AI Assistant Floating Button & Chat Drawer */}
       <FloatingStylistButton />

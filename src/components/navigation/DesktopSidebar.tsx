@@ -29,11 +29,11 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
   const { user, logout } = useAuthStore();
 
   const navLinks = [
-    { label: 'Home', href: '/', icon: Home },
     { label: 'My Wardrobe', href: '/wardrobe', icon: Shirt },
     { label: 'Travel', href: '/travel', icon: Plane, badge: 'USP' },
     { label: 'Occasion', href: '/occasions', icon: Sparkles },
     { label: 'Recommendations', href: '/recommendations', icon: Compass },
+    { label: 'Showcase', href: '/showcase', icon: Home },
     { label: 'Style Profile', href: '/style-profile', icon: Dna },
     { label: 'Profile', href: '/profile', icon: User },
     { label: 'Settings', href: '/settings', icon: Sliders },
@@ -41,7 +41,7 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
 
   const handleLogout = async () => {
     await logout();
-    router.push('/login');
+    router.push('/');
   };
 
   const styleSummary =
@@ -69,7 +69,7 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
       >
         {/* Header Branding */}
         <div className="flex h-20 items-center justify-between px-6 border-b border-[#E2E8F0] bg-white/60">
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/wardrobe" className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#E87A90] to-[#0284C7] text-white shadow-xs">
               <Sparkles className="h-5 w-5" />
             </div>

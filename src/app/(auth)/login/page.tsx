@@ -35,7 +35,7 @@ export default function LoginPage() {
   // Auto redirect if already logged in
   useEffect(() => {
     if (isAuthenticated && user) {
-      router.push('/');
+      router.push('/wardrobe');
     }
   }, [isAuthenticated, user, router]);
 
@@ -53,7 +53,7 @@ export default function LoginPage() {
       profileImage: '/images/showcase/editorial_smart_casual_1791561468361.jpg',
       createdAt: new Date().toISOString(),
     });
-    router.push('/');
+    router.push('/wardrobe');
   };
 
   const handleGoogleLogin = async () => {
@@ -74,7 +74,7 @@ export default function LoginPage() {
     try {
       setErrorMessage('');
       await loginWithEmail(email);
-      router.push('/');
+      router.push('/wardrobe');
     } catch {
       setErrorMessage('Email login failed. Please verify your address.');
     }
