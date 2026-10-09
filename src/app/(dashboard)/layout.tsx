@@ -43,13 +43,13 @@ export default function DashboardLayout({
   }, []);
 
   useEffect(() => {
-    // If authenticated check is ready and user is not authenticated, land on login page for dashboard subpages
-    if (isReady && !isAuthenticated && !isHome) {
+    // Require authentication for the entire application - unauthenticated users land on login
+    if (isReady && !isAuthenticated) {
       router.replace('/login');
     }
-  }, [isReady, isAuthenticated, router, isHome]);
+  }, [isReady, isAuthenticated, router]);
 
-  if (isReady && !isAuthenticated && !isHome) {
+  if (isReady && !isAuthenticated) {
     return null;
   }
 

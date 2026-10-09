@@ -95,41 +95,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </motion.span>
           </div>
 
-          {/* 2. LIQUID CHROME SUSPENDED ABSTRACT SPLASH (Gentle floating motion) */}
-          <motion.div
-            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.8, y: -20 }}
-            animate={
-              shouldReduceMotion
-                ? { opacity: 1, scale: 1, y: 0 }
-                : {
-                    opacity: 1,
-                    scale: 1,
-                    y: [0, -10, 0],
-                  }
-            }
-            transition={
-              shouldReduceMotion
-                ? { duration: 0.6 }
-                : {
-                    opacity: { duration: 1, ease: 'easeOut' },
-                    scale: { duration: 1, ease: 'easeOut' },
-                    y: {
-                      duration: 7,
-                      repeat: Infinity,
-                      ease: 'easeInOut',
-                    },
-                  }
-            }
-            className="absolute z-10 -top-4 sm:top-2 left-1/4 sm:left-[28%] w-36 sm:w-48 md:w-56 h-36 sm:h-48 md:h-56 pointer-events-none"
-          >
-            <img
-              src="/images/showcase/liquid_chrome_splash_1791561214924.jpg"
-              alt="Liquid Chrome Element"
-              className="w-full h-full object-contain filter drop-shadow-xl mix-blend-multiply opacity-90 rotate-[-12deg]"
-            />
-          </motion.div>
-
-          {/* 3. FOREGROUND 3D HERO PRODUCT (Soft Blush & Ice Blue Contemporary Designer Bag) */}
+          {/* 2. FOREGROUND 3D HERO PRODUCT (Soft Blush & Ice Blue Contemporary Designer Bag - Pure Transparent Silhouette) */}
           <motion.div
             style={
               shouldReduceMotion
@@ -145,7 +111,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             transition={{ duration: 0.9, ease: EASINGS.luxury, delay: 0.15 }}
             className="relative z-20 w-72 sm:w-96 md:w-[480px] lg:w-[540px] flex flex-col items-center group cursor-pointer"
           >
-            <div className="relative w-full aspect-square filter drop-shadow-2xl transition-transform duration-500 group-hover:scale-105">
+            <div className="relative w-full aspect-square transition-transform duration-500 group-hover:scale-105 flex items-center justify-center">
               <motion.img
                 animate={
                   shouldReduceMotion
@@ -163,9 +129,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                         ease: 'easeInOut',
                       }
                 }
-                src="/images/showcase/hero_contemporary_bag_1791561448222.jpg"
+                src="/images/showcase/hero_contemporary_bag_transparent.png"
                 alt="Contemporary Minimalist Signature Bag in Soft Blush & Sky Blue"
-                className="w-full h-full object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.18)]"
+                className="w-full h-full object-contain drop-shadow-[0_25px_35px_rgba(0,0,0,0.15)] filter"
               />
 
               {/* Floating Aesthetic Tag with spring reveal */}
