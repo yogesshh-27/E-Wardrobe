@@ -54,9 +54,15 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         try {
           const user = await authService.loginWithGoogle();
+          set({
+            user,
+            isAuthenticated: true,
+            isLoading: false,
+          });
           return user;
-        } finally {
-          // Keep loading state until external redirect completes
+        } catch (err) {
+          set({ isLoading: false });
+          throw err;
         }
       },
 

@@ -32,9 +32,8 @@ export class AuthService implements IAuthService {
   async getCurrentUser(): Promise<UserProfile | null> {
     if (typeof window === 'undefined') return null;
 
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      try {
-        const supabase = createClient();
+    try {
+      const supabase = createClient();
         const { data: { session } } = await supabase.auth.getSession();
         if (session?.user) {
           const userMeta = session.user.user_metadata || {};
@@ -51,7 +50,6 @@ export class AuthService implements IAuthService {
       } catch (err) {
         console.warn('[Supabase Session] Checking session fallback:', err);
       }
-    }
 
     const stored = localStorage.getItem(STORAGE_KEY);
     if (!stored) return null;
@@ -63,7 +61,7 @@ export class AuthService implements IAuthService {
   }
 
   async loginWithGoogle(): Promise<UserProfile> {
-    if (typeof window !== 'undefined' && process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    if (typeof window !== 'undefined') {
       try {
         const supabase = createClient();
         const { data, error } = await supabase.auth.signInWithOAuth({

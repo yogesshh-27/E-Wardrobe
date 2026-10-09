@@ -59,7 +59,10 @@ export default function LoginPage() {
   const handleGoogleLogin = async () => {
     try {
       setErrorMessage('');
-      await loginWithGoogle();
+      const loggedUser = await loginWithGoogle();
+      if (loggedUser) {
+        router.push('/wardrobe');
+      }
     } catch (err: unknown) {
       setErrorMessage((err as Error)?.message || 'Google authentication failed. Please try again.');
     }
