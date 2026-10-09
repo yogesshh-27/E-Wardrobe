@@ -32,12 +32,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Auto redirect if already logged in
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      router.push('/wardrobe');
-    }
-  }, [isAuthenticated, user, router]);
+  // Keep user on login page unless they click to proceed or switch account
 
   const handleQuickDemoEnter = () => {
     setUser({
@@ -188,6 +183,46 @@ export default function LoginPage() {
             {/* Options View */}
             {authMethod === 'options' && (
               <div className="space-y-3.5">
+                {/* Active Session Notice if already logged in */}
+                {isAuthenticated && user && (
+                  <div className="rounded-2xl bg-gradient-to-r from-[#FCE7EB] to-[#E0F2FE] border border-[#E2E8F0] p-4 space-y-3 shadow-xs">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full overflow-hidden border-2 border-white shadow-xs shrink-0 bg-white">
+                        <img
+                          src={user.profileImage || '/images/showcase/editorial_smart_casual_1791561468361.jpg'}
+                          alt={user.name || 'User'}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5">
+                          <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                          <p className="text-xs font-bold text-[#1C1917] truncate">{user.name}</p>
+                        </div>
+                        <p className="text-[11px] text-[#64748B] truncate">{user.email || 'Active Studio Session'}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-1">
+                      <button
+                        onClick={() => router.push('/wardrobe')}
+                        className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-[#1C1917] py-2 px-3 text-xs font-bold text-white shadow-xs hover:bg-[#334155] active:scale-[0.99] transition-all"
+                      >
+                        <span>Open Wardrobe Studio</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </button>
+                      <button
+                        onClick={async () => {
+                          await useAuthStore.getState().logout();
+                        }}
+                        className="rounded-xl border border-[#CBD5E1] bg-white py-2 px-3 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-all shadow-xs"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 {/* 1-Click Guest Demo Button */}
                 <button
                   onClick={handleQuickDemoEnter}
