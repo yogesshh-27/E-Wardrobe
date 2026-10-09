@@ -16,6 +16,7 @@ import {
   ChevronLeft,
 } from 'lucide-react';
 import { useAuthStore } from '@/store/useAuthStore';
+import { motion } from 'framer-motion';
 
 interface DesktopSidebarProps {
   isOpen: boolean;
@@ -102,36 +103,42 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
             const isActive = pathname === item.href;
 
             return (
-              <Link
+              <motion.div
                 key={item.href}
-                href={item.href}
-                onClick={() => {
-                  if (window.innerWidth < 1024) onClose();
-                }}
-                className={`group flex items-center justify-between rounded-2xl px-3.5 py-3 text-xs font-semibold transition-all ${
-                  isActive
-                    ? 'bg-gradient-to-r from-[#0284C7] to-[#38BDF8] text-white shadow-sm'
-                    : 'text-[#475569] hover:bg-white hover:text-[#1C1917] hover:shadow-2xs'
-                }`}
+                whileHover={{ x: 2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ duration: 0.16 }}
               >
-                <div className="flex items-center gap-3">
-                  <Icon
-                    className={`h-4 w-4 transition-transform group-hover:scale-110 ${
-                      isActive ? 'text-white' : 'text-[#64748B] group-hover:text-[#0284C7]'
-                    }`}
-                  />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge && (
-                  <span
-                    className={`rounded-full px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase ${
-                      isActive ? 'bg-white/20 text-white' : 'bg-[#E0F2FE] text-[#0284C7]'
-                    }`}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
+                <Link
+                  href={item.href}
+                  onClick={() => {
+                    if (window.innerWidth < 1024) onClose();
+                  }}
+                  className={`group flex items-center justify-between rounded-2xl px-3.5 py-3 text-xs font-semibold transition-all ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#0284C7] to-[#38BDF8] text-white shadow-sm'
+                      : 'text-[#475569] hover:bg-white hover:text-[#1C1917] hover:shadow-2xs'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon
+                      className={`h-4 w-4 transition-transform group-hover:scale-110 ${
+                        isActive ? 'text-white' : 'text-[#64748B] group-hover:text-[#0284C7]'
+                      }`}
+                    />
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge && (
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-[9px] font-bold tracking-wide uppercase ${
+                        isActive ? 'bg-white/20 text-white' : 'bg-[#E0F2FE] text-[#0284C7]'
+                      }`}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              </motion.div>
             );
           })}
         </div>

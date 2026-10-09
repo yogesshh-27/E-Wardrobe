@@ -3,13 +3,23 @@
 import React from 'react';
 import Link from 'next/link';
 import { BubbleLogo } from './BubbleLogo';
-import { ArrowUpRight, Heart, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { EASINGS } from '@/lib/animations';
 
 export const ShowcaseFooter: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <footer className="w-full bg-[#FAF8F5] border-t border-[#E7E0D6] pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+        <motion.div
+          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, ease: EASINGS.luxury }}
+          className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12"
+        >
           {/* Brand Column */}
           <div className="space-y-4 md:col-span-1">
             <BubbleLogo text="WARDROBE" variant="dual" size="sm" />
@@ -29,22 +39,22 @@ export const ShowcaseFooter: React.FC = () => {
             </h4>
             <ul className="space-y-2 text-xs text-[#57534E]">
               <li>
-                <Link href="/wardrobe" className="hover:text-[#1C1917] transition-colors">
+                <Link href="/wardrobe" className="hover:text-[#0284C7] transition-colors nav-link-animated">
                   Digital Closet
                 </Link>
               </li>
               <li>
-                <Link href="/outfits" className="hover:text-[#1C1917] transition-colors">
+                <Link href="/outfits" className="hover:text-[#0284C7] transition-colors nav-link-animated">
                   Outfit Combinations
                 </Link>
               </li>
               <li>
-                <Link href="/travel" className="hover:text-[#1C1917] transition-colors">
+                <Link href="/travel" className="hover:text-[#0284C7] transition-colors nav-link-animated">
                   Travel Capsule Packing
                 </Link>
               </li>
               <li>
-                <Link href="/occasions" className="hover:text-[#1C1917] transition-colors">
+                <Link href="/occasions" className="hover:text-[#0284C7] transition-colors nav-link-animated">
                   Event Occasions
                 </Link>
               </li>
@@ -58,22 +68,22 @@ export const ShowcaseFooter: React.FC = () => {
             </h4>
             <ul className="space-y-2 text-xs text-[#57534E]">
               <li>
-                <Link href="#new-arrivals" className="hover:text-[#1C1917] transition-colors">
+                <Link href="#new-arrivals" className="hover:text-[#E87A90] transition-colors nav-link-animated">
                   New Arrivals
                 </Link>
               </li>
               <li>
-                <Link href="#collections" className="hover:text-[#1C1917] transition-colors">
+                <Link href="#collections" className="hover:text-[#0284C7] transition-colors nav-link-animated">
                   Sky Blue Essentials
                 </Link>
               </li>
               <li>
-                <Link href="#collections" className="hover:text-[#1C1917] transition-colors">
+                <Link href="#collections" className="hover:text-[#E87A90] transition-colors nav-link-animated">
                   Blush Tailoring
                 </Link>
               </li>
               <li>
-                <Link href="/recommendations" className="hover:text-[#1C1917] transition-colors">
+                <Link href="/recommendations" className="hover:text-[#0284C7] transition-colors nav-link-animated">
                   Smart Recommendations
                 </Link>
               </li>
@@ -87,28 +97,28 @@ export const ShowcaseFooter: React.FC = () => {
             </h4>
             <ul className="space-y-2 text-xs text-[#57534E]">
               <li>
-                <Link href="/style-profile" className="hover:text-[#1C1917] transition-colors">
+                <Link href="/style-profile" className="hover:text-[#1C1917] transition-colors nav-link-animated">
                   Style DNA Analysis
                 </Link>
               </li>
               <li>
-                <Link href="/profile" className="hover:text-[#1C1917] transition-colors">
+                <Link href="/profile" className="hover:text-[#1C1917] transition-colors nav-link-animated">
                   Silhouette Profile
                 </Link>
               </li>
               <li>
-                <Link href="/settings" className="hover:text-[#1C1917] transition-colors">
+                <Link href="/settings" className="hover:text-[#1C1917] transition-colors nav-link-animated">
                   Preferences &amp; Fit
                 </Link>
               </li>
               <li>
-                <Link href="/help" className="hover:text-[#1C1917] transition-colors">
+                <Link href="/help" className="hover:text-[#1C1917] transition-colors nav-link-animated">
                   Stylist Guidelines
                 </Link>
               </li>
             </ul>
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-[#E7E0D6]/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#78716C]">

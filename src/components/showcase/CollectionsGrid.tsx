@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Sparkles, Shirt, Heart, Eye } from 'lucide-react';
+import { ArrowRight, Shirt } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { EASINGS, DURATIONS } from '@/lib/animations';
 
 interface CollectionCard {
   id: string;
@@ -63,6 +65,7 @@ interface CollectionsGridProps {
 }
 
 export const CollectionsGrid: React.FC<CollectionsGridProps> = ({ colorMode }) => {
+  const shouldReduceMotion = useReducedMotion();
   const [filter, setFilter] = useState<'all' | 'unisex' | 'him' | 'her'>('all');
 
   const filtered = COLLECTIONS.filter((col) => {
@@ -75,8 +78,14 @@ export const CollectionsGrid: React.FC<CollectionsGridProps> = ({ colorMode }) =
     <section id="collections" className="w-full py-20 bg-[#FAF8F5] border-t border-[#E7E0D6]/60">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* SECTION HEADER (Matching reference: "Our collections") */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        {/* SECTION HEADER WITH SCROLL REVEAL */}
+        <motion.div
+          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 0.6, ease: EASINGS.luxury }}
+          className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12"
+        >
           <div>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#1C1917] font-sans">
               Our collections
@@ -86,7 +95,7 @@ export const CollectionsGrid: React.FC<CollectionsGridProps> = ({ colorMode }) =
             </p>
           </div>
 
-          {/* Gender Filter Buttons */}
+          {/* Gender Filter Buttons with tactile spring */}
           <div className="flex items-center gap-2 bg-white border border-[#E7E0D6] rounded-full p-1 shadow-2xs">
             {[
               { id: 'all', label: 'All Curations' },
@@ -94,8 +103,9 @@ export const CollectionsGrid: React.FC<CollectionsGridProps> = ({ colorMode }) =
               { id: 'her', label: 'For Her' },
               { id: 'unisex', label: 'Unisex' },
             ].map((btn) => (
-              <button
+              <motion.button
                 key={btn.id}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setFilter(btn.id as any)}
                 className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
                   filter === btn.id
@@ -104,16 +114,32 @@ export const CollectionsGrid: React.FC<CollectionsGridProps> = ({ colorMode }) =
                 }`}
               >
                 {btn.label}
-              </button>
+              </motion.button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* 4-COLUMN CARDS GRID */}
+        {/* 4-COLUMN CARDS GRID WITH STAGGER REVEAL */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filtered.map((item) => (
-            <div
+          {filtered.map((item, index) => (
+            <motion.div
               key={item.id}
+              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-30px' }}
+              transition={{
+                duration: 0.55,
+                delay: index * DURATIONS.stagger, // 80ms stagger
+                ease: EASINGS.luxury,
+              }}
+              whileHover={
+                shouldReduceMotion
+                  ? undefined
+                  : {
+                      y: -6,
+                      transition: { duration: 0.24, ease: EASINGS.luxury },
+                    }
+              }
               className="group rounded-3xl bg-white border border-[#E7E0D6] overflow-hidden hover:border-[#CBD5E1] shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col"
             >
               {/* Product Visual Container with Arch Curve */}
@@ -159,22 +185,28 @@ export const CollectionsGrid: React.FC<CollectionsGridProps> = ({ colorMode }) =
                 <div className="pt-2 border-t border-[#F4EFEA] flex items-center justify-between">
                   <Link
                     href="/wardrobe"
-                    className="text-xs font-bold text-[#1C1917] hover:text-[#0284C7] flex items-center gap-1.5 transition-colors"
+                    className="text-xs font-bold text-[#1C1917] hover:text-[#0284C7] flex items-center gap-1.5 transition-colors group/link"
                   >
                     <span>Style Ensemble</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover/link:translate-x-1" />
                   </Link>
 
-                  <Link
-                    href="/outfits"
-                    className="h-8 w-8 rounded-full bg-[#FAF8F5] hover:bg-[#E0F2FE] text-[#57534E] hover:text-[#0284C7] flex items-center justify-center transition-colors"
-                    title="View Outfits"
+                  <motion.div
+                    whileHover={{ scale: 1.15 }}
+                    whileTap={{ scale: 0.9 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 25 }}
                   >
-                    <Shirt className="h-4 w-4" />
-                  </Link>
+                    <Link
+                      href="/outfits"
+                      className="h-8 w-8 rounded-full bg-[#FAF8F5] hover:bg-[#E0F2FE] text-[#57534E] hover:text-[#0284C7] flex items-center justify-center transition-colors block"
+                      title="View Outfits"
+                    >
+                      <Shirt className="h-4 w-4" />
+                    </Link>
+                  </motion.div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 

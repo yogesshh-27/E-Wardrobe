@@ -7,14 +7,8 @@ import {
   Plane,
   Compass,
   ArrowRight,
-  Shirt,
-  Heart,
-  Search,
-  SlidersHorizontal,
-  Layers,
-  ChevronRight,
-  Eye,
 } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ShowcaseNavbar } from '@/components/showcase/ShowcaseNavbar';
 import { HeroSection } from '@/components/showcase/HeroSection';
 import { NewArrivalsCarousel } from '@/components/showcase/NewArrivalsCarousel';
@@ -23,17 +17,60 @@ import { CollectionsGrid } from '@/components/showcase/CollectionsGrid';
 import { ShowcaseFooter } from '@/components/showcase/ShowcaseFooter';
 import { GlobalSearchModal } from '@/components/navigation/GlobalSearchModal';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
-import { useAuthStore } from '@/store/useAuthStore';
-import { useOutfitStore } from '@/store/useOutfitStore';
+import { EASINGS, DURATIONS } from '@/lib/animations';
 
 export default function HomePage() {
   // 'dual' = Balanced soft blush pink & clean ice sky blue for both boys and girls
   const [colorMode, setColorMode] = useState<'dual' | 'sky' | 'blush'>('dual');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   const { items } = useWardrobeStore();
-  const { user } = useAuthStore();
-  const { openTryOn } = useOutfitStore();
+
+  const atelierFeatures = [
+    {
+      href: '/travel',
+      badge: 'Core Feature',
+      badgeColor: 'text-[#0284C7]',
+      hoverBorder: 'hover:border-[#38BDF8]',
+      icon: Plane,
+      iconColor: 'text-[#0284C7]',
+      title: '✈️ Travel Packing',
+      hoverTitleColor: 'group-hover:text-[#0284C7]',
+      description:
+        'Plan outfits for your next trip. Day-wise weather intelligence, capsule reuse, and luggage optimization.',
+      actionText: 'Launch Packing Assistant →',
+      actionColor: 'text-[#0284C7]',
+    },
+    {
+      href: '/occasions',
+      badge: 'Event Curations',
+      badgeColor: 'text-[#E87A90]',
+      hoverBorder: 'hover:border-[#E87A90]',
+      icon: Sparkles,
+      iconColor: 'text-[#E87A90]',
+      title: '✨ Occasion Stylist',
+      hoverTitleColor: 'group-hover:text-[#E87A90]',
+      description:
+        'Create the perfect look for dinner dates, weddings, galas, and professional meetings for both him and her.',
+      actionText: 'Style An Event →',
+      actionColor: 'text-[#E87A90]',
+    },
+    {
+      href: '/recommendations',
+      badge: 'AI Taste Engine',
+      badgeColor: 'text-[#8B5CF6]',
+      hoverBorder: 'hover:border-[#8B5CF6]',
+      icon: Compass,
+      iconColor: 'text-[#8B5CF6]',
+      title: '🛍️ Recommendations',
+      hoverTitleColor: 'group-hover:text-[#8B5CF6]',
+      description:
+        'Smart suggestions tailored to your personal aesthetic taxonomy and closet gaps in soft blue and blush.',
+      actionText: 'Discover Items →',
+      actionColor: 'text-[#8B5CF6]',
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#1C1917] flex flex-col selection:bg-[#38BDF8]/20 selection:text-[#0284C7]">
@@ -59,7 +96,13 @@ export default function HomePage() {
       {/* 6. AI ATELIER QUICK LAUNCHPAD (Seamless bridge to E-Wardrobe smart features) */}
       <section className="w-full py-16 bg-white border-t border-[#E2E8F0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.6, ease: EASINGS.luxury }}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10"
+          >
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E0F2FE] text-[#0284C7] text-xs font-bold uppercase tracking-wider mb-2">
                 <Sparkles className="h-3.5 w-3.5" />
@@ -73,81 +116,71 @@ export default function HomePage() {
               </p>
             </div>
 
-            <Link
-              href="/wardrobe"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1C1917] hover:bg-[#2D2926] text-white text-xs font-bold transition-all shadow-sm hover:shadow-md"
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
             >
-              <span>View Full Wardrobe ({items.length} garments)</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
+              <Link
+                href="/wardrobe"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#1C1917] hover:bg-[#2D2926] text-white text-xs font-bold transition-all shadow-sm hover:shadow-md"
+              >
+                <span>View Full Wardrobe ({items.length} garments)</span>
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </motion.div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1: ✈️ TRAVEL CAPSULE */}
-            <Link
-              href="/travel"
-              className="group rounded-3xl bg-[#FAF8F5] border border-[#E2E8F0] p-7 hover:border-[#38BDF8] hover:shadow-lg transition-all duration-300 relative overflow-hidden"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#0284C7] border border-[#E2E8F0] mb-5 group-hover:scale-110 transition-transform shadow-2xs">
-                <Plane className="h-6 w-6" />
-              </div>
-              <span className="text-[11px] font-bold tracking-widest uppercase text-[#0284C7]">
-                Core Feature
-              </span>
-              <h3 className="text-xl font-bold text-[#1C1917] mt-1 group-hover:text-[#0284C7] transition-colors">
-                ✈️ Travel Packing
-              </h3>
-              <p className="text-xs text-[#57534E] mt-2 leading-relaxed">
-                Plan outfits for your next trip. Day-wise weather intelligence, capsule reuse, and luggage optimization.
-              </p>
-              <div className="mt-6 pt-4 border-t border-[#E2E8F0]/60 flex items-center justify-between text-xs font-bold text-[#0284C7]">
-                <span>Launch Packing Assistant →</span>
-              </div>
-            </Link>
-
-            {/* Card 2: ✨ OCCASION STYLIST */}
-            <Link
-              href="/occasions"
-              className="group rounded-3xl bg-[#FAF8F5] border border-[#E2E8F0] p-7 hover:border-[#E87A90] hover:shadow-lg transition-all duration-300 relative overflow-hidden"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#E87A90] border border-[#E2E8F0] mb-5 group-hover:scale-110 transition-transform shadow-2xs">
-                <Sparkles className="h-6 w-6" />
-              </div>
-              <span className="text-[11px] font-bold tracking-widest uppercase text-[#E87A90]">
-                Event Curations
-              </span>
-              <h3 className="text-xl font-bold text-[#1C1917] mt-1 group-hover:text-[#E87A90] transition-colors">
-                ✨ Occasion Stylist
-              </h3>
-              <p className="text-xs text-[#57534E] mt-2 leading-relaxed">
-                Create the perfect look for dinner dates, weddings, galas, and professional meetings for both him and her.
-              </p>
-              <div className="mt-6 pt-4 border-t border-[#E2E8F0]/60 flex items-center justify-between text-xs font-bold text-[#E87A90]">
-                <span>Style An Event →</span>
-              </div>
-            </Link>
-
-            {/* Card 3: 🛍️ RECOMMENDATIONS */}
-            <Link
-              href="/recommendations"
-              className="group rounded-3xl bg-[#FAF8F5] border border-[#E2E8F0] p-7 hover:border-[#8B5CF6] hover:shadow-lg transition-all duration-300 relative overflow-hidden"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#8B5CF6] border border-[#E2E8F0] mb-5 group-hover:scale-110 transition-transform shadow-2xs">
-                <Compass className="h-6 w-6" />
-              </div>
-              <span className="text-[11px] font-bold tracking-widest uppercase text-[#8B5CF6]">
-                AI Taste Engine
-              </span>
-              <h3 className="text-xl font-bold text-[#1C1917] mt-1 group-hover:text-[#8B5CF6] transition-colors">
-                🛍️ Recommendations
-              </h3>
-              <p className="text-xs text-[#57534E] mt-2 leading-relaxed">
-                Smart suggestions tailored to your personal aesthetic taxonomy and closet gaps in soft blue and blush.
-              </p>
-              <div className="mt-6 pt-4 border-t border-[#E2E8F0]/60 flex items-center justify-between text-xs font-bold text-[#8B5CF6]">
-                <span>Discover Items →</span>
-              </div>
-            </Link>
+            {atelierFeatures.map((card, index) => {
+              const Icon = card.icon;
+              return (
+                <motion.div
+                  key={card.href}
+                  initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-30px' }}
+                  transition={{
+                    duration: 0.55,
+                    delay: index * DURATIONS.stagger, // 80ms stagger
+                    ease: EASINGS.luxury,
+                  }}
+                  whileHover={
+                    shouldReduceMotion
+                      ? undefined
+                      : {
+                          y: -6,
+                          transition: { duration: 0.24, ease: EASINGS.luxury },
+                        }
+                  }
+                >
+                  <Link
+                    href={card.href}
+                    className={`block h-full group rounded-3xl bg-[#FAF8F5] border border-[#E2E8F0] p-7 ${card.hoverBorder} hover:shadow-lg transition-all duration-300 relative overflow-hidden`}
+                  >
+                    <div
+                      className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-white ${card.iconColor} border border-[#E2E8F0] mb-5 group-hover:scale-110 group-hover:rotate-3 transition-transform shadow-2xs`}
+                    >
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <span className={`text-[11px] font-bold tracking-widest uppercase ${card.badgeColor}`}>
+                      {card.badge}
+                    </span>
+                    <h3 className={`text-xl font-bold text-[#1C1917] mt-1 ${card.hoverTitleColor} transition-colors`}>
+                      {card.title}
+                    </h3>
+                    <p className="text-xs text-[#57534E] mt-2 leading-relaxed">
+                      {card.description}
+                    </p>
+                    <div
+                      className={`mt-6 pt-4 border-t border-[#E2E8F0]/60 flex items-center justify-between text-xs font-bold ${card.actionColor}`}
+                    >
+                      <span>{card.actionText}</span>
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>

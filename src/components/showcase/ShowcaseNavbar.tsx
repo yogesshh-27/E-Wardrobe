@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, Sparkles, Shirt, SlidersHorizontal, ArrowRight, User } from 'lucide-react';
+import { Search, Sparkles, Shirt } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { BubbleLogo } from './BubbleLogo';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -20,48 +21,69 @@ export const ShowcaseNavbar: React.FC<ShowcaseNavbarProps> = ({
 }) => {
   const { items } = useWardrobeStore();
   const { user } = useAuthStore();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#FAF8F5]/90 backdrop-blur-md border-b border-[#E7E0D6]/60 transition-colors">
+    <header
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+        isScrolled
+          ? 'bg-[#FAF8F5]/95 backdrop-blur-lg border-b border-[#E7E0D6] shadow-[0_4px_20px_-4px_rgba(28,25,23,0.06)]'
+          : 'bg-[#FAF8F5]/85 backdrop-blur-md border-b border-[#E7E0D6]/60'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
         {/* Left Navigation: Explore, Collections, About, Reviews */}
         <nav className="hidden md:flex items-center gap-7 text-[13px] font-semibold text-[#57534E]">
           <Link
             href="#explore"
-            className="flex items-center gap-1.5 text-[#1C1917] hover:text-[#E87A90] transition-colors group"
+            className="nav-link-animated flex items-center gap-1.5 text-[#1C1917] hover:text-[#E87A90] transition-colors group"
           >
             <span>Explore</span>
             <span className="h-2 w-2 rounded-full bg-[#E87A90] group-hover:scale-125 transition-transform animate-pulse" />
           </Link>
           <Link
             href="#collections"
-            className="hover:text-[#0284C7] transition-colors"
+            className="nav-link-animated hover:text-[#0284C7] transition-colors"
           >
             Collections
           </Link>
           <Link
             href="#about"
-            className="hover:text-[#E87A90] transition-colors"
+            className="nav-link-animated hover:text-[#E87A90] transition-colors"
           >
             About
           </Link>
           <Link
             href="#reviews"
-            className="hover:text-[#0284C7] transition-colors"
+            className="nav-link-animated hover:text-[#0284C7] transition-colors"
           >
             Reviews
           </Link>
         </nav>
 
-        {/* Center: Iconic Bubble Wordmark */}
+        {/* Center: Iconic Bubble Wordmark with subtle hover spring */}
         <div className="flex-1 md:flex-initial text-center md:text-left flex justify-center">
           <Link href="/" className="group flex items-center justify-center">
-            <BubbleLogo
-              text="WARDROBE"
-              variant={colorMode === 'sky' ? 'sky' : colorMode === 'blush' ? 'blush' : 'dual'}
-              size="md"
-            />
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+            >
+              <BubbleLogo
+                text="WARDROBE"
+                variant={colorMode === 'sky' ? 'sky' : colorMode === 'blush' ? 'blush' : 'dual'}
+                size="md"
+              />
+            </motion.div>
           </Link>
         </div>
 
@@ -69,7 +91,8 @@ export const ShowcaseNavbar: React.FC<ShowcaseNavbarProps> = ({
         <div className="flex items-center gap-3">
           {/* Dual / Unisex Compatibility Mode Toggle */}
           <div className="hidden sm:flex items-center bg-white/80 border border-[#E7E0D6] rounded-full p-1 shadow-xs text-xs font-medium">
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               onClick={() => onColorModeChange('dual')}
               className={`px-3 py-1 rounded-full transition-all flex items-center gap-1.5 ${
                 colorMode === 'dual'
@@ -80,8 +103,9 @@ export const ShowcaseNavbar: React.FC<ShowcaseNavbarProps> = ({
             >
               <Sparkles className="h-3 w-3" />
               <span>Unisex</span>
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               onClick={() => onColorModeChange('sky')}
               className={`px-2.5 py-1 rounded-full transition-all ${
                 colorMode === 'sky'
@@ -91,8 +115,9 @@ export const ShowcaseNavbar: React.FC<ShowcaseNavbarProps> = ({
               title="Sky Blue (Cool tone)"
             >
               Blue
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               onClick={() => onColorModeChange('blush')}
               className={`px-2.5 py-1 rounded-full transition-all ${
                 colorMode === 'blush'
@@ -102,29 +127,38 @@ export const ShowcaseNavbar: React.FC<ShowcaseNavbarProps> = ({
               title="Blush Rose (Warm tone)"
             >
               Pink
-            </button>
+            </motion.button>
           </div>
 
           {/* Search Trigger */}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.18 }}
             onClick={onOpenSearch}
-            className="h-10 w-10 flex items-center justify-center rounded-full bg-white border border-[#E7E0D6] text-[#57534E] hover:text-[#1C1917] hover:border-[#CBD5E1] transition-all shadow-xs"
+            className="h-10 w-10 flex items-center justify-center rounded-full bg-white border border-[#E7E0D6] text-[#57534E] hover:text-[#1C1917] hover:border-[#CBD5E1] transition-colors shadow-xs"
             aria-label="Search collection"
           >
             <Search className="h-4 w-4" />
-          </button>
+          </motion.button>
 
           {/* Wardrobe Atelier Quick Access */}
-          <Link
-            href="/wardrobe"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#1C1917] hover:bg-[#2D2926] text-white text-xs font-bold transition-all shadow-sm hover:shadow-md"
+          <motion.div
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            transition={{ type: 'spring', stiffness: 400, damping: 25 }}
           >
-            <Shirt className="h-3.5 w-3.5 text-[#38BDF8]" />
-            <span className="hidden lg:inline">My Wardrobe</span>
-            <span className="bg-white/20 text-white text-[10px] px-1.5 py-0.5 rounded-full font-mono">
-              {items.length}
-            </span>
-          </Link>
+            <Link
+              href="/wardrobe"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#1C1917] hover:bg-[#2D2926] text-white text-xs font-bold transition-colors shadow-sm hover:shadow-md"
+            >
+              <Shirt className="h-3.5 w-3.5 text-[#38BDF8]" />
+              <span className="hidden lg:inline">My Wardrobe</span>
+              <span className="bg-white/20 text-white text-[10px] px-1.5 py-0.5 rounded-full font-mono">
+                {items.length}
+              </span>
+            </Link>
+          </motion.div>
         </div>
       </div>
     </header>

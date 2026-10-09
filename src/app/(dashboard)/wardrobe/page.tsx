@@ -20,6 +20,8 @@ import {
 } from 'lucide-react';
 import { useWardrobeStore } from '@/store/useWardrobeStore';
 import { ClothingCategory } from '@/types';
+import { motion } from 'framer-motion';
+import { EASINGS } from '@/lib/animations';
 
 export default function WardrobePage() {
   const {
@@ -417,11 +419,22 @@ export default function WardrobePage() {
           </div>
         </div>
       ) : filters.viewMode === 'grid' ? (
-        /* Grid View */
+        /* Grid View with Stagger and Hover */
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5">
-          {filteredItems.map((item) => (
-            <div
+          {filteredItems.map((item, index) => (
+            <motion.div
               key={item.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.4,
+                delay: Math.min(index * 0.04, 0.35),
+                ease: EASINGS.luxury,
+              }}
+              whileHover={{
+                y: -5,
+                transition: { duration: 0.2, ease: EASINGS.luxury },
+              }}
               onClick={() => setSelectedItem(item)}
               className="group rounded-3xl border border-[#E2E8F0] bg-white p-3 card-shadow card-shadow-hover cursor-pointer flex flex-col justify-between"
             >
@@ -474,17 +487,28 @@ export default function WardrobePage() {
                   {item.occasion[0]}
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       ) : (
         /* List View */
         <div className="space-y-2.5">
-          {filteredItems.map((item) => (
-            <div
+          {filteredItems.map((item, index) => (
+            <motion.div
               key={item.id}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.35,
+                delay: Math.min(index * 0.03, 0.3),
+                ease: EASINGS.luxury,
+              }}
+              whileHover={{
+                x: 3,
+                transition: { duration: 0.18 },
+              }}
               onClick={() => setSelectedItem(item)}
-              className="group flex items-center justify-between gap-4 p-3.5 rounded-2xl border border-[#E2E8F0] bg-white hover:border-[#0284C7]/40 hover:shadow-xs cursor-pointer transition-all"
+              className="group flex items-center justify-between gap-4 p-3.5 rounded-2xl border border-[#E2E8F0] bg-white hover:border-[#0284C7]/40 hover:shadow-xs cursor-pointer transition-colors"
             >
               <div className="flex items-center gap-3.5 min-w-0">
                 <img
@@ -525,7 +549,7 @@ export default function WardrobePage() {
                   />
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}

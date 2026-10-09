@@ -43,13 +43,13 @@ export default function DashboardLayout({
   }, []);
 
   useEffect(() => {
-    // If authenticated check is ready and user is not authenticated, land on login page
-    if (isReady && !isAuthenticated) {
+    // If authenticated check is ready and user is not authenticated, land on login page for dashboard subpages
+    if (isReady && !isAuthenticated && !isHome) {
       router.replace('/login');
     }
-  }, [isReady, isAuthenticated, router]);
+  }, [isReady, isAuthenticated, router, isHome]);
 
-  if (!isReady || !isAuthenticated) {
+  if (isReady && !isAuthenticated && !isHome) {
     return null;
   }
 

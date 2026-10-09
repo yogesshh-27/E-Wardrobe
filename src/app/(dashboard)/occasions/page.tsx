@@ -24,6 +24,8 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { useOutfitStore } from '@/store/useOutfitStore';
 import { stylistService } from '@/services/stylistService';
 import { Outfit } from '@/types';
+import { motion } from 'framer-motion';
+import { EASINGS } from '@/lib/animations';
 
 const OCCASIONS_LIST = [
   'Dandiya Night',
@@ -244,8 +246,12 @@ export default function OccasionsPage() {
               const makeupTip = makeups[selectedOccasion] || makeups['Dandiya Night'];
 
               return (
-                <div
+                <motion.div
                   key={outfit.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: idx * 0.1, ease: EASINGS.luxury }}
+                  whileHover={{ y: -5, transition: { duration: 0.22, ease: EASINGS.luxury } }}
                   className="rounded-3xl bg-white border border-[#E2E8F0] p-7 shadow-lg card-shadow flex flex-col justify-between space-y-6"
                 >
                   <div className="space-y-6">
@@ -355,7 +361,7 @@ export default function OccasionsPage() {
                       <span>{isSaved ? 'Look Saved' : 'Save Complete Look'}</span>
                     </button>
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
