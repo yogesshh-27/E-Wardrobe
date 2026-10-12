@@ -39,9 +39,17 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
     { label: 'Settings', href: '/settings', icon: Sliders },
   ];
 
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
+
   const handleLogout = async () => {
-    await logout();
-    router.push('/');
+    try {
+      setIsLoggingOut(true);
+      await logout();
+    } catch (err) {
+      console.error('[Sidebar Logout] Error:', err);
+    } finally {
+      window.location.href = '/?logged_out=true';
+    }
   };
 
   const styleSummary =
@@ -172,11 +180,17 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ isOpen, onClose 
           </Link>
 
           <button
+            type="button"
             onClick={handleLogout}
-            className="flex w-full items-center justify-center gap-2 rounded-xl py-2 text-[11px] font-semibold text-[#64748B] hover:text-[#E87A90] hover:bg-rose-50 transition-colors"
+            disabled={isLoggingOut}
+            className="flex w-full items-center justify-center gap-2 rounded-xl py-2 text-[11px] font-semibold text-[#64748B] hover:text-[#E87A90] hover:bg-rose-50 transition-colors disabled:opacity-50 cursor-pointer"
           >
-            <LogOut className="h-3.5 w-3.5" />
-            <span>Log Out</span>
+            {isLoggingOut ? (
+              <div className="h-3.5 w-3.5 rounded-full border-2 border-rose-500 border-t-transparent animate-spin" />
+            ) : (
+              <LogOut className="h-3.5 w-3.5" />
+            )}
+            <span>{isLoggingOut ? 'Logging Out...' : 'Log Out'}</span>
           </button>
         </div>
       </aside>

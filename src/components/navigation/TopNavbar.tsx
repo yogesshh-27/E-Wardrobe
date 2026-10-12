@@ -75,9 +75,17 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onToggleSidebar }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
   const handleLogout = async () => {
-    await logout();
-    router.push('/');
+    try {
+      setIsLoggingOut(true);
+      await logout();
+    } catch (err) {
+      console.error('[TopNavbar Logout] Error:', err);
+    } finally {
+      window.location.href = '/?logged_out=true';
+    }
   };
 
   return (
@@ -301,11 +309,17 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ onToggleSidebar }) => {
                   </div>
                   <div className="border-t border-[#E2E8F0] pt-1">
                     <button
+                      type="button"
                       onClick={handleLogout}
-                      className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#E87A90] hover:bg-rose-50 transition-colors"
+                      disabled={isLoggingOut}
+                      className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#E87A90] hover:bg-rose-50 transition-colors disabled:opacity-50 cursor-pointer"
                     >
-                      <LogOut className="h-4 w-4" />
-                      Log out
+                      {isLoggingOut ? (
+                        <div className="h-4 w-4 rounded-full border-2 border-rose-500 border-t-transparent animate-spin" />
+                      ) : (
+                        <LogOut className="h-4 w-4" />
+                      )}
+                      <span>{isLoggingOut ? 'Logging out...' : 'Log out'}</span>
                     </button>
                   </div>
                 </motion.div>

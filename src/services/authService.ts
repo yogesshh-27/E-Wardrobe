@@ -113,15 +113,56 @@ export class AuthService implements IAuthService {
 
   async logout(): Promise<void> {
     if (typeof window !== 'undefined') {
-      if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      // 1. Call server-side logout route to clear server cookies
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+      } catch (err) {
+        console.warn('[Server Logout API] Warning:', err);
+      }
+
+      // 2. Unconditionally sign out from Supabase client
+      try {
+        const supabase = createClient();
+        await supabase.auth.signOut();
+      } catch (err) {
+        console.warn('[Supabase SignOut] Trying local signout:', err);
         try {
           const supabase = createClient();
-          await supabase.auth.signOut();
-        } catch (err) {
-          console.warn('[Supabase SignOut] Error:', err);
+          await supabase.auth.signOut({ scope: 'local' });
+        } catch {
+          // ignore
         }
       }
-      localStorage.removeItem(STORAGE_KEY);
+
+      // 3. Clear all stored user and auth tokens from localStorage
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem('ewardrobe_auth_store');
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const key = localStorage.key(i);
+          if (key && (key.startsWith('sb-') || key.includes('supabase') || key.includes('session'))) {
+            localStorage.removeItem(key);
+          }
+        }
+      } catch (err) {
+        console.warn('[Auth Storage Clear] Warning:', err);
+      }
+
+      // 4. Clear sessionStorage
+      try {
+        sessionStorage.clear();
+      } catch {}
+
+      // 5. Expire any client cookies
+      try {
+        document.cookie.split(';').forEach((cookie) => {
+          const name = cookie.split('=')[0]?.trim();
+          if (name && (name.startsWith('sb-') || name.includes('supabase') || name.includes('auth'))) {
+            document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+            document.cookie = `${name}=; path=/; domain=${window.location.hostname}; expires=Thu, 01 Jan 1970 00:00:00 GMT;`;
+          }
+        });
+      } catch {}
     }
   }
 

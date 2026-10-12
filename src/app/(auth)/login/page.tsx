@@ -35,6 +35,12 @@ export default function LoginPage() {
   const [isGoogleConnecting, setIsGoogleConnecting] = useState(false);
 
   useEffect(() => {
+    // If user explicitly logged out, bypass auto-redirect and clear the query flag
+    if (typeof window !== 'undefined' && window.location.search.includes('logged_out=true')) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      return;
+    }
+
     try {
       const supabase = createClient();
 
@@ -251,10 +257,12 @@ export default function LoginPage() {
                         <ArrowRight className="h-3.5 w-3.5" />
                       </button>
                       <button
+                        type="button"
                         onClick={async () => {
                           await useAuthStore.getState().logout();
+                          window.location.href = '/?logged_out=true';
                         }}
-                        className="rounded-xl border border-[#CBD5E1] bg-white py-2 px-3 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-all shadow-xs"
+                        className="rounded-xl border border-[#CBD5E1] bg-white py-2 px-3 text-xs font-semibold text-rose-600 hover:bg-rose-50 transition-all shadow-xs cursor-pointer"
                       >
                         Sign Out
                       </button>
